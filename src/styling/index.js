@@ -35,6 +35,7 @@ export const Button = styled.div`
   border-radius: 30px;
   font-weight: 600;
   cursor: pointer;
+  box-shadow: 0 10px 20px 0 ${COLORS.fadedBlue};
   transition: background-position 100ms ease-in-out;
 
   ${(props) =>
