@@ -44,7 +44,7 @@ export const Button = styled.div`
         ${COLORS.fadedBlue},
         ${COLORS.fadedLightBlue}
       );
-      color: #3228ad;
+      color: ${COLORS.blue};
       font-weight: 500;
     `}
 
