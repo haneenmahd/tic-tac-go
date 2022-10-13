@@ -9,6 +9,7 @@ export const COLORS = {
   lightBlue: "#6fcbff",
   fadedBlue: "#0f00bd20",
   fadedLightBlue: "#6fcbff20",
+  textBlue: "rgb(37, 28, 139)",
 };
 
 export const FlexDiv = styled.div`
