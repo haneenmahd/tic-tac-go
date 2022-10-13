@@ -1,6 +1,7 @@
-import * as React from "react";
+import { useEffect } from "react";
 import "./App.css";
 import styled, { keyframes } from "styled-components";
+import { useLocation } from "react-router-dom";
 
 const FadeIn = keyframes`
     from {
@@ -18,10 +19,20 @@ const AppWraper = styled.div`
   animation: ${FadeIn} 0.3s ease-out;
 `;
 
-class App extends React.Component {
-  render() {
-    return <AppWraper>{this.props.children}</AppWraper>;
-  }
-}
+const App = (props) => {
+  const ScrollToTop = () => {
+    const { pathname } = useLocation();
+
+    useEffect(() => {
+      window.scrollTo(0, 0);
+    }, [pathname]);
+  };
+  return (
+    <>
+      <ScrollToTop />
+      <AppWraper>{props.children}</AppWraper>
+    </>
+  );
+};
 
 export default App;
