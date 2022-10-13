@@ -54,3 +54,10 @@ export const Button = styled.div`
     background-position: 300px;
   }
 `;
+
+export const HighlightedText = styled.b`
+  color: transparent;
+  background: linear-gradient(90deg, ${COLORS.blue}, ${COLORS.lightBlue} 120%);
+  background-clip: text;
+  -webkit-background-clip: text;
+`;
