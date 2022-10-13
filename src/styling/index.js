@@ -1,0 +1,54 @@
+import styled, { css } from "styled-components";
+
+export const QUERIES = {
+  large: "min-width: 801px",
+};
+
+export const COLORS = {
+  blue: "#0f00bd",
+  lightBlue: "#6fcbff",
+  fadedBlue: "#0f00bd20",
+  fadedLightBlue: "#6fcbff20",
+};
+
+export const FlexDiv = styled.div`
+  height: ${(props) => (props.flexHeight ? "100vh" : "auto")};
+  width: 100%;
+  padding: 2rem 0;
+  display: flex;
+  flex-direction: ${(props) => props.direction || "column"};
+  align-items: center;
+  justify-content: center;
+  gap: ${(props) => props.gap || "20px"};
+
+  @media screen and (${QUERIES.large}) {
+    flex-direction: ${(props) => props.direction || "row"};
+    gap: ${(props) => props.gap || "50px"};
+    padding: 0;
+  }
+`;
+
+export const Button = styled.div`
+  padding: 1rem 3rem;
+  color: white;
+  background: radial-gradient(${COLORS.blue}, ${COLORS.lightBlue});
+  border-radius: 30px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-position 100ms ease-in-out;
+
+  ${(props) =>
+    props.secondary &&
+    css`
+      background: radial-gradient(
+        ${COLORS.fadedBlue},
+        ${COLORS.fadedLightBlue}
+      );
+      color: #3228ad;
+      font-weight: 500;
+    `}
+
+  &:hover {
+    background-position: 300px;
+  }
+`;
