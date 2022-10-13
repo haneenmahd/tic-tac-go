@@ -25,7 +25,7 @@ export const FlexDiv = styled.div`
   @media screen and (${QUERIES.large}) {
     flex-direction: ${(props) => props.direction || "row"};
     gap: ${(props) => props.gap || "50px"};
-    padding: 0;
+    padding: 2rem 0;
   }
 `;
 
