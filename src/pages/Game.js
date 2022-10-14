@@ -1,4 +1,10 @@
-import * as React from "react";
+import { useState } from "react";
+import { useParams } from "react-router-dom";
+import styled, { css } from "styled-components";
+import { PlayerSide, PlayModes } from "../store/data";
+import { COLORS, FlexDiv, GameInfo, PlayerName } from "../styling";
+import SymbolO from "../assets/svg/O-symbol.svg";
+import SymbolX from "../assets/svg/X-symbol.svg";
 
 function calculateWinner(squares) {
   const lines = [
@@ -29,151 +35,77 @@ function calculateWinner(squares) {
   };
 }
 
-function Square(props) {
-  return (
-    <button
-      className={`square ${props.highlighted ? "highlighted" : "null"}`}
-      onClick={props.onClick}
-    >
-      {props.value}
-    </button>
-  );
-}
+const Board = styled.div`
+  display: grid;
+  grid-template-columns: 100px 100px 100px;
+  height: 300px;
+  width: 300px;
+  background-color: #fff;
+  box-shadow: -2px 3px 10px 0 rgba(19, 14, 124, 0.15);
+`;
 
-class Board extends React.Component {
-  renderSquare(i, highlighted) {
-    return (
-      <Square
-        value={this.props.squares[i]}
-        highlighted={highlighted}
-        onClick={() => this.props.onClick(i)}
-      />
-    );
+const Square = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100px;
+  width: 100px;
+  border: 1px solid ${COLORS.fadedBlue};
+  cursor: pointer;
+  transition: 200ms ease-in-out;
+
+  &:hover {
+    background: ${COLORS.fadedLightBlue};
   }
+`;
 
-  render() {
-    return (
-      <div>
-        <div className="board-row">
-          {this.renderSquare(0, this.props.highlightedLines.includes(0))}
-          {this.renderSquare(1, this.props.highlightedLines.includes(1))}
-          {this.renderSquare(2, this.props.highlightedLines.includes(2))}
-        </div>
-        <div className="board-row">
-          {this.renderSquare(3, this.props.highlightedLines.includes(3))}
-          {this.renderSquare(4, this.props.highlightedLines.includes(4))}
-          {this.renderSquare(5, this.props.highlightedLines.includes(5))}
-        </div>
-        <div className="board-row">
-          {this.renderSquare(6, this.props.highlightedLines.includes(6))}
-          {this.renderSquare(7, this.props.highlightedLines.includes(7))}
-          {this.renderSquare(8, this.props.highlightedLines.includes(8))}
-        </div>
-      </div>
-    );
-  }
-}
+const Game = (props) => {
+  const params = useParams();
+  const mode = params.mode;
+  const side = params.side;
+  const [squares, setSquares] = useState(Array(9).fill(null));
+  const [currentSide, setCurrentSide] = useState(side); // using the default chosen for the first move
 
-class App extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      history: [
-        {
-          squares: Array(9).fill(null),
-        },
-      ],
-      xIsNext: true,
-      stepNumber: 0,
-    };
-  }
-
-  checkAllFilled(sqaures) {
-    return sqaures.every((square) => square !== null);
-  }
-
-  handleClick(i) {
-    const history = this.state.history.slice(0, this.state.stepNumber + 1);
-    const current = history[history.length - 1];
-    const squares = current.squares.slice();
-
-    if (
-      this.checkAllFilled(squares) ||
-      calculateWinner(squares).winner ||
-      squares[i]
-    ) {
+  const handleClick = (i) => {
+    if (calculateWinner(squares).winner || squares[i]) {
       return;
     }
 
-    squares[i] = this.state.xIsNext ? "X" : "O";
+    const tempSquares = squares.slice();
+    tempSquares[i] = currentSide;
 
-    this.setState({
-      history: history.concat([
-        {
-          squares: squares,
-        },
-      ]),
-      stepNumber: history.length,
-      xIsNext: !this.state.xIsNext,
-    });
-  }
+    setSquares(tempSquares);
+    setCurrentSide(currentSide === PlayerSide.X ? PlayerSide.O : PlayerSide.X);
+  };
 
-  jumpTo(step) {
-    this.setState({
-      stepNumber: step,
-      xIsNext: step % 2 === 0,
-    });
-  }
+  return (
+    <FlexDiv direction="column">
+      <FlexDiv direction="row">
+        <PlayerName>You</PlayerName>
 
-  render() {
-    const history = this.state.history;
-    const current = history[this.state.stepNumber];
-    const result = calculateWinner(current.squares);
+        <GameInfo>0 - 0</GameInfo>
 
-    const moves = history.map((step, move) => {
-      const desc = move ? "Go to move #" + move : "Go to game start";
+        <PlayerName>{mode}</PlayerName>
+      </FlexDiv>
 
-      return (
-        <li key={move}>
-          <button
-            style={{
-              fontWeight: move === this.state.stepNumber ? "bold" : "normal",
-              transition: "font-weight ease-in-out 150ms",
-            }}
-            onClick={() => this.jumpTo(move)}
-          >
-            {desc}
-          </button>
-        </li>
-      );
-    });
+      <Board>
+        {squares.map((square, index) => {
+          const img =
+            square === PlayerSide.X ? (
+              <img height={50} src={SymbolX} alt="Symbol for X" />
+            ) : square === PlayerSide.O ? (
+              <img height={50} src={SymbolO} alt="Symbol for O" />
+            ) : null;
 
-    let status;
-    if (result.winner) {
-      status = "Winner: " + result.winner;
-    } else if (this.checkAllFilled(current.squares)) {
-      status = "You've run out of moves. Draw!!!";
-    } else {
-      status = "Next player: " + (this.state.xIsNext ? "X" : "O");
-    }
+          return (
+            <Square onClick={() => handleClick(index)} key={index}>
+              {img}
+            </Square>
+          );
+        })}
+      </Board>
+    </FlexDiv>
+  );
+};
 
-    return (
-      <div className="game">
-        <div className="game-board">
-          <Board
-            squares={current.squares}
-            highlightedLines={result.highlightedLines || []}
-            onClick={(i) => this.handleClick(i)}
-          />
-        </div>
-        <div className="game-info">
-          <div>{status}</div>
-          <ol>{moves}</ol>
-        </div>
-      </div>
-    );
-  }
-}
-
-export default App;
+export default Game;
