@@ -1,6 +1,6 @@
 export const PlayModes = {
-  AI: "AI",
-  FRIEND: "FRIEND",
+  ONLINE: "ONLINE",
+  OFFLINE: "OFFLINE",
 };
 
 export const PlayerSide = {

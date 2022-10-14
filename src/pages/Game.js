@@ -76,7 +76,7 @@ const Game = (props) => {
       } else {
         setOpponentScore((opponentScore) => opponentScore + 1);
 
-        toast("Your friend won!", {
+        toast("Your opponent won!", {
           icon: <Droplet fill="orange" />,
         });
       }
