@@ -37,23 +37,20 @@ const Home = () => {
   const playModeView = (
     <div>
       <FlexDiv direction="row" gap="30px">
-        <img src={SymbolX} alt="X symbol" />
-        <img src={SymbolO} alt="O symbol" />
+        <img height="auto" src={SymbolX} alt="X symbol" />
+        <img height="auto" src={SymbolO} alt="O symbol" />
       </FlexDiv>
 
-      <FlexDiv direction="column">
-        <h2
-          style={{
-            color: COLORS.textBlue,
-          }}
-        >
-          Choose your play mode
-        </h2>
+      <FlexDiv direction="column" gap="10px">
+        <HighlightedText>Tic Tac Toe. Now with more fun!</HighlightedText>
+        <h2>Choose your play mode</h2>
 
         <FlexDiv direction="column" gap="20px">
-          <Button onClick={() => handlePlayMode(PlayModes.AI)}>With AI</Button>
+          <Button onClick={() => handlePlayMode(PlayModes.AI)}>
+            Join Room
+          </Button>
           <Button onClick={() => handlePlayMode(PlayModes.FRIEND)} secondary>
-            With a friend
+            Create room
           </Button>
         </FlexDiv>
       </FlexDiv>
