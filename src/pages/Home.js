@@ -7,6 +7,7 @@ import SymbolO from "../assets/svg/O-symbol.svg";
 import SymbolX from "../assets/svg/X-symbol.svg";
 
 const SideImage = styled.img`
+  height: 100px;
   opacity: 0.3;
   cursor: pointer;
   transition: 300ms ease-in-out;
@@ -61,7 +62,7 @@ const Home = () => {
     <FlexDiv direction="column">
       <h2>Pick your side</h2>
 
-      <FlexDiv direction="row" gap="50px">
+      <FlexDiv direction="row" gap="30px">
         <SideImage
           src={SymbolX}
           alt="X symbol"
