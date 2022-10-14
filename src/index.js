@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import "./index.css";
 import AppWraper from "./App";
 import Home from "./pages/Home";
+import Game from "./pages/Game";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -16,6 +17,15 @@ root.render(
           element={
             <AppWraper>
               <Home />
+            </AppWraper>
+          }
+        />
+
+        <Route
+          path="/game/:mode/:side"
+          element={
+            <AppWraper>
+              <Game />
             </AppWraper>
           }
         />
