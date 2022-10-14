@@ -29,6 +29,10 @@ export const FlexDiv = styled.div`
   }
 `;
 
+export const PlayerName = styled.p`
+  font-weight: 500;
+`;
+
 export const Button = styled.div`
   padding: 1rem 3rem;
   color: white;
@@ -49,10 +53,6 @@ export const Button = styled.div`
       color: ${COLORS.blue};
       font-weight: 500;
     `}
-
-  &:hover {
-    background-position: 300px;
-  }
 `;
 
 export const HighlightedText = styled.b`
@@ -60,4 +60,11 @@ export const HighlightedText = styled.b`
   background: linear-gradient(90deg, ${COLORS.blue}, ${COLORS.lightBlue} 120%);
   background-clip: text;
   -webkit-background-clip: text;
+`;
+
+export const GameInfo = styled.div`
+  padding: 0.8rem 2rem;
+  background: ${COLORS.fadedLightBlue};
+  border: 1px solid ${COLORS.fadedBlue};
+  border-radius: 30px;
 `;
