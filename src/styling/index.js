@@ -44,6 +44,13 @@ export const Button = styled.div`
   transition: background-position 100ms ease-in-out;
 
   ${(props) =>
+    props.disabled &&
+    css`
+      cursor: not-allowed;
+      opacity: 0.5;
+    `}
+
+  ${(props) =>
     props.secondary &&
     css`
       background: radial-gradient(
@@ -63,7 +70,7 @@ export const HighlightedText = styled.b`
 `;
 
 export const GameInfo = styled.div`
-  padding: 0.8rem 2rem;
+  padding: 0.8rem 1em;
   background: ${COLORS.fadedLightBlue};
   border: 1px solid ${COLORS.fadedBlue};
   border-radius: 30px;
