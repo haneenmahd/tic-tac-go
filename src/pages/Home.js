@@ -1,16 +1,10 @@
 import { useState } from "react";
-import { Button, COLORS, FlexDiv, HighlightedText } from "../styling";
+import { Link } from "react-router-dom";
+import styled, { css } from "styled-components";
+import { Button, COLORS, FlexDiv, GameInfo, HighlightedText } from "../styling";
+import { PlayerSide, PlayModes } from "../store/data";
 import SymbolO from "../assets/svg/O-symbol.svg";
 import SymbolX from "../assets/svg/X-symbol.svg";
-import { PlayerSide, PlayModes } from "../store/data";
-import styled, { css } from "styled-components";
-
-const GameInfo = styled.div`
-  padding: 0.8rem 2rem;
-  background: ${COLORS.fadedLightBlue};
-  border: 1px solid ${COLORS.fadedBlue};
-  border-radius: 30px;
-`;
 
 const SideImage = styled.img`
   opacity: 0.3;
@@ -26,7 +20,7 @@ const SideImage = styled.img`
 
 const Home = () => {
   const [playMode, setPlayMode] = useState(null);
-  const [side, setSide] = useState("X"); // choosing X by default
+  const [playSide, setSide] = useState("X"); // choosing X by default
 
   const handlePlayMode = (mode) => {
     if (mode === PlayModes.AI || mode === PlayModes.FRIEND) {
@@ -74,13 +68,13 @@ const Home = () => {
         <SideImage
           src={SymbolX}
           alt="X symbol"
-          selected={side === PlayerSide.X}
+          selected={playSide === PlayerSide.X}
           onClick={() => handlePlaySide(PlayerSide.X)}
         />
         <SideImage
           src={SymbolO}
           alt="O symbol"
-          selected={side === PlayerSide.O}
+          selected={playSide === PlayerSide.O}
           onClick={() => handlePlaySide(PlayerSide.O)}
         />
       </FlexDiv>
@@ -89,7 +83,9 @@ const Home = () => {
         Playing with <HighlightedText>{playMode}</HighlightedText>
       </GameInfo>
 
-      <Button secondary>Continue</Button>
+      <Link to={`game/${playMode}/${playSide}`}>
+        <Button secondary>Continue</Button>
+      </Link>
     </FlexDiv>
   );
 
