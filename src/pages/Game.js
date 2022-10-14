@@ -1,8 +1,10 @@
-import { useState } from "react";
+import { useEffect, useInsertionEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import styled, { css } from "styled-components";
 import { PlayerSide, PlayModes } from "../store/data";
-import { COLORS, FlexDiv, GameInfo, PlayerName } from "../styling";
+import { Button, COLORS, FlexDiv, GameInfo, PlayerName } from "../styling";
+import { Toaster, toast } from "react-hot-toast";
+import { Droplet } from "react-feather";
 import SymbolO from "../assets/svg/O-symbol.svg";
 import SymbolX from "../assets/svg/X-symbol.svg";
 
@@ -22,17 +24,11 @@ function calculateWinner(squares) {
     const [a, b, c] = lines[i];
 
     if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
-      return {
-        highlightedLines: lines[i],
-        winner: squares[a],
-      };
+      return squares[a];
     }
   }
 
-  return {
-    highlightedLines: null,
-    winner: null,
-  };
+  return null;
 }
 
 const Board = styled.div`
@@ -64,10 +60,33 @@ const Game = (props) => {
   const mode = params.mode;
   const side = params.side;
   const [squares, setSquares] = useState(Array(9).fill(null));
+  const [score, setScore] = useState(0);
+  const [opponentScore, setOpponentScore] = useState(0);
   const [currentSide, setCurrentSide] = useState(side); // using the default chosen for the first move
+  const [roundCompleted, setRoundCompleted] = useState(false);
+
+  useEffect(() => {
+    if (calculateWinner(squares)) {
+      if (currentSide !== side) {
+        setScore((score) => score + 1);
+
+        toast("You won!", {
+          icon: <Droplet fill="blue" />,
+        });
+      } else {
+        setOpponentScore((opponentScore) => opponentScore + 1);
+
+        toast("Your friend won!", {
+          icon: <Droplet fill="orange" />,
+        });
+      }
+
+      setRoundCompleted(true);
+    }
+  }, [squares, side, currentSide]);
 
   const handleClick = (i) => {
-    if (calculateWinner(squares).winner || squares[i]) {
+    if (calculateWinner(squares) || squares[i]) {
       return;
     }
 
@@ -78,32 +97,63 @@ const Game = (props) => {
     setCurrentSide(currentSide === PlayerSide.X ? PlayerSide.O : PlayerSide.X);
   };
 
+  const allFilled = (squares) => {
+    return squares.every((square) => square !== null);
+  };
+
+  const disableRoundButton = () => {
+    if (allFilled(squares) || roundCompleted) {
+      return false;
+    }
+
+    return true;
+  };
+
+  const nextRound = () => {
+    setSquares(Array(9).fill(null));
+    setRoundCompleted(false);
+  };
+
   return (
     <FlexDiv direction="column">
       <FlexDiv direction="row">
-        <PlayerName>You</PlayerName>
+        <PlayerName active={currentSide === side}>You</PlayerName>
 
-        <GameInfo>0 - 0</GameInfo>
+        <GameInfo>
+          {score} - {opponentScore}
+        </GameInfo>
 
-        <PlayerName>{mode}</PlayerName>
+        <PlayerName active={currentSide !== side}>{mode}</PlayerName>
       </FlexDiv>
 
-      <Board>
-        {squares.map((square, index) => {
-          const img =
-            square === PlayerSide.X ? (
-              <img height={50} src={SymbolX} alt="Symbol for X" />
-            ) : square === PlayerSide.O ? (
-              <img height={50} src={SymbolO} alt="Symbol for O" />
-            ) : null;
+      <FlexDiv direction="column" gap="100px">
+        <Board>
+          {squares.map((square, index) => {
+            const img =
+              square === PlayerSide.X ? (
+                <img height={50} src={SymbolX} alt="Symbol for X" />
+              ) : square === PlayerSide.O ? (
+                <img height={50} src={SymbolO} alt="Symbol for O" />
+              ) : null;
 
-          return (
-            <Square onClick={() => handleClick(index)} key={index}>
-              {img}
-            </Square>
-          );
-        })}
-      </Board>
+            return (
+              <Square onClick={() => handleClick(index)} key={index}>
+                {img}
+              </Square>
+            );
+          })}
+        </Board>
+
+        <Button
+          onClick={nextRound}
+          disabled={disableRoundButton()}
+          tabIndex={1}
+        >
+          Next Round
+        </Button>
+      </FlexDiv>
+
+      <Toaster />
     </FlexDiv>
   );
 };
