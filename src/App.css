@@ -1,6 +1,6 @@
 body {
-  font: 14px "Century Gothic", Futura, sans-serif;
-  margin: 20px;
+  font: 16px system-ui, sans-serif;
+  background-color: #fafafa;
 }
 
 ol,
