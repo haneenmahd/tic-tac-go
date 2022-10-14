@@ -9,6 +9,8 @@ import SymbolX from "../assets/svg/X-symbol.svg";
 const SideImage = styled.img`
   height: 100px;
   opacity: 0.3;
+  scale: 0.8;
+  filter: grayscale(0.5);
   cursor: pointer;
   transition: 300ms ease-in-out;
 
@@ -16,6 +18,8 @@ const SideImage = styled.img`
     props.selected &&
     css`
       opacity: 1;
+      scale: 1;
+      filter: grayscale(0);
     `}
 `;
 
@@ -24,7 +28,7 @@ const Home = () => {
   const [playSide, setSide] = useState("X"); // choosing X by default
 
   const handlePlayMode = (mode) => {
-    if (mode === PlayModes.AI || mode === PlayModes.FRIEND) {
+    if (mode === PlayModes.ONLINE || mode === PlayModes.OFFLINE) {
       setPlayMode(mode);
     }
   };
@@ -38,8 +42,8 @@ const Home = () => {
   const playModeView = (
     <div>
       <FlexDiv direction="row" gap="30px">
-        <img height="auto" src={SymbolX} alt="X symbol" />
-        <img height="auto" src={SymbolO} alt="O symbol" />
+        <img height="100px" src={SymbolX} alt="X symbol" />
+        <img height="100px" src={SymbolO} alt="O symbol" />
       </FlexDiv>
 
       <FlexDiv direction="column" gap="10px">
@@ -47,10 +51,10 @@ const Home = () => {
         <h2>Choose your play mode</h2>
 
         <FlexDiv direction="column" gap="20px">
-          <Button onClick={() => handlePlayMode(PlayModes.AI)}>
+          <Button onClick={() => handlePlayMode(PlayModes.ONLINE)}>
             Join Room
           </Button>
-          <Button onClick={() => handlePlayMode(PlayModes.FRIEND)} secondary>
+          <Button onClick={() => handlePlayMode(PlayModes.OFFLINE)} secondary>
             Create room
           </Button>
         </FlexDiv>
@@ -78,7 +82,7 @@ const Home = () => {
       </FlexDiv>
 
       <GameInfo>
-        Playing with <HighlightedText>{playMode}</HighlightedText>
+        Playing <HighlightedText>{playMode}</HighlightedText>
       </GameInfo>
 
       <Link to={`game/${playMode}/${playSide}`}>
