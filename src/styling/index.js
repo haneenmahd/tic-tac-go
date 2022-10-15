@@ -63,6 +63,7 @@ export const Button = styled.div`
 `;
 
 export const HighlightedText = styled.b`
+  margin: 0 0.2rem;
   color: transparent;
   background: linear-gradient(90deg, ${COLORS.blue}, ${COLORS.lightBlue} 120%);
   background-clip: text;
@@ -70,6 +71,9 @@ export const HighlightedText = styled.b`
 `;
 
 export const GameInfo = styled.div`
+  display: flex;
+  justify-content: center;
+  width: 10rem;
   padding: 0.8rem 1em;
   background: ${COLORS.fadedLightBlue};
   border: 1px solid ${COLORS.fadedBlue};

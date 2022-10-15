@@ -117,13 +117,27 @@ const Game = (props) => {
   return (
     <FlexDiv direction="column">
       <FlexDiv direction="row">
-        <PlayerName active={currentSide === side}>You</PlayerName>
+        <FlexDiv direction="row" gap="10px">
+          <img
+            height={30}
+            src={side === PlayerSide.X ? SymbolX : SymbolO}
+            alt="Symbol for You"
+          />
+          <PlayerName active={currentSide === side}>You</PlayerName>
+        </FlexDiv>
 
         <GameInfo>
           {score} - {opponentScore}
         </GameInfo>
 
-        <PlayerName active={currentSide !== side}>{mode}</PlayerName>
+        <FlexDiv direction="row" gap="10px">
+          <img
+            height={30}
+            src={side !== PlayerSide.X ? SymbolX : SymbolO}
+            alt="Symbol for You"
+          />
+          <PlayerName active={currentSide !== side}>{mode}</PlayerName>
+        </FlexDiv>
       </FlexDiv>
 
       <FlexDiv direction="column" gap="100px">
