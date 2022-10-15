@@ -34,14 +34,13 @@ export const PlayerName = styled.p`
 `;
 
 export const Button = styled.div`
-  padding: 1rem 3rem;
+  padding: 1rem 2rem;
   color: white;
   background: radial-gradient(${COLORS.blue}, ${COLORS.lightBlue});
   border-radius: 30px;
   font-weight: 600;
   cursor: pointer;
   box-shadow: 0 10px 20px 0 ${COLORS.fadedBlue};
-  transition: background-position 100ms ease-in-out;
 
   ${(props) =>
     props.disabled &&
@@ -60,6 +59,28 @@ export const Button = styled.div`
       color: ${COLORS.blue};
       font-weight: 500;
     `}
+`;
+
+export const TextField = styled.input`
+  padding: 1rem 1.5rem;
+  font-size: 1rem;
+  border: 1px solid ${COLORS.fadedBlue};
+  outline: none;
+  border-radius: 30px;
+  font-weight: 600;
+  box-shadow: 0 0 0 0;
+  transition: 100ms ease-in-out;
+
+  &:focus {
+    box-shadow: 0 0 0 2px ${COLORS.fadedBlue};
+  }
+`;
+
+export const Divider = styled.span`
+  background: ${COLORS.fadedBlue};
+  width: 80%;
+  height: 1px;
+  border-radius: 30px;
 `;
 
 export const HighlightedText = styled.b`

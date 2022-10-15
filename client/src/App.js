@@ -15,7 +15,7 @@ const FadeIn = keyframes`
 
 const AppWraper = styled.div`
   min-height: 100vh;
-  padding: 3rem;
+  padding: 0rem;
   animation: ${FadeIn} 0.3s ease-out;
 `;
 

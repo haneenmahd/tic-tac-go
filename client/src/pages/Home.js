@@ -1,7 +1,15 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import styled, { css } from "styled-components";
-import { Button, COLORS, FlexDiv, GameInfo, HighlightedText } from "../styling";
+import {
+  Button,
+  COLORS,
+  Divider,
+  FlexDiv,
+  GameInfo,
+  HighlightedText,
+  TextField,
+} from "../styling";
 import { PlayerSide, PlayModes } from "../store/data";
 import SymbolO from "../assets/svg/O-symbol.svg";
 import SymbolX from "../assets/svg/X-symbol.svg";
@@ -51,12 +59,16 @@ const Home = () => {
         <h2>Choose your play mode</h2>
 
         <FlexDiv direction="column" gap="20px">
-          <Button onClick={() => handlePlayMode(PlayModes.ONLINE)}>
-            Join Room
-          </Button>
-          <Button onClick={() => handlePlayMode(PlayModes.OFFLINE)} secondary>
-            Create room
-          </Button>
+          <FlexDiv direction="row" gap="20px">
+            <TextField placeholder="Room Code" />
+            <Button onClick={() => handlePlayMode(PlayModes.ONLINE)}>
+              Join Room
+            </Button>
+          </FlexDiv>
+          <Divider />
+          <FlexDiv>
+            <Button secondary>Create room</Button>
+          </FlexDiv>
         </FlexDiv>
       </FlexDiv>
     </div>
