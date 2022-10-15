@@ -1,7 +1,7 @@
-import { useEffect, useInsertionEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import styled, { css } from "styled-components";
-import { PlayerSide, PlayModes } from "../store/data";
+import styled from "styled-components";
+import { PlayerSide } from "../store/data";
 import {
   Button,
   COLORS,
