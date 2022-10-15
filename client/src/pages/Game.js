@@ -74,7 +74,7 @@ const Game = (props) => {
 
   useEffect(() => {
     if (calculateWinner(squares)) {
-      if (currentSide !== side) {
+      if (currentSide !== PlayerSide.X) {
         setScore((score) => score + 1);
 
         toast("You won!", {
