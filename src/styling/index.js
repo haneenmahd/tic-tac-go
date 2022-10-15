@@ -15,9 +15,10 @@ export const COLORS = {
 export const FlexDiv = styled.div`
   height: ${(props) => (props.flexHeight ? "100vh" : "auto")};
   width: 100%;
-  padding: 2rem 0;
+  padding: 0;
   display: flex;
   flex-direction: ${(props) => props.direction || "column"};
+  padding: 1rem 0;
   align-items: center;
   justify-content: center;
   gap: ${(props) => props.gap || "20px"};
@@ -25,7 +26,6 @@ export const FlexDiv = styled.div`
   @media screen and (${QUERIES.large}) {
     flex-direction: ${(props) => props.direction || "row"};
     gap: ${(props) => props.gap || "50px"};
-    padding: 2rem 0;
   }
 `;
 
