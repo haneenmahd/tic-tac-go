@@ -32,6 +32,8 @@ const SideImage = styled.img`
 `;
 
 const Home = () => {
+  const [roomCode, setRoomCode] = useState("");
+
   return (
     <FlexDiv flexHeight>
       <div>
@@ -46,8 +48,14 @@ const Home = () => {
 
           <FlexDiv direction="column" gap="20px">
             <FlexDiv direction="row" gap="20px">
-              <TextField placeholder="Room Code" />
-              <Button>Join Room</Button>
+              <TextField
+                value={roomCode}
+                onChange={(e) => setRoomCode(e.target.value)}
+                placeholder="Room Code"
+              />
+              <Link to={`/room/${roomCode}`}>
+                <Button>Join Room</Button>
+              </Link>
             </FlexDiv>
             <Divider />
             <FlexDiv>
