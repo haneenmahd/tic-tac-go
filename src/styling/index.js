@@ -79,3 +79,11 @@ export const GameInfo = styled.div`
   border: 1px solid ${COLORS.fadedBlue};
   border-radius: 30px;
 `;
+
+export const PlayerInfo = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+`;

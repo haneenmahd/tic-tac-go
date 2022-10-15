@@ -2,7 +2,14 @@ import { useEffect, useInsertionEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import styled, { css } from "styled-components";
 import { PlayerSide, PlayModes } from "../store/data";
-import { Button, COLORS, FlexDiv, GameInfo, PlayerName } from "../styling";
+import {
+  Button,
+  COLORS,
+  FlexDiv,
+  GameInfo,
+  PlayerInfo,
+  PlayerName,
+} from "../styling";
 import { Toaster, toast } from "react-hot-toast";
 import { Droplet } from "react-feather";
 import SymbolO from "../assets/svg/O-symbol.svg";
@@ -118,27 +125,27 @@ const Game = (props) => {
     <FlexDiv direction="column">
       <FlexDiv direction="row">
         <FlexDiv direction="row" gap="20px">
-          <div>
+          <PlayerInfo>
             <img
               height={30}
               src={side === PlayerSide.X ? SymbolX : SymbolO}
               alt="Symbol for You"
             />
             <PlayerName active={currentSide === side}>You</PlayerName>
-          </div>
+          </PlayerInfo>
 
           <GameInfo>
             {score} - {opponentScore}
           </GameInfo>
 
-          <div>
+          <PlayerInfo>
             <img
               height={30}
               src={side !== PlayerSide.X ? SymbolX : SymbolO}
               alt="Symbol for You"
             />
             <PlayerName active={currentSide !== side}>{mode}</PlayerName>
-          </div>
+          </PlayerInfo>
         </FlexDiv>
       </FlexDiv>
 
