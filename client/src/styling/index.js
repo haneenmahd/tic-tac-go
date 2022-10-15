@@ -13,7 +13,7 @@ export const COLORS = {
 };
 
 export const FlexDiv = styled.div`
-  height: ${(props) => (props.flexHeight ? "100vh" : "auto")};
+  height: ${(props) => (props.flexHeight ? "90vh" : "auto")};
   width: 100%;
   padding: 0;
   display: flex;
@@ -68,7 +68,7 @@ export const TextField = styled.input`
   outline: none;
   border-radius: 30px;
   font-weight: 600;
-  box-shadow: 0 0 0 0;
+  box-shadow: 0 0 0 0 ${COLORS.fadedBlue};
   transition: 100ms ease-in-out;
 
   &:focus {

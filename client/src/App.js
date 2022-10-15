@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import "./App.css";
 import styled, { keyframes } from "styled-components";
 import { useLocation } from "react-router-dom";
+import Footer from "./components/Footer";
 
 const FadeIn = keyframes`
     from {
@@ -15,7 +16,6 @@ const FadeIn = keyframes`
 
 const AppWraper = styled.div`
   min-height: 100vh;
-  padding: 0rem;
   animation: ${FadeIn} 0.3s ease-out;
 `;
 
@@ -30,7 +30,10 @@ const App = (props) => {
   return (
     <>
       <ScrollToTop />
-      <AppWraper>{props.children}</AppWraper>
+      <AppWraper>
+        {props.children}
+        <Footer />
+      </AppWraper>
     </>
   );
 };
