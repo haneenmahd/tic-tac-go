@@ -32,78 +32,32 @@ const SideImage = styled.img`
 `;
 
 const Home = () => {
-  const [playMode, setPlayMode] = useState(null);
-  const [playSide, setSide] = useState("X"); // choosing X by default
+  return (
+    <FlexDiv flexHeight>
+      <div>
+        <FlexDiv direction="row" gap="30px">
+          <img height="100px" src={SymbolX} alt="X symbol" />
+          <img height="100px" src={SymbolO} alt="O symbol" />
+        </FlexDiv>
 
-  const handlePlayMode = (mode) => {
-    if (mode === PlayModes.ONLINE || mode === PlayModes.OFFLINE) {
-      setPlayMode(mode);
-    }
-  };
+        <FlexDiv direction="column" gap="10px">
+          <HighlightedText>Tic Tac Toe. Now with more fun!</HighlightedText>
+          <h2>Choose your play mode</h2>
 
-  const handlePlaySide = (side) => {
-    if (side === PlayerSide.O || side === PlayerSide.X) {
-      setSide(side);
-    }
-  };
-
-  const playModeView = (
-    <div>
-      <FlexDiv direction="row" gap="30px">
-        <img height="100px" src={SymbolX} alt="X symbol" />
-        <img height="100px" src={SymbolO} alt="O symbol" />
-      </FlexDiv>
-
-      <FlexDiv direction="column" gap="10px">
-        <HighlightedText>Tic Tac Toe. Now with more fun!</HighlightedText>
-        <h2>Choose your play mode</h2>
-
-        <FlexDiv direction="column" gap="20px">
-          <FlexDiv direction="row" gap="20px">
-            <TextField placeholder="Room Code" />
-            <Button onClick={() => handlePlayMode(PlayModes.ONLINE)}>
-              Join Room
-            </Button>
-          </FlexDiv>
-          <Divider />
-          <FlexDiv>
-            <Button secondary>Create room</Button>
+          <FlexDiv direction="column" gap="20px">
+            <FlexDiv direction="row" gap="20px">
+              <TextField placeholder="Room Code" />
+              <Button>Join Room</Button>
+            </FlexDiv>
+            <Divider />
+            <FlexDiv>
+              <Button secondary>Create room</Button>
+            </FlexDiv>
           </FlexDiv>
         </FlexDiv>
-      </FlexDiv>
-    </div>
-  );
-
-  const pickSideView = (
-    <FlexDiv direction="column">
-      <h2>Pick your side</h2>
-
-      <FlexDiv direction="row" gap="30px">
-        <SideImage
-          src={SymbolX}
-          alt="X symbol"
-          selected={playSide === PlayerSide.X}
-          onClick={() => handlePlaySide(PlayerSide.X)}
-        />
-        <SideImage
-          src={SymbolO}
-          alt="O symbol"
-          selected={playSide === PlayerSide.O}
-          onClick={() => handlePlaySide(PlayerSide.O)}
-        />
-      </FlexDiv>
-
-      <GameInfo>
-        Playing <HighlightedText>{playMode}</HighlightedText>
-      </GameInfo>
-
-      <Link to={`game/${playMode}/${playSide}`}>
-        <Button secondary>Continue</Button>
-      </Link>
+      </div>
     </FlexDiv>
   );
-
-  return <FlexDiv flexHeight>{playMode ? pickSideView : playModeView}</FlexDiv>;
 };
 
 export default Home;
