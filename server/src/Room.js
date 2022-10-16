@@ -1,3 +1,4 @@
+const { PlayerSide, PlayerMove } = require("./data/game");
 const Player = require("./Player");
 const generateId = require("./utils/generateId");
 
@@ -23,13 +24,21 @@ class Room {
   }
 
   addMove(i, move) {
-    if (this.squares[i] === null) {
+    if (this.squares[i] === null && this.validateMove(move)) {
       this.squares[i] = move;
 
       return true;
     }
 
     return false;
+  }
+
+  validateMove(move) {
+    if (move !== PlayerMove.X && move !== PlayerMove.O) {
+      return false;
+    }
+
+    return true;
   }
 }
 
