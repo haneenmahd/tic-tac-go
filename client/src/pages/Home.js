@@ -11,6 +11,7 @@ import {
   TextField,
 } from "../styling";
 import { PlayerSide, PlayModes } from "../store/data";
+import GameService from "../network/GameService";
 import SymbolO from "../assets/svg/O-symbol.svg";
 import SymbolX from "../assets/svg/X-symbol.svg";
 
@@ -32,7 +33,13 @@ const SideImage = styled.img`
 `;
 
 const Home = () => {
-  const [roomCode, setRoomCode] = useState("");
+  const [roomId, setRoomId] = useState("");
+
+  const handleCreateRoom = async () => {
+    const res = await GameService.shared.createNewRoom();
+
+    setRoomId(res.id);
+  };
 
   return (
     <FlexDiv flexHeight>
@@ -49,17 +56,19 @@ const Home = () => {
           <FlexDiv direction="column" gap="20px">
             <FlexDiv direction="row" gap="20px">
               <TextField
-                value={roomCode}
-                onChange={(e) => setRoomCode(e.target.value)}
-                placeholder="Room Code"
+                value={roomId}
+                onChange={(e) => setRoomId(e.target.value)}
+                placeholder="Room ID"
               />
-              <Link to={`/room/${roomCode}`}>
+              <Link to={`/room/${roomId}`}>
                 <Button>Join Room</Button>
               </Link>
             </FlexDiv>
             <Divider />
             <FlexDiv>
-              <Button secondary>Create room</Button>
+              <Button onClick={() => handleCreateRoom()} secondary>
+                Create room
+              </Button>
             </FlexDiv>
           </FlexDiv>
         </FlexDiv>

@@ -23,7 +23,7 @@ root.render(
         />
 
         <Route
-          path="/room/:roomCode"
+          path="/room/:roomId"
           element={
             <AppWraper>
               <Room />
