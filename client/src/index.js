@@ -5,7 +5,6 @@ import "./index.css";
 import AppWraper from "./App";
 import Home from "./pages/Home";
 import Game from "./pages/Game";
-import Room from "./pages/Room";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -23,16 +22,7 @@ root.render(
         />
 
         <Route
-          path="/room/:roomId"
-          element={
-            <AppWraper>
-              <Room />
-            </AppWraper>
-          }
-        />
-
-        <Route
-          path="/game/:mode/:side"
+          path="/game/:roomId/:side"
           element={
             <AppWraper>
               <Game />

@@ -14,6 +14,9 @@ import { Toaster, toast } from "react-hot-toast";
 import { Droplet } from "react-feather";
 import SymbolO from "../assets/svg/O-symbol.svg";
 import SymbolX from "../assets/svg/X-symbol.svg";
+import io from "socket.io-client";
+
+const socket = io("ws://localhost:3001");
 
 function calculateWinner(squares) {
   const lines = [
@@ -63,14 +66,30 @@ const Square = styled.div`
 `;
 
 const Game = (props) => {
-  const params = useParams();
-  const mode = params.mode;
-  const side = params.side;
+  const { roomId, side } = useParams();
   const [squares, setSquares] = useState(Array(9).fill(null));
   const [score, setScore] = useState(0);
   const [opponentScore, setOpponentScore] = useState(0);
   const [currentSide, setCurrentSide] = useState(side); // using the default chosen for the first move
   const [roundCompleted, setRoundCompleted] = useState(false);
+
+  useEffect(() => {
+    socket.emit("join", roomId, (error) => {
+      if (error) {
+        console.log(error);
+      }
+
+      console.log("called!!");
+    });
+  }, []);
+
+  useEffect(() => {
+    socket.on("connect", () => {
+      socket.on("mark", (squares) => {
+        setSquares(squares);
+      });
+    });
+  });
 
   useEffect(() => {
     if (calculateWinner(squares)) {
@@ -97,10 +116,10 @@ const Game = (props) => {
       return;
     }
 
-    const tempSquares = squares.slice();
-    tempSquares[i] = currentSide;
+    socket.emit("mark", roomId, i, currentSide, (squares) => {
+      setSquares(squares);
+    });
 
-    setSquares(tempSquares);
     setCurrentSide(currentSide === PlayerSide.X ? PlayerSide.O : PlayerSide.X);
   };
 
@@ -127,7 +146,7 @@ const Game = (props) => {
         <FlexDiv direction="row" gap="20px">
           <PlayerInfo>
             <img
-              height={30}
+              height={12}
               src={side === PlayerSide.X ? SymbolX : SymbolO}
               alt="Symbol for You"
             />
@@ -140,11 +159,11 @@ const Game = (props) => {
 
           <PlayerInfo>
             <img
-              height={30}
+              height={12}
               src={side !== PlayerSide.X ? SymbolX : SymbolO}
               alt="Symbol for You"
             />
-            <PlayerName active={currentSide !== side}>{mode}</PlayerName>
+            <PlayerName active={currentSide !== side}>Opponent</PlayerName>
           </PlayerInfo>
         </FlexDiv>
       </FlexDiv>
