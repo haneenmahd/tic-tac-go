@@ -15,6 +15,7 @@ import { Droplet } from "react-feather";
 import SymbolO from "../assets/svg/O-symbol.svg";
 import SymbolX from "../assets/svg/X-symbol.svg";
 import io from "socket.io-client";
+import GameService from "../network/GameService";
 
 const socket = io("ws://localhost:3001");
 
@@ -66,85 +67,64 @@ const Square = styled.div`
 `;
 
 const Game = (props) => {
-  const { roomId, side } = useParams();
+  const { roomId } = useParams();
   const [squares, setSquares] = useState(Array(9).fill(null));
-  const [score, setScore] = useState(0);
-  const [opponentScore, setOpponentScore] = useState(0);
-  const [currentSide, setCurrentSide] = useState(side); // using the default chosen for the first move
-  const [roundCompleted, setRoundCompleted] = useState(false);
+  const [side, setSide] = useState();
 
   useEffect(() => {
-    socket.on("connect", () => {
-      socket.emit("join", roomId, (error) => {
-        if (error) {
-          console.log(error);
-        }
+    GameService.shared.joinRoom(roomId, (side) => setSide(side));
 
-        console.log("called!!");
-      });
+    GameService.shared.ws.on("mark", (squares) => {
+      setSquares(squares);
+    });
+
+    GameService.shared.markMove(roomId, 0, null, (squares) => {
+      setSquares(squares);
     });
   }, []);
-
-  useEffect(() => {
-    socket.on("connect", () => {
-      socket.on("mark", (squares) => {
-        setSquares(squares);
-      });
-    });
-  });
-
-  useEffect(() => {
-    if (calculateWinner(squares)) {
-      if (currentSide !== PlayerSide.X) {
-        setScore((score) => score + 1);
-
-        toast("You won!", {
-          icon: <Droplet fill="blue" />,
-        });
-      } else {
-        setOpponentScore((opponentScore) => opponentScore + 1);
-
-        toast("Your opponent won!", {
-          icon: <Droplet fill="orange" />,
-        });
-      }
-
-      setRoundCompleted(true);
-    }
-  }, [squares, side, currentSide]);
 
   const handleClick = (i) => {
     if (calculateWinner(squares) || squares[i]) {
       return;
     }
 
-    socket.emit("mark", roomId, i, currentSide, (squares) => {
+    GameService.shared.markMove(roomId, i, side, (squares) => {
       setSquares(squares);
     });
-
-    setCurrentSide(currentSide === PlayerSide.X ? PlayerSide.O : PlayerSide.X);
-  };
-
-  const allFilled = (squares) => {
-    return squares.every((square) => square !== null);
-  };
-
-  const disableRoundButton = () => {
-    if (allFilled(squares) || roundCompleted) {
-      return false;
-    }
-
-    return true;
-  };
-
-  const nextRound = () => {
-    setSquares(Array(9).fill(null));
-    setRoundCompleted(false);
   };
 
   return (
     <FlexDiv direction="column">
-      <FlexDiv direction="row">
+      <FlexDiv direction="column" gap="100px">
+        <Board>
+          {squares.map((square, index) => {
+            const img =
+              square === PlayerSide.X ? (
+                <img height={50} src={SymbolX} alt="Symbol for X" />
+              ) : square === PlayerSide.O ? (
+                <img height={50} src={SymbolO} alt="Symbol for O" />
+              ) : null;
+
+            return (
+              <Square onClick={() => handleClick(index)} key={index}>
+                {img}
+              </Square>
+            );
+          })}
+        </Board>
+      </FlexDiv>
+
+      <Toaster />
+    </FlexDiv>
+  );
+};
+
+export default Game;
+
+// freeze the ability to mark a move when you have already made one
+
+{
+  /* <FlexDiv direction="row">
         <FlexDiv direction="row" gap="20px">
           <PlayerInfo>
             <img
@@ -168,38 +148,5 @@ const Game = (props) => {
             <PlayerName active={currentSide !== side}>Opponent</PlayerName>
           </PlayerInfo>
         </FlexDiv>
-      </FlexDiv>
-
-      <FlexDiv direction="column" gap="100px">
-        <Board>
-          {squares.map((square, index) => {
-            const img =
-              square === PlayerSide.X ? (
-                <img height={50} src={SymbolX} alt="Symbol for X" />
-              ) : square === PlayerSide.O ? (
-                <img height={50} src={SymbolO} alt="Symbol for O" />
-              ) : null;
-
-            return (
-              <Square onClick={() => handleClick(index)} key={index}>
-                {img}
-              </Square>
-            );
-          })}
-        </Board>
-
-        <Button
-          onClick={nextRound}
-          disabled={disableRoundButton()}
-          tabIndex={1}
-        >
-          Next Round
-        </Button>
-      </FlexDiv>
-
-      <Toaster />
-    </FlexDiv>
-  );
-};
-
-export default Game;
+      </FlexDiv> */
+}

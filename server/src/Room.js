@@ -1,4 +1,3 @@
-const { PlayerSide, PlayerMove } = require("./data/game");
 const Player = require("./Player");
 const generateId = require("./utils/generateId");
 
@@ -9,11 +8,11 @@ class Room {
     this.squares = Array(9).fill(null);
   }
 
-  addPlayer(id) {
+  addPlayer(id, side) {
     if (this.players.length !== 2) {
       // MAX Member count is 2
 
-      const player = new Player(id);
+      const player = new Player(id, side);
 
       this.players.push(player);
 
@@ -26,6 +25,8 @@ class Room {
   addMove(i, move) {
     if (this.squares[i] === null && this.validateMove(move)) {
       this.squares[i] = move;
+
+      console.log(move);
 
       return true;
     }

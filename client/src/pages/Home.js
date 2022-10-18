@@ -60,7 +60,7 @@ const Home = () => {
                 onChange={(e) => setRoomId(e.target.value)}
                 placeholder="Room ID"
               />
-              <Link to={`/game/${roomId}/X`}>
+              <Link to={`/game/${roomId}`}>
                 <Button>Join Room</Button>
               </Link>
             </FlexDiv>

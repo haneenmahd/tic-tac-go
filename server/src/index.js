@@ -4,6 +4,7 @@ const express = require("express");
 const socketio = require("socket.io");
 const Room = require("./Room");
 const Player = require("./Player");
+const { PlayerMove } = require("./data/game");
 const app = express();
 
 const corsOptions = {
@@ -46,19 +47,25 @@ io.on("connection", (socket) => {
   socket.once("join", (roomId, cb) => {
     const room = rooms.find((room) => room.id === roomId);
 
-    if (room.addPlayer(socket.id)) {
+    const side = room.players.find((player) => player.side === PlayerMove.X)
+      ? PlayerMove.O
+      : PlayerMove.X;
+
+    if (room.addPlayer(socket.id, side)) {
       console.log(`${socket.id} has now joined room #${roomId}`);
 
       socket.join(roomId);
 
       socket.broadcast.emit("join");
+
+      cb(side, null);
     } else {
-      cb(`${socket.id} cannot join due to maximum players!`);
+      cb(null, `${socket.id} cannot join due to maximum players!`);
       // BUG: does not allow new members to join in the `Room`
     }
   });
 
-  socket.once("mark", (roomId, pos, move, cb) => {
+  socket.on("mark", (roomId, pos, move, cb) => {
     const room = rooms.find((room) => room.id === roomId);
 
     room.squares[pos] = move;

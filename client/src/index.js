@@ -22,7 +22,7 @@ root.render(
         />
 
         <Route
-          path="/game/:roomId/:side"
+          path="/game/:roomId"
           element={
             <AppWraper>
               <Game />
