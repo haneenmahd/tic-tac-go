@@ -74,12 +74,14 @@ const Game = (props) => {
   const [roundCompleted, setRoundCompleted] = useState(false);
 
   useEffect(() => {
-    socket.emit("join", roomId, (error) => {
-      if (error) {
-        console.log(error);
-      }
+    socket.on("connect", () => {
+      socket.emit("join", roomId, (error) => {
+        if (error) {
+          console.log(error);
+        }
 
-      console.log("called!!");
+        console.log("called!!");
+      });
     });
   }, []);
 
