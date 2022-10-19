@@ -10,8 +10,6 @@ import {
   PlayerInfo,
   PlayerName,
 } from "../styling";
-import SymbolO from "../assets/svg/O-symbol.svg";
-import SymbolX from "../assets/svg/X-symbol.svg";
 import io from "socket.io-client";
 import GameService from "../network/GameService";
 
@@ -104,28 +102,7 @@ const Game = (props) => {
     });
   };
 
-  return (
-    <FlexDiv direction="column">
-      <FlexDiv direction="column" gap="100px">
-        <Board>
-          {squares.map((square, index) => {
-            const img =
-              square === PlayerSide.X ? (
-                <SideImage height={50} src={SymbolX} alt="Symbol for X" />
-              ) : square === PlayerSide.O ? (
-                <SideImage height={50} src={SymbolO} alt="Symbol for O" />
-              ) : null;
-
-            return (
-              <Square onClick={() => handleClick(index)} key={index}>
-                {img}
-              </Square>
-            );
-          })}
-        </Board>
-      </FlexDiv>
-    </FlexDiv>
-  );
+  return <div>Game</div>;
 };
 
 export default Game;
