@@ -70,13 +70,6 @@ export const TextField = styled.input`
   }
 `;
 
-export const Divider = styled.span`
-  background: ${COLORS.fadedBlue};
-  width: 80%;
-  height: 1px;
-  border-radius: 30px;
-`;
-
 export const HighlightedText = styled.b`
   margin: 0 0.2rem;
   color: transparent;
