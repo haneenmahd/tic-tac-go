@@ -9,7 +9,7 @@ const Container = styled.div`
   justify-content: flex-end;
   align-items: center;
   padding: 33px 30px;
-  gap: 56px;
+  gap: 2rem;
   width: 100vw;
 `;
 
