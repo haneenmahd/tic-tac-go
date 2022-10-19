@@ -1,28 +1,28 @@
 import styled from "styled-components";
+import NavLink from "../components/NavLink";
 import { COLORS } from "../styling";
+import Divider from "./Divider";
 
 const Container = styled.div`
-  width: 100%;
   display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
   align-items: center;
-  justify-content: center;
-  padding: 1.5rem 0;
+  padding: 33px 30px;
+  gap: 56px;
+  width: 100vw;
+`;
 
-  a {
-    margin: 0 0.3rem;
-    color: ${COLORS.blue};
-    font-weight: 600;
-    transition: color 150ms ease-in-out;
-
-    &:hover {
-      color: ${COLORS.blue}90;
-    }
-  }
+const FooterLink = styled(NavLink)`
+  color: ${COLORS.gray};
 `;
 
 const Footer = () => (
   <Container>
-    Made with ❤️ by <a href="https://haneenmahd.github.io">Haneen Mahdin</a>
+    <FooterLink to="/about">About</FooterLink>
+    <FooterLink to="/support">Support</FooterLink>
+    <FooterLink to="/privacy-policy">Privacy</FooterLink>
+    <Divider />
   </Container>
 );
 
