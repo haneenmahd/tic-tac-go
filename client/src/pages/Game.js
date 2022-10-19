@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import { PlayerSide } from "../store/data";
 import {
   Button,
@@ -10,14 +10,10 @@ import {
   PlayerInfo,
   PlayerName,
 } from "../styling";
-import { Toaster, toast } from "react-hot-toast";
-import { Droplet } from "react-feather";
 import SymbolO from "../assets/svg/O-symbol.svg";
 import SymbolX from "../assets/svg/X-symbol.svg";
 import io from "socket.io-client";
 import GameService from "../network/GameService";
-
-const socket = io("ws://localhost:3001");
 
 function calculateWinner(squares) {
   const lines = [
@@ -66,19 +62,34 @@ const Square = styled.div`
   }
 `;
 
+const ScaleAnimation = keyframes`
+  from {
+    scale: 0;
+    opacity: 0.5;
+  }
+
+  to {
+    scale: 1;
+    opacity: 1;
+  }
+`;
+
+const SideImage = styled.img`
+  animation: ${ScaleAnimation} 200ms cubic-bezier(0.075, 0.82, 0.165, 1);
+`;
+
 const Game = (props) => {
   const { roomId } = useParams();
   const [squares, setSquares] = useState(Array(9).fill(null));
   const [side, setSide] = useState();
 
   useEffect(() => {
-    GameService.shared.joinRoom(roomId, (side) => setSide(side));
-
-    GameService.shared.ws.on("mark", (squares) => {
+    GameService.shared.joinRoom(roomId, (side, squares) => {
+      setSide(side);
       setSquares(squares);
     });
 
-    GameService.shared.markMove(roomId, 0, null, (squares) => {
+    GameService.shared.ws.on("mark", (squares) => {
       setSquares(squares);
     });
   }, []);
@@ -100,9 +111,9 @@ const Game = (props) => {
           {squares.map((square, index) => {
             const img =
               square === PlayerSide.X ? (
-                <img height={50} src={SymbolX} alt="Symbol for X" />
+                <SideImage height={50} src={SymbolX} alt="Symbol for X" />
               ) : square === PlayerSide.O ? (
-                <img height={50} src={SymbolO} alt="Symbol for O" />
+                <SideImage height={50} src={SymbolO} alt="Symbol for O" />
               ) : null;
 
             return (
@@ -113,8 +124,6 @@ const Game = (props) => {
           })}
         </Board>
       </FlexDiv>
-
-      <Toaster />
     </FlexDiv>
   );
 };
@@ -122,31 +131,3 @@ const Game = (props) => {
 export default Game;
 
 // freeze the ability to mark a move when you have already made one
-
-{
-  /* <FlexDiv direction="row">
-        <FlexDiv direction="row" gap="20px">
-          <PlayerInfo>
-            <img
-              height={12}
-              src={side === PlayerSide.X ? SymbolX : SymbolO}
-              alt="Symbol for You"
-            />
-            <PlayerName active={currentSide === side}>You</PlayerName>
-          </PlayerInfo>
-
-          <GameInfo>
-            {score} - {opponentScore}
-          </GameInfo>
-
-          <PlayerInfo>
-            <img
-              height={12}
-              src={side !== PlayerSide.X ? SymbolX : SymbolO}
-              alt="Symbol for You"
-            />
-            <PlayerName active={currentSide !== side}>Opponent</PlayerName>
-          </PlayerInfo>
-        </FlexDiv>
-      </FlexDiv> */
-}
