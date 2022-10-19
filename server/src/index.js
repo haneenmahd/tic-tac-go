@@ -17,6 +17,7 @@ const server = http.createServer(app);
 const io = socketio(server, {
   cors: corsOptions,
 });
+
 const PORT = process.env.PORT || 3001;
 
 const rooms = [];
@@ -58,10 +59,9 @@ io.on("connection", (socket) => {
 
       socket.broadcast.emit("join");
 
-      cb(side, null);
+      cb(side, room.squares);
     } else {
-      cb(null, `${socket.id} cannot join due to maximum players!`);
-      // BUG: does not allow new members to join in the `Room`
+      cb(null, null);
     }
   });
 
@@ -79,9 +79,3 @@ io.on("connection", (socket) => {
 server.listen(PORT, () => {
   console.log(`Listening for connections at http://localhost:${PORT}`);
 });
-
-// validate moves ✅
-// emit info about room ❌
-// emit moves using WS ❌
-// mark moves ❌
-// fix room member updation, cannot remove a person and add another ❌

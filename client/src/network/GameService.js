@@ -13,10 +13,8 @@ class GameService {
   }
 
   joinRoom(roomId, cb) {
-    this.ws.emit("join", roomId, (side, error) => {
-      if (error) throw error;
-
-      cb(side);
+    this.ws.emit("join", roomId, (side, squares) => {
+      cb(side, squares);
     });
   }
 
