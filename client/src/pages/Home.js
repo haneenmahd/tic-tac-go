@@ -14,6 +14,7 @@ import { PlayerSide, PlayModes } from "../store/data";
 import GameService from "../network/GameService";
 import SymbolO from "../assets/svg/O-symbol.svg";
 import SymbolX from "../assets/svg/X-symbol.svg";
+import NavBar from "../components/NavBar";
 
 const SideImage = styled.img`
   height: 100px;
@@ -43,36 +44,7 @@ const Home = () => {
 
   return (
     <FlexDiv flexHeight>
-      <div>
-        <FlexDiv direction="row" gap="30px">
-          <img height="100px" src={SymbolX} alt="X symbol" />
-          <img height="100px" src={SymbolO} alt="O symbol" />
-        </FlexDiv>
-
-        <FlexDiv direction="column" gap="10px">
-          <HighlightedText>Tic Tac Toe. Now with more fun!</HighlightedText>
-          <h2>Choose your play mode</h2>
-
-          <FlexDiv direction="column" gap="20px">
-            <FlexDiv direction="row" gap="20px">
-              <TextField
-                value={roomId}
-                onChange={(e) => setRoomId(e.target.value)}
-                placeholder="Room ID"
-              />
-              <Link to={`/game/${roomId}`}>
-                <Button>Join Room</Button>
-              </Link>
-            </FlexDiv>
-            <Divider />
-            <FlexDiv>
-              <Button onClick={() => handleCreateRoom()} secondary>
-                Create room
-              </Button>
-            </FlexDiv>
-          </FlexDiv>
-        </FlexDiv>
-      </div>
+      <NavBar />
     </FlexDiv>
   );
 };
