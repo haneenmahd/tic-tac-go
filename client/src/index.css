@@ -9,6 +9,10 @@
   font-family: 'Inter', sans-serif;
 }
 
+*::selection {
+  color: #00000050;
+}
+
 @supports (font-variation-settings: normal) {
   * {
     font-family: 'Inter var', sans-serif;
