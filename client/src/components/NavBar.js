@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { COLORS, FlexDiv, TRANSITIONS } from "../styling";
+import { COLORS, FlexDiv } from "../styling";
 import Icon from "../assets/svg/icon.svg";
 import NavLink from "../components/NavLink";
 
@@ -22,10 +22,12 @@ const Text = styled.span`
 export default function NavBar() {
   return (
     <Container>
-      <FlexDiv gap="11px">
-        <img src={Icon} alt="Icon for TicTacGo" />
-        <Text>TicTacGo</Text>
-      </FlexDiv>
+      <NavLink to="/">
+        <FlexDiv gap="11px">
+          <img src={Icon} alt="Icon for TicTacGo" />
+          <Text>TicTacGo</Text>
+        </FlexDiv>
+      </NavLink>
 
       <NavLink to="/play">Play</NavLink>
     </Container>
