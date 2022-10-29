@@ -18,7 +18,7 @@ const io = socketio(server, {
   cors: corsOptions,
 });
 
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 4000;
 
 const rooms = [];
 
