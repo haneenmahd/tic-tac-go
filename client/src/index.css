@@ -10,7 +10,7 @@
 }
 
 *::selection {
-  color: #00000050;
+  background-color: #00000020;
 }
 
 @supports (font-variation-settings: normal) {
