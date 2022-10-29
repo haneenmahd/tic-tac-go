@@ -8,6 +8,7 @@ import TextField from "../components/TextField";
 import ArrowUp from "../assets/svg/icons/arrow-up.svg";
 import Plus from "../assets/svg/icons/plus.svg";
 import GameMobileShowcase from "../assets/png/game-mobile.png";
+import { useNavigate } from "react-router-dom";
 
 const Hero = styled.div`
   display: flex;
@@ -50,11 +51,18 @@ const HeroImage = styled.img`
 
 const Home = () => {
   const [roomId, setRoomId] = useState("");
+  const navigate = useNavigate();
 
   const handleCreateRoom = async () => {
     const res = await GameService.shared.createNewRoom();
 
     setRoomId(res.id);
+  };
+
+  const handleJoinRoom = () => {
+    navigate(`/play/join/${roomId}`);
+
+    // still got to define the route and component for /play/join/
   };
 
   return (
@@ -82,7 +90,7 @@ const Home = () => {
               type="text"
               placeholder="Room ID"
             />
-            <Button>
+            <Button onClick={handleJoinRoom}>
               <img src={ArrowUp} alt="arrow up icon" />
               Join
             </Button>
