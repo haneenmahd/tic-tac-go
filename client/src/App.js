@@ -16,7 +16,7 @@ const FadeIn = keyframes`
 
 const AppWraper = styled.div`
   min-height: 100vh;
-  animation: ${FadeIn} 0.3s ease-out;
+  animation: ${FadeIn} 1s cubic-bezier(0.69, -0.03, 0.2, 1);
 `;
 
 const App = (props) => {
