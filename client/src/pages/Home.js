@@ -76,7 +76,12 @@ const Home = () => {
           </FlexDiv>
 
           <HeroActions>
-            <TextField type="text" placeholder="Room ID" />
+            <TextField
+              value={roomId}
+              onChange={(e) => setRoomId(e.target.value)}
+              type="text"
+              placeholder="Room ID"
+            />
             <Button>
               <img src={ArrowUp} alt="arrow up icon" />
               Join
@@ -86,7 +91,7 @@ const Home = () => {
           <Divider />
 
           <PadBox padding="20px 0">
-            <SecondaryButton>
+            <SecondaryButton onClick={handleCreateRoom}>
               <img src={Plus} alt="plus icon" />
               Create your room
             </SecondaryButton>
