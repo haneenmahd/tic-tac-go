@@ -19,17 +19,30 @@ const Text = styled.span`
   color: ${COLORS.black};
 `;
 
-export default function NavBar() {
+const HomeLink = () => (
+  <NavLink to="/">
+    <FlexDiv gap="11px">
+      <img src={Icon} alt="Icon for TicTacGo" />
+      <Text>TicTacGo</Text>
+    </FlexDiv>
+  </NavLink>
+);
+
+const NavBar = () => {
   return (
     <Container>
-      <NavLink to="/">
-        <FlexDiv gap="11px">
-          <img src={Icon} alt="Icon for TicTacGo" />
-          <Text>TicTacGo</Text>
-        </FlexDiv>
-      </NavLink>
+      <HomeLink />
 
       <NavLink to="/play">Play</NavLink>
     </Container>
   );
-}
+};
+
+const LinkLessNav = () => (
+  <Container>
+    <HomeLink />
+  </Container>
+);
+
+export { LinkLessNav };
+export default NavBar;
