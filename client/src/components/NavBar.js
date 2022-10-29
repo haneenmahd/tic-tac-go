@@ -1,7 +1,7 @@
 import styled from "styled-components";
-import { COLORS, FlexDiv } from "../styling";
-import Icon from "../assets/svg/icon.svg";
 import NavLink from "../components/NavLink";
+import { COLORS, FlexDiv } from "../styling";
+import Icon from "../assets/svg/logo.svg";
 
 const Container = styled.div`
   display: flex;
