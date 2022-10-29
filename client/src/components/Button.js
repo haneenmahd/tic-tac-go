@@ -11,7 +11,11 @@ const Button = styled.button`
   transition: ${TRANSITIONS.hovers};
 
   &:hover {
-    background-color: ${COLORS.lightGray};
+    background-color: ${COLORS.gray};
+  }
+
+  &:active {
+    scale: 0.99;
   }
 `;
 
@@ -20,6 +24,10 @@ const SecondaryButton = styled(Button)`
   border: 1px solid ${COLORS.lightGray};
   width: 405px;
   color: ${COLORS.black};
+
+  &:hover {
+    background-color: ${COLORS.lightGray};
+  }
 `;
 
 export { SecondaryButton };
