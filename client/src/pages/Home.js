@@ -1,9 +1,9 @@
 import { useState } from "react";
-import styled, { css } from "styled-components";
-import { COLORS, FlexDiv, TRANSITIONS } from "../styling";
+import styled from "styled-components";
+import { COLORS, Divider, FlexDiv, PadBox } from "../styling";
 import GameService from "../network/GameService";
 import NavBar from "../components/NavBar";
-import Button from "../components/Button";
+import Button, { SecondaryButton } from "../components/Button";
 import TextField from "../components/TextField";
 import GameMobileShowcase from "../assets/png/game-mobile.png";
 
@@ -77,6 +77,12 @@ const Home = () => {
             <TextField type="text" placeholder="Room ID" />
             <Button>Join</Button>
           </HeroActions>
+
+          <Divider />
+
+          <PadBox padding="20px 0">
+            <SecondaryButton>Create your room</SecondaryButton>
+          </PadBox>
         </HeroSubContainer>
 
         <HeroImage
