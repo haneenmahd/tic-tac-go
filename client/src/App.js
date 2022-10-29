@@ -4,7 +4,7 @@ import { useLocation } from "react-router-dom";
 import Footer from "./components/Footer";
 import AppWraper from "./components/AppWrapper";
 
-const App = (props) => {
+const App = props => {
   const ScrollToTop = () => {
     const { pathname } = useLocation();
 

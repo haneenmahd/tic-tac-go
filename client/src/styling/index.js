@@ -22,10 +22,10 @@ export const TRANSITIONS = {
 
 export const FlexDiv = styled.div`
   display: flex;
-  flex-direction: ${(props) => props.direction || "row"};
-  align-items: ${(props) => props.alignment || "center"};
-  justify-content: ${(props) => props.justify || "center"};
-  gap: ${(props) => props.gap};
+  flex-direction: ${props => props.direction || "row"};
+  align-items: ${props => props.alignment || "center"};
+  justify-content: ${props => props.justify || "center"};
+  gap: ${props => props.gap};
 `;
 
 export const Divider = styled.div`
@@ -35,5 +35,5 @@ export const Divider = styled.div`
 `;
 
 export const PadBox = styled.div`
-  padding: ${(props) => props.padding};
+  padding: ${props => props.padding};
 `;

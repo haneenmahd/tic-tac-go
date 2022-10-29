@@ -78,7 +78,7 @@ const Home = () => {
           <HeroActions>
             <TextField
               value={roomId}
-              onChange={(e) => setRoomId(e.target.value)}
+              onChange={e => setRoomId(e.target.value)}
               type="text"
               placeholder="Room ID"
             />

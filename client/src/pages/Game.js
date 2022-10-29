@@ -76,7 +76,7 @@ const SideImage = styled.img`
   animation: ${ScaleAnimation} 200ms cubic-bezier(0.075, 0.82, 0.165, 1);
 `;
 
-const Game = (props) => {
+const Game = props => {
   const { roomId } = useParams();
   const [squares, setSquares] = useState(Array(9).fill(null));
   const [side, setSide] = useState();
@@ -87,17 +87,17 @@ const Game = (props) => {
       setSquares(squares);
     });
 
-    GameService.shared.ws.on("mark", (squares) => {
+    GameService.shared.ws.on("mark", squares => {
       setSquares(squares);
     });
   }, []);
 
-  const handleClick = (i) => {
+  const handleClick = i => {
     if (calculateWinner(squares) || squares[i]) {
       return;
     }
 
-    GameService.shared.markMove(roomId, i, side, (squares) => {
+    GameService.shared.markMove(roomId, i, side, squares => {
       setSquares(squares);
     });
   };

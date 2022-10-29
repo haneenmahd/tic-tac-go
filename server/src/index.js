@@ -25,7 +25,7 @@ const rooms = [];
 app.get("/rooms/info/:roomId", (req, res) => {
   const { roomId } = req.params;
 
-  const room = rooms.find((room) => room.id === roomId);
+  const room = rooms.find(room => room.id === roomId);
 
   res.status(200).send({
     playerCount: room.players.length,
@@ -44,11 +44,11 @@ app.post("/rooms/new", (req, res) => {
   });
 });
 
-io.on("connection", (socket) => {
+io.on("connection", socket => {
   socket.once("join", (roomId, cb) => {
-    const room = rooms.find((room) => room.id === roomId);
+    const room = rooms.find(room => room.id === roomId);
 
-    const side = room.players.find((player) => player.side === PlayerMove.X)
+    const side = room.players.find(player => player.side === PlayerMove.X)
       ? PlayerMove.O
       : PlayerMove.X;
 
@@ -66,7 +66,7 @@ io.on("connection", (socket) => {
   });
 
   socket.on("mark", (roomId, pos, move, cb) => {
-    const room = rooms.find((room) => room.id === roomId);
+    const room = rooms.find(room => room.id === roomId);
 
     room.squares[pos] = move;
 

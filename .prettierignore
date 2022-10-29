@@ -1,0 +1,4 @@
+# ignore artifacts
+build
+dist
+coverage

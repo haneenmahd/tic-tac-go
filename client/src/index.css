@@ -6,7 +6,7 @@
   padding: 0;
   margin: 0;
   box-sizing: border-box;
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
 }
 
 *::selection {
@@ -15,8 +15,9 @@
 
 @supports (font-variation-settings: normal) {
   * {
-    font-family: 'Inter var', sans-serif;
-    font-feature-settings: "cv01", "cv02", "cv03", "cv04", "cv05", "cv06", "cv07", "cv08", "cv09", "cv10", "cv11";
+    font-family: "Inter var", sans-serif;
+    font-feature-settings: "cv01", "cv02", "cv03", "cv04", "cv05", "cv06",
+      "cv07", "cv08", "cv09", "cv10", "cv11";
   }
 }
 
@@ -30,6 +31,6 @@ body {
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }

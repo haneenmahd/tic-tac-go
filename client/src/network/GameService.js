@@ -19,7 +19,7 @@ class GameService {
   }
 
   markMove(roomId, pos, move, cb) {
-    this.ws.emit("mark", roomId, pos, move, (squares) => {
+    this.ws.emit("mark", roomId, pos, move, squares => {
       cb(squares);
     });
   }
