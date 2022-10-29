@@ -1,3 +1,5 @@
 {
-  "arrowParens": "avoid"
+  "arrowParens": "avoid",
+  "singleAttributePerLine": true,
+  "bracketSameLine": true
 }
