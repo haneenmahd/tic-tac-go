@@ -5,6 +5,8 @@ import GameService from "../network/GameService";
 import NavBar from "../components/NavBar";
 import Button, { SecondaryButton } from "../components/Button";
 import TextField from "../components/TextField";
+import ArrowUp from "../assets/svg/icons/arrow-up.svg";
+import Plus from "../assets/svg/icons/plus.svg";
 import GameMobileShowcase from "../assets/png/game-mobile.png";
 
 const Hero = styled.div`
@@ -75,13 +77,19 @@ const Home = () => {
 
           <HeroActions>
             <TextField type="text" placeholder="Room ID" />
-            <Button>Join</Button>
+            <Button>
+              <img src={ArrowUp} alt="arrow up icon" />
+              Join
+            </Button>
           </HeroActions>
 
           <Divider />
 
           <PadBox padding="20px 0">
-            <SecondaryButton>Create your room</SecondaryButton>
+            <SecondaryButton>
+              <img src={Plus} alt="plus icon" />
+              Create your room
+            </SecondaryButton>
           </PadBox>
         </HeroSubContainer>
 

@@ -2,6 +2,11 @@ import styled from "styled-components";
 import { COLORS, TRANSITIONS } from "../styling";
 
 const Button = styled.button`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
   width: 91px;
   height: 45px;
   background: ${COLORS.black};
