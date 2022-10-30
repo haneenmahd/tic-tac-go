@@ -1,97 +1,128 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
-import styled, { css } from "styled-components";
-import { Button, COLORS, FlexDiv, GameInfo, HighlightedText } from "../styling";
-import { PlayerSide, PlayModes } from "../store/data";
-import SymbolO from "../assets/svg/O-symbol.svg";
-import SymbolX from "../assets/svg/X-symbol.svg";
+import styled from "styled-components";
+import { COLORS, Divider, FlexDiv, PadBox } from "../styling";
+import GameService from "../network/GameService";
+import NavBar from "../components/NavBar";
+import Button, { SecondaryButton } from "../components/Button";
+import TextField from "../components/TextField";
+import ArrowUp from "../assets/svg/icons/arrow-up.svg";
+import Plus from "../assets/svg/icons/plus.svg";
+import GameMobileShowcase from "../assets/png/game-mobile.png";
+import { useNavigate } from "react-router-dom";
 
-const SideImage = styled.img`
-  height: 100px;
-  opacity: 0.3;
-  scale: 0.8;
-  filter: grayscale(0.5);
-  cursor: pointer;
-  transition: 300ms ease-in-out;
+const Hero = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 30px;
+  gap: 30px;
+  height: calc(100vh - 90px - 96px);
+`;
 
-  ${(props) =>
-    props.selected &&
-    css`
-      opacity: 1;
-      scale: 1;
-      filter: grayscale(0);
-    `}
+const HeroSubContainer = styled(FlexDiv)`
+  max-width: 40%;
+  flex-direction: column;
+  align-items: flex-start;
+`;
+
+const HeroTitle = styled.h1`
+  font-weight: 500;
+  font-size: 30px;
+  color: ${COLORS.black};
+  line-height: 40px;
+`;
+
+const HeroDescription = styled.p`
+  font-size: 18px;
+  color: ${COLORS.gray};
+  line-height: 30px;
+`;
+
+const HeroActions = styled(FlexDiv)`
+  gap: 20px;
+  padding: 30px 0;
+`;
+
+const HeroImage = styled.img`
+  max-width: 350px;
+  height: auto;
 `;
 
 const Home = () => {
-  const [playMode, setPlayMode] = useState(null);
-  const [playSide, setSide] = useState("X"); // choosing X by default
+  const [roomId, setRoomId] = useState("");
+  const navigate = useNavigate();
 
-  const handlePlayMode = (mode) => {
-    if (mode === PlayModes.ONLINE || mode === PlayModes.OFFLINE) {
-      setPlayMode(mode);
-    }
+  const handleCreateRoom = async () => {
+    const res = await GameService.shared.createNewRoom();
+
+    setRoomId(res.id);
   };
 
-  const handlePlaySide = (side) => {
-    if (side === PlayerSide.O || side === PlayerSide.X) {
-      setSide(side);
-    }
+  const handleJoinRoom = () => {
+    navigate(`/play/join/${roomId}`);
+
+    // still got to define the route and component for /play/join/
   };
 
-  const playModeView = (
-    <div>
-      <FlexDiv direction="row" gap="30px">
-        <img height="100px" src={SymbolX} alt="X symbol" />
-        <img height="100px" src={SymbolO} alt="O symbol" />
-      </FlexDiv>
+  return (
+    <FlexDiv
+      direction="column"
+      flexHeight>
+      <NavBar />
 
-      <FlexDiv direction="column" gap="10px">
-        <HighlightedText>Tic Tac Toe. Now with more fun!</HighlightedText>
-        <h2>Choose your play mode</h2>
+      <Hero>
+        <HeroSubContainer>
+          <FlexDiv
+            direction="column"
+            gap="10px">
+            <HeroTitle>
+              Play Tic Tac Toe together online with more fun, live chat and
+              private rooms.
+            </HeroTitle>
+            <HeroDescription>
+              Create rooms so that you can hang out and spend time with your
+              family. With Competition Mode, you are open to play with more than
+              2 players.
+            </HeroDescription>
+          </FlexDiv>
 
-        <FlexDiv direction="column" gap="20px">
-          <Button onClick={() => handlePlayMode(PlayModes.ONLINE)}>
-            Join Room
-          </Button>
-          <Button onClick={() => handlePlayMode(PlayModes.OFFLINE)} secondary>
-            Create room
-          </Button>
-        </FlexDiv>
-      </FlexDiv>
-    </div>
-  );
+          <HeroActions>
+            <TextField
+              value={roomId}
+              onChange={e => setRoomId(e.target.value)}
+              type="text"
+              placeholder="Room ID"
+            />
+            <Button onClick={handleJoinRoom}>
+              <img
+                src={ArrowUp}
+                alt="arrow up icon"
+              />
+              Join
+            </Button>
+          </HeroActions>
 
-  const pickSideView = (
-    <FlexDiv direction="column">
-      <h2>Pick your side</h2>
+          <Divider />
 
-      <FlexDiv direction="row" gap="30px">
-        <SideImage
-          src={SymbolX}
-          alt="X symbol"
-          selected={playSide === PlayerSide.X}
-          onClick={() => handlePlaySide(PlayerSide.X)}
+          <PadBox padding="20px 0">
+            <SecondaryButton onClick={handleCreateRoom}>
+              <img
+                src={Plus}
+                alt="plus icon"
+              />
+              Create your room
+            </SecondaryButton>
+          </PadBox>
+        </HeroSubContainer>
+
+        <HeroImage
+          src={GameMobileShowcase}
+          alt="2 players in a multiplayer tic tac toe game with Bob with a score of 1 and Hetty with 3."
         />
-        <SideImage
-          src={SymbolO}
-          alt="O symbol"
-          selected={playSide === PlayerSide.O}
-          onClick={() => handlePlaySide(PlayerSide.O)}
-        />
-      </FlexDiv>
-
-      <GameInfo>
-        Playing <HighlightedText>{playMode}</HighlightedText>
-      </GameInfo>
-
-      <Link to={`game/${playMode}/${playSide}`}>
-        <Button secondary>Continue</Button>
-      </Link>
+      </Hero>
     </FlexDiv>
   );
-
-  return <FlexDiv flexHeight>{playMode ? pickSideView : playModeView}</FlexDiv>;
 };
 
 export default Home;

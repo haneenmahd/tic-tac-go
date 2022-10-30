@@ -2,9 +2,9 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import "./index.css";
-import AppWraper from "./App";
+import AppWraper from "./AppWrapper";
 import Home from "./pages/Home";
-import Game from "./pages/Game";
+import Play from "./pages/Play";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -22,10 +22,10 @@ root.render(
         />
 
         <Route
-          path="/game/:mode/:side"
+          path="/play"
           element={
             <AppWraper>
-              <Game />
+              <Play />
             </AppWraper>
           }
         />
