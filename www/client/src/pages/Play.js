@@ -28,10 +28,6 @@ const SelectedAvatar = styled.div`
   position: relative;
   cursor: pointer;
 
-  svg rect {
-    animation: ${SelectedAvatarAnimation} 1s ${TRANSITIONS.load};
-  }
-
   &::before {
     content: "Good luck <3";
     position: absolute;
@@ -97,6 +93,11 @@ const AvatarOption = styled.div`
         stroke-dasharray: 0;
         stroke-dashoffset: 0;
         stroke: black;
+      }
+
+      svg rect,
+      svg path {
+        animation: ${SelectedAvatarAnimation} 1s ${TRANSITIONS.load};
       }
     `}
 `;
