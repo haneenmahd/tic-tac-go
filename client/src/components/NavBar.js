@@ -22,7 +22,10 @@ const Text = styled.span`
 const HomeLink = () => (
   <NavLink to="/">
     <FlexDiv gap="11px">
-      <img src={Icon} alt="Icon for TicTacGo" />
+      <img
+        src={Icon}
+        alt="Icon for TicTacGo"
+      />
       <Text>TicTacGo</Text>
     </FlexDiv>
   </NavLink>

@@ -7,8 +7,9 @@ const Button = styled.button`
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  width: 91px;
+  min-width: 91px;
   height: 45px;
+  padding: 0 0.8rem;
   background: ${COLORS.black};
   color: ${COLORS.white};
   border-radius: 30px;

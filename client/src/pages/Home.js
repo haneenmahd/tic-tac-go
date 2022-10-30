@@ -66,12 +66,16 @@ const Home = () => {
   };
 
   return (
-    <FlexDiv direction="column" flexHeight>
+    <FlexDiv
+      direction="column"
+      flexHeight>
       <NavBar />
 
       <Hero>
         <HeroSubContainer>
-          <FlexDiv direction="column" gap="10px">
+          <FlexDiv
+            direction="column"
+            gap="10px">
             <HeroTitle>
               Play Tic Tac Toe together online with more fun, live chat and
               private rooms.
@@ -91,7 +95,10 @@ const Home = () => {
               placeholder="Room ID"
             />
             <Button onClick={handleJoinRoom}>
-              <img src={ArrowUp} alt="arrow up icon" />
+              <img
+                src={ArrowUp}
+                alt="arrow up icon"
+              />
               Join
             </Button>
           </HeroActions>
@@ -100,7 +107,10 @@ const Home = () => {
 
           <PadBox padding="20px 0">
             <SecondaryButton onClick={handleCreateRoom}>
-              <img src={Plus} alt="plus icon" />
+              <img
+                src={Plus}
+                alt="plus icon"
+              />
               Create your room
             </SecondaryButton>
           </PadBox>
