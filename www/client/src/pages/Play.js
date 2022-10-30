@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import styled, { css, keyframes } from "styled-components";
 import { COLORS, FlexDiv, PadBox, TRANSITIONS } from "../styling";
 import { LinkLessNav } from "../components/NavBar";
