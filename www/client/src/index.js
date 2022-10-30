@@ -5,31 +5,44 @@ import "./index.css";
 import AppWraper from "./AppWrapper";
 import Home from "./pages/Home";
 import Play from "./pages/Play";
+import Game from "./pages/Game";
+import UserProvider from "./context/UserContext";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
-    <Router>
-      <Routes>
-        <Route
-          path="/"
-          index
-          element={
-            <AppWraper>
-              <Home />
-            </AppWraper>
-          }
-        />
+    <UserProvider>
+      <Router>
+        <Routes>
+          <Route
+            path="/"
+            index
+            element={
+              <AppWraper>
+                <Home />
+              </AppWraper>
+            }
+          />
 
-        <Route
-          path="/play"
-          element={
-            <AppWraper>
-              <Play />
-            </AppWraper>
-          }
-        />
-      </Routes>
-    </Router>
+          <Route
+            path="/play"
+            element={
+              <AppWraper>
+                <Play />
+              </AppWraper>
+            }
+          />
+
+          <Route
+            path="/game"
+            element={
+              <AppWraper>
+                <Game />
+              </AppWraper>
+            }
+          />
+        </Routes>
+      </Router>
+    </UserProvider>
   </React.StrictMode>
 );

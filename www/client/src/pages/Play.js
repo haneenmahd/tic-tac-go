@@ -7,9 +7,11 @@ import generateId from "../utils/generateId";
 import Button from "../components/Button";
 import ArrowUp from "../assets/svg/icons/arrow-up.svg";
 import TextField from "../components/TextField";
+import { useName, useNameUpdate } from "../context/UserContext";
+import { useEffect } from "react";
 
 const Container = styled.div`
-  height: calc(100vh - 90px - 96px);
+  min-height: calc(100vh - 90px - 96px);
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -115,6 +117,7 @@ const PreviewAvatar = ({ id, avatar, avatarProps }) => (
 const Play = () => {
   const [name, setName] = useState("");
   const [selectedAvatar, setSelectedAvatar] = useState(generateId());
+  const updateName = useNameUpdate();
 
   const [avatars] = useState(
     Array(12)
@@ -129,6 +132,10 @@ const Play = () => {
 
   const handleAvatarPick = avatar => {
     setSelectedAvatar(avatar);
+  };
+
+  const handleNameUpdate = name => {
+    updateName(name);
   };
 
   return (
@@ -154,7 +161,7 @@ const Play = () => {
               onChange={e => setName(e.target.value)}
             />
 
-            <Button>
+            <Button onClick={() => handleNameUpdate(name)}>
               <img
                 src={ArrowUp}
                 alt="plus icon"
@@ -168,6 +175,7 @@ const Play = () => {
         <AvatarPickerGrid>
           {avatars.map((avatar, id) => (
             <AvatarOption
+              key={id}
               selected={selectedAvatar === avatar}
               onClick={() => handleAvatarPick(avatar)}>
               <Avatar
