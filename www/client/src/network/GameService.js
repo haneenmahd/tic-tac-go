@@ -12,6 +12,10 @@ class GameService {
     return res.data;
   }
 
+  joinWaitingList(playerName, side) {
+    this.ws.emit("join-waiting-list", playerName, side);
+  }
+
   joinRoom(roomId, cb) {
     this.ws.emit("join", roomId, (side, squares) => {
       cb(side, squares);

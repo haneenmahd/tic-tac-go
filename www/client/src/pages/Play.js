@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styled, { css, keyframes } from "styled-components";
 import {
   ClippedAndRounded,
@@ -17,6 +17,7 @@ import TextField from "../components/TextField";
 import OSymbol from "../assets/svg/moves/O.svg";
 import XSymbol from "../assets/svg/moves/X.svg";
 import SearchIcon from "../assets/svg/icons/search-filled.svg";
+import GameService from "../network/GameService";
 
 const FadeIn = keyframes`
   from {
@@ -176,6 +177,7 @@ const Play = () => {
   const [selectedAvatar, setSelectedAvatar] = useState(generateId());
   const [showingGame, setShowingGame] = useState(false);
   const [playerSide, setPlayerSide] = useState("X");
+  const [joinedWaitingList, setJoinedWaitingList] = useState(false);
 
   const playerSides = {
     X: "X",
@@ -199,6 +201,14 @@ const Play = () => {
 
   const handlePlay = () => {
     setShowingGame(true);
+  };
+
+  const joinWaitingList = () => {
+    if (!joinedWaitingList) {
+      GameService.shared.joinWaitingList(name, playerSide);
+
+      setJoinedWaitingList(true);
+    }
   };
 
   const avatarPickerView = (
@@ -281,9 +291,9 @@ const Play = () => {
         </FlexDiv>
       </PlayerInfoBubble>
 
-      <Divider span />
+      <Divider fit />
 
-      <SearchPlayerInfoBubble>
+      <SearchPlayerInfoBubble onClick={joinWaitingList}>
         <FlexDiv gap="20px">
           <img
             src={SearchIcon}
