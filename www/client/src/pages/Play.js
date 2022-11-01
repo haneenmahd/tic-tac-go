@@ -1,22 +1,37 @@
 import { useState } from "react";
 import styled, { css, keyframes } from "styled-components";
-import { COLORS, FlexDiv, PadBox, TRANSITIONS } from "../styling";
+import {
+  ClippedAndRounded,
+  COLORS,
+  Divider,
+  FlexDiv,
+  PadBox,
+  TRANSITIONS,
+} from "../styling";
 import { LinkLessNav } from "../components/NavBar";
 import Avatar from "boring-avatars";
 import generateId from "../utils/generateId";
 import Button from "../components/Button";
 import ArrowUp from "../assets/svg/icons/arrow-up.svg";
 import TextField from "../components/TextField";
-import { useName, useNameUpdate } from "../context/UserContext";
-import { useEffect } from "react";
+import OSymbol from "../assets/svg/moves/O.svg";
+import XSymbol from "../assets/svg/moves/X.svg";
+import SearchIcon from "../assets/svg/icons/search-filled.svg";
+
+const FadeIn = keyframes`
+  from {
+    opacity: 0;
+  }
+`;
 
 const Container = styled.div`
   min-height: calc(100vh - 90px - 96px);
   width: 100%;
   display: flex;
-  flex-direction: column;
+  flex-direction: ${p => p.direction || "column"};
   align-items: center;
   justify-content: center;
+  animation: ${FadeIn} 1s ${TRANSITIONS.load};
 `;
 
 const SelectedAvatarAnimation = keyframes`
@@ -104,6 +119,48 @@ const AvatarOption = styled.div`
     `}
 `;
 
+const PlayerInfoBubble = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 28px 25px;
+  gap: 20px;
+  width: 338px;
+  height: 126px;
+  border: 1px solid #ececec;
+  border-radius: 100px;
+
+  span {
+    font-weight: 500;
+  }
+`;
+
+const SearchPlayerInfoBubble = styled(PlayerInfoBubble)`
+  cursor: pointer;
+  transition: ${TRANSITIONS.focus};
+
+  &:active {
+    scale: 0.99;
+  }
+`;
+
+const PlayerSidePreview = styled.img`
+  cursor: pointer;
+  transition: 200ms ${TRANSITIONS.load};
+
+  ${p =>
+    p.selected
+      ? css`
+          opacity: 1;
+          scale: 1;
+        `
+      : css`
+          opacity: 0.19;
+          scale: 0.8;
+        `}
+`;
+
 const PreviewAvatar = ({ id, avatar, avatarProps }) => (
   <SelectedAvatar key={id}>
     <Avatar
@@ -117,7 +174,13 @@ const PreviewAvatar = ({ id, avatar, avatarProps }) => (
 const Play = () => {
   const [name, setName] = useState("");
   const [selectedAvatar, setSelectedAvatar] = useState(generateId());
-  const updateName = useNameUpdate();
+  const [showingGame, setShowingGame] = useState(false);
+  const [playerSide, setPlayerSide] = useState("X");
+
+  const playerSides = {
+    X: "X",
+    O: "O",
+  };
 
   const [avatars] = useState(
     Array(12)
@@ -134,9 +197,104 @@ const Play = () => {
     setSelectedAvatar(avatar);
   };
 
-  const handleNameUpdate = name => {
-    updateName(name);
+  const handlePlay = () => {
+    setShowingGame(true);
   };
+
+  const avatarPickerView = (
+    <Container>
+      <PreviewAvatar
+        id={generateId()}
+        avatar={selectedAvatar}
+        avatarProps={avatarProps}
+      />
+
+      <PadBox padding="50px 0">
+        <FlexDiv
+          direction="row"
+          gap="20px">
+          <TextField
+            placeholder="Your Name"
+            value={name}
+            onChange={e => setName(e.target.value)}
+          />
+
+          <Button onClick={handlePlay}>
+            <img
+              src={ArrowUp}
+              alt="plus icon"
+            />
+            Play
+          </Button>
+        </FlexDiv>
+      </PadBox>
+
+      <AvatarPickerGrid>
+        {avatars.map((avatar, id) => (
+          <AvatarOption
+            key={id}
+            selected={selectedAvatar === avatar}
+            onClick={() => handleAvatarPick(avatar)}>
+            <Avatar
+              size={80}
+              name={avatar}
+              {...avatarProps}
+            />
+          </AvatarOption>
+        ))}
+      </AvatarPickerGrid>
+    </Container>
+  );
+
+  const preMatchView = (
+    <Container
+      direction="row"
+      gap="36px"
+      key={null}>
+      <PlayerInfoBubble>
+        <FlexDiv gap="20px">
+          <ClippedAndRounded>
+            <Avatar
+              size={80}
+              name={selectedAvatar}
+              {...avatarProps}
+            />
+          </ClippedAndRounded>
+
+          <span>{name}</span>
+        </FlexDiv>
+
+        <FlexDiv gap="20px">
+          <PlayerSidePreview
+            src={OSymbol}
+            alt="O symbol"
+            selected={playerSide === playerSides.O}
+            onClick={() => setPlayerSide(playerSides.O)}
+          />
+
+          <PlayerSidePreview
+            src={XSymbol}
+            alt="X symbol"
+            selected={playerSide === playerSides.X}
+            onClick={() => setPlayerSide(playerSides.X)}
+          />
+        </FlexDiv>
+      </PlayerInfoBubble>
+
+      <Divider span />
+
+      <SearchPlayerInfoBubble>
+        <FlexDiv gap="20px">
+          <img
+            src={SearchIcon}
+            alt="opponent search icon"
+          />
+
+          <span>Search for opponent</span>
+        </FlexDiv>
+      </SearchPlayerInfoBubble>
+    </Container>
+  );
 
   return (
     <FlexDiv
@@ -144,49 +302,7 @@ const Play = () => {
       flexHeight>
       <LinkLessNav />
 
-      <Container>
-        <PreviewAvatar
-          id={generateId()}
-          avatar={selectedAvatar}
-          avatarProps={avatarProps}
-        />
-
-        <PadBox padding="50px 0">
-          <FlexDiv
-            direction="row"
-            gap="20px">
-            <TextField
-              placeholder="Your Name"
-              value={name}
-              onChange={e => setName(e.target.value)}
-            />
-
-            <Button onClick={() => handleNameUpdate(name)}>
-              <img
-                src={ArrowUp}
-                alt="plus icon"
-              />
-              Update
-            </Button>
-          </FlexDiv>
-        </PadBox>
-
-        {/* AVATAR PICKER GRID */}
-        <AvatarPickerGrid>
-          {avatars.map((avatar, id) => (
-            <AvatarOption
-              key={id}
-              selected={selectedAvatar === avatar}
-              onClick={() => handleAvatarPick(avatar)}>
-              <Avatar
-                size={80}
-                name={avatar}
-                {...avatarProps}
-              />
-            </AvatarOption>
-          ))}
-        </AvatarPickerGrid>
-      </Container>
+      {showingGame ? preMatchView : avatarPickerView}
     </FlexDiv>
   );
 };
