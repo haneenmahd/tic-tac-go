@@ -1,8 +1,9 @@
 class Player {
-  constructor(id, side) {
+  constructor(id, name, side) {
     this.id = id;
+    this.name;
     this.side = side; // DEBUG
   }
 }
 
-module.exports = Player;
+export default Player;

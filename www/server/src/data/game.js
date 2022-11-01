@@ -3,4 +3,4 @@ const PlayerMove = {
   O: "O",
 };
 
-module.exports = { PlayerMove };
+export { PlayerMove };

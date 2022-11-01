@@ -1,5 +1,6 @@
-const Player = require("./Player");
-const generateId = require("./utils/generateId");
+import Player from "./Player.js";
+import generateId from "../utils/generateId.js";
+import { PlayerMove } from "../data/game.js";
 
 class Room {
   constructor() {
@@ -8,11 +9,11 @@ class Room {
     this.squares = Array(9).fill(null);
   }
 
-  addPlayer(id, side) {
+  addPlayer(id, name, side) {
     if (this.players.length !== 2) {
       // MAX Member count is 2
 
-      const player = new Player(id, side);
+      const player = new Player(id, name, side);
 
       this.players.push(player);
 
@@ -25,8 +26,6 @@ class Room {
   addMove(i, move) {
     if (this.squares[i] === null && this.validateMove(move)) {
       this.squares[i] = move;
-
-      console.log(move);
 
       return true;
     }
@@ -43,4 +42,4 @@ class Room {
   }
 }
 
-module.exports = Room;
+export default Room;

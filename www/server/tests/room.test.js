@@ -1,5 +1,5 @@
-const Room = require("../src/Room");
-const generateId = require("../src/utils/generateId");
+import Room from "../src/core/Room.js";
+import generateId from "../src/utils/generateId.js";
 
 test("Checks if a room has players", () => {
   const room = new Room();

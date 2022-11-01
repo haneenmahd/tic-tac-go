@@ -1,10 +1,12 @@
-const http = require("http");
-const cors = require("cors");
-const express = require("express");
-const socketio = require("socket.io");
-const Room = require("./Room");
-const Player = require("./Player");
-const { PlayerMove } = require("./data/game");
+import http from "http";
+import cors from "cors";
+import express from "express";
+import { Server } from "socket.io";
+import Room from "./core/Room.js";
+import Queue from "./core/Queue.js";
+import { PlayerMove } from "./data/game.js";
+import Player from "./core/Player.js";
+
 const app = express();
 
 const corsOptions = {
@@ -14,13 +16,22 @@ const corsOptions = {
 app.use(cors(corsOptions));
 
 const server = http.createServer(app);
-const io = socketio(server, {
+const io = new Server(server, {
   cors: corsOptions,
 });
 
 const PORT = process.env.PORT || 4000;
 
 const rooms = [];
+const queuedPeople = new Queue();
+
+app.get("/player/find", (req, res) => {
+  let playerId = queuedPeople.findRandom();
+
+  res.status(200).send({
+    playerId: playerId,
+  });
+});
 
 app.get("/rooms/info/:roomId", (req, res) => {
   const { roomId } = req.params;
@@ -40,19 +51,31 @@ app.post("/rooms/new", (req, res) => {
 
   res.status(200).send({
     id: room.id,
-    message: `Created room successfully #${room.id}`,
   });
 });
 
 io.on("connection", socket => {
-  socket.once("join", (roomId, cb) => {
+  socket.on("join-waiting-list", (playerName, side) => {
+    const player = new Player(socket.id, playerName, side);
+
+    queuedPeople.join(player);
+  });
+
+  socket.on("leave-waiting-list", (playerName, side) => {
+    const player = new Player(socket.id, playerName, side);
+
+    queuedPeople.remove(player);
+  });
+
+  // USE ".once" if there is an error
+  socket.on("join", (roomId, playerName, cb) => {
     const room = rooms.find(room => room.id === roomId);
 
     const side = room.players.find(player => player.side === PlayerMove.X)
       ? PlayerMove.O
       : PlayerMove.X;
 
-    if (room.addPlayer(socket.id, side)) {
+    if (room.addPlayer(socket.id, playerName, side)) {
       console.log(`${socket.id} has now joined room #${roomId}`);
 
       socket.join(roomId);

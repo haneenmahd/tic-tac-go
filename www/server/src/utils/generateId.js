@@ -12,4 +12,4 @@ const generateId = () => {
   return result;
 };
 
-module.exports = generateId;
+export default generateId;
