@@ -29,11 +29,16 @@ export const FlexDiv = styled.div`
 `;
 
 export const Divider = styled.div`
-  width: 405px;
+  width: ${props => (props.span ? "10%" : "405px")};
   height: 0px;
   border: 1px solid ${COLORS.fadedGray};
 `;
 
 export const PadBox = styled.div`
   padding: ${props => props.padding};
+`;
+
+export const ClippedAndRounded = styled.div`
+  border-radius: 100%;
+  overflow: hidden;
 `;
