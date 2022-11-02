@@ -17,7 +17,7 @@ const Hero = styled.div`
   justify-content: space-between;
   padding: 0 30px;
   gap: 30px;
-  height: calc(100vh - 90px - 96px);
+  min-height: calc(100vh - 90px - 96px);
 `;
 
 const HeroSubContainer = styled(FlexDiv)`
