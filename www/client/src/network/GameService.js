@@ -16,6 +16,12 @@ class GameService {
     this.ws.emit("join-waiting-list", playerName, side);
   }
 
+  async findPlayer() {
+    const res = await axios.get(`${GameService.apiUrl}/player/find`);
+
+    return res.data;
+  }
+
   joinRoom(roomId, cb) {
     this.ws.emit("join", roomId, (side, squares) => {
       cb(side, squares);
