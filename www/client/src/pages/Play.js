@@ -178,6 +178,7 @@ const Play = () => {
   const [showingGame, setShowingGame] = useState(false);
   const [playerSide, setPlayerSide] = useState("X");
   const [joinedWaitingList, setJoinedWaitingList] = useState(false);
+  const [opponent, setOpponent] = useState();
 
   const playerSides = {
     X: "X",
@@ -203,13 +204,19 @@ const Play = () => {
     setShowingGame(true);
   };
 
-  const joinWaitingList = () => {
-    if (!joinedWaitingList) {
+  const findPlayer = async () => {
+    const player = await GameService.shared.findPlayer();
+
+    setOpponent(player);
+  };
+
+  useEffect(() => {
+    if (showingGame) {
       GameService.shared.joinWaitingList(name, playerSide);
 
       setJoinedWaitingList(true);
     }
-  };
+  }, [showingGame]);
 
   const avatarPickerView = (
     <Container>
@@ -275,34 +282,64 @@ const Play = () => {
         </FlexDiv>
 
         <FlexDiv gap="20px">
-          <PlayerSidePreview
-            src={OSymbol}
-            alt="O symbol"
-            selected={playerSide === playerSides.O}
-            onClick={() => setPlayerSide(playerSides.O)}
-          />
+          {opponent ? (
+            <PlayerSidePreview
+              src={playerSide === playerSides.X ? XSymbol : OSymbol}
+              selected
+            />
+          ) : (
+            <>
+              <PlayerSidePreview
+                src={OSymbol}
+                alt="O symbol"
+                selected={playerSide === playerSides.O}
+                onClick={() => setPlayerSide(playerSides.O)}
+              />
 
-          <PlayerSidePreview
-            src={XSymbol}
-            alt="X symbol"
-            selected={playerSide === playerSides.X}
-            onClick={() => setPlayerSide(playerSides.X)}
-          />
+              <PlayerSidePreview
+                src={XSymbol}
+                alt="X symbol"
+                selected={playerSide === playerSides.X}
+                onClick={() => setPlayerSide(playerSides.X)}
+              />
+            </>
+          )}
         </FlexDiv>
       </PlayerInfoBubble>
 
       <Divider fit />
 
-      <SearchPlayerInfoBubble onClick={joinWaitingList}>
-        <FlexDiv gap="20px">
-          <img
-            src={SearchIcon}
-            alt="opponent search icon"
-          />
+      {opponent ? (
+        <PlayerInfoBubble>
+          <FlexDiv gap="20px">
+            <ClippedAndRounded>
+              <Avatar
+                size={80}
+                name={selectedAvatar}
+                {...avatarProps}
+              />
+            </ClippedAndRounded>
 
-          <span>Search for opponent</span>
-        </FlexDiv>
-      </SearchPlayerInfoBubble>
+            <span>{opponent.name}</span>
+          </FlexDiv>
+
+          <PlayerSidePreview
+            src={opponent.side === playerSides.X ? XSymbol : OSymbol}
+            selected
+          />
+        </PlayerInfoBubble>
+      ) : (
+        <SearchPlayerInfoBubble onClick={findPlayer}>
+          <FlexDiv gap="20px">
+            <img
+              src={SearchIcon}
+              alt="opponent search icon"
+            />
+
+            <span>Search for opponent</span>
+          </FlexDiv>
+        </SearchPlayerInfoBubble>
+      )}
     </Container>
   );
 
