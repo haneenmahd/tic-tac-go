@@ -23,14 +23,12 @@ const io = new Server(server, {
 const PORT = process.env.PORT || 4000;
 
 const rooms = [];
-const queuedPeople = new Queue();
+const queuedPlayers = new Queue();
 
 app.get("/player/find", (req, res) => {
-  let playerId = queuedPeople.findRandom();
+  const player = queuedPlayers.findRandom();
 
-  res.status(200).send({
-    playerId: playerId,
-  });
+  res.status(200).send(player);
 });
 
 app.get("/rooms/info/:roomId", (req, res) => {
@@ -58,13 +56,7 @@ io.on("connection", socket => {
   socket.on("join-waiting-list", (playerName, side) => {
     const player = new Player(socket.id, playerName, side);
 
-    queuedPeople.join(player);
-  });
-
-  socket.on("leave-waiting-list", (playerName, side) => {
-    const player = new Player(socket.id, playerName, side);
-
-    queuedPeople.remove(player);
+    queuedPlayers.join(player);
   });
 
   // USE ".once" if there is an error
@@ -96,6 +88,14 @@ io.on("connection", socket => {
     io.to(roomId).emit("mark", room.squares);
 
     cb(room.squares);
+  });
+
+  socket.on("disconnect", () => {
+    const player = queuedPlayers.queue.find(player => player.id === socket.id); // id is assigned from socket.id
+
+    queuedPlayers.remove(player);
+
+    console.log("KICKING OUT", player);
   });
 });
 
