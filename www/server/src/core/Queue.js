@@ -18,6 +18,12 @@ class Queue {
 
     return this.queue[randomIndex];
   }
+
+  findAndSet(el, prop, value) {
+    const elIndex = this.queue.indexOf(el);
+
+    this.queue[elIndex][prop][value];
+  }
 }
 
 export default Queue;
