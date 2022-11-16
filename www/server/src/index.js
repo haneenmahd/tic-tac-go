@@ -1,3 +1,4 @@
+import crypto from "crypto";
 import http from "http";
 import cors from "cors";
 import express from "express";
@@ -64,6 +65,20 @@ io.on("connection", socket => {
 
     queuedPlayers.join(player);
     socket.join("prematch");
+  });
+
+  socket.on("find-player", (playerName, playerSide, cb) => {
+    let player = queuedPlayers.findRandom();
+    const roomToken = crypto
+      .createHash("sha256")
+      .update(socket.id, player.id)
+      .digest("hex"); // sha256 hash
+
+    if (player.name === playerName && playerSide === player.side) {
+      player = queuedPlayers.findRandom();
+    }
+
+    cb(roomToken);
   });
 
   // DEBUG: EXPERIMENTAL

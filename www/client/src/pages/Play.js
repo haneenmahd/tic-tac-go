@@ -139,13 +139,27 @@ const PlayerInfoName = styled.p`
   text-wrap: wrap;
 `;
 
-const SearchPlayerInfoBubble = styled(PlayerInfoBubble)`
-  cursor: pointer;
-  transition: ${TRANSITIONS.focus};
-
-  &:active {
-    scale: 0.99;
+const BlinkAnimation = keyframes`
+  0% {
+    border-color: ${COLORS.black};
   }
+
+  50% {
+    border-color: ${COLORS.fadedGray};
+  }
+
+  100% {
+    border-color: ${COLORS.black};
+  }
+`;
+
+const SearchPlayerInfoBubble = styled(PlayerInfoBubble)`
+  ${p =>
+    p.searching &&
+    css`
+      border: 2px dashed ${COLORS.black};
+      animation: ${BlinkAnimation} 1s ${TRANSITIONS.load} infinite;
+    `}
 `;
 
 const PlayerSidePreview = styled.img`
@@ -206,6 +220,7 @@ const Play = () => {
   const [showingGame, setShowingGame] = useState(false);
   const [playerSide, setPlayerSide] = useState("X");
   const [joinedWaitingList, setJoinedWaitingList] = useState(false);
+  const [roomToken, setRoomToken] = useState("");
   const [opponent, setOpponent] = useState();
 
   const playerSides = {
@@ -232,16 +247,12 @@ const Play = () => {
     setShowingGame(true);
   };
 
-  const findPlayer = async () => {
-    const player = await GameService.shared.findPlayer(name, playerSide);
-
-    setOpponent(player);
-  };
-
   const joinWaitingList = () => {
     GameService.shared.joinWaitingList(name, playerSide, selectedAvatar);
 
     setJoinedWaitingList(true);
+
+    GameService.shared.findPlayer(name, playerSide, setRoomToken);
   };
 
   const avatarPickerView = (
@@ -362,14 +373,18 @@ const Play = () => {
           />
         </PlayerInfoBubble>
       ) : (
-        <SearchPlayerInfoBubble onClick={findPlayer}>
+        <SearchPlayerInfoBubble searching={joinedWaitingList}>
           <FlexDiv gap="20px">
             <img
               src={SearchIcon}
-              alt="opponent search icon"
+              alt="opponent searching icon"
             />
 
-            <span>Search for opponent</span>
+            <span>
+              {joinedWaitingList
+                ? "Searching for opponent"
+                : "Choose your side"}
+            </span>
           </FlexDiv>
         </SearchPlayerInfoBubble>
       )}
