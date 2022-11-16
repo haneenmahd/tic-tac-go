@@ -12,12 +12,14 @@ class GameService {
     return res.data;
   }
 
-  joinWaitingList(playerName, side) {
-    this.ws.emit("join-waiting-list", playerName, side);
+  joinWaitingList(playerName, playerside) {
+    this.ws.emit("join-waiting-list", playerName, playerside);
   }
 
-  async findPlayer() {
-    const res = await axios.get(`${GameService.apiUrl}/player/find`);
+  async findPlayer(playerName, playerSide) {
+    const res = await axios.get(
+      `${GameService.apiUrl}/player/find/${playerName}/${playerSide}`
+    );
 
     return res.data;
   }
