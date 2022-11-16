@@ -12,8 +12,8 @@ class GameService {
     return res.data;
   }
 
-  joinWaitingList(playerName, playerside) {
-    this.ws.emit("join-waiting-list", playerName, playerside);
+  joinWaitingList(playerName, playerside, avatarId) {
+    this.ws.emit("join-waiting-list", playerName, playerside, avatarId);
   }
 
   async findPlayer(playerName, playerSide) {

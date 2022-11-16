@@ -18,6 +18,7 @@ import OSymbol from "../assets/svg/moves/O.svg";
 import XSymbol from "../assets/svg/moves/X.svg";
 import SearchIcon from "../assets/svg/icons/search-filled.svg";
 import GameService from "../network/GameService";
+import { Check } from "react-feather";
 
 const FadeIn = keyframes`
   from {
@@ -131,10 +132,11 @@ const PlayerInfoBubble = styled.div`
   height: 126px;
   border: 1px solid #ececec;
   border-radius: 100px;
+`;
 
-  span {
-    font-weight: 500;
-  }
+const PlayerInfoName = styled.p`
+  font-weight: 500;
+  text-wrap: wrap;
 `;
 
 const SearchPlayerInfoBubble = styled(PlayerInfoBubble)`
@@ -147,6 +149,8 @@ const SearchPlayerInfoBubble = styled(PlayerInfoBubble)`
 `;
 
 const PlayerSidePreview = styled.img`
+  height: 30px;
+  width: 30px;
   cursor: pointer;
   transition: 200ms ${TRANSITIONS.load};
 
@@ -155,11 +159,35 @@ const PlayerSidePreview = styled.img`
       ? css`
           opacity: 1;
           scale: 1;
+          cursor: default;
         `
       : css`
-          opacity: 0.19;
-          scale: 0.8;
+          opacity: 0.39;
+          scale: 0.7;
         `}
+`;
+
+const ConfirmButton = styled.button`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 40px;
+  width: 40px;
+  padding: 10px;
+  font-size: 0.8rem;
+  color: ${COLORS.white};
+  background: #00000090;
+  border-radius: 100px;
+  border: 2px dashed #000;
+  transition: ${TRANSITIONS.hovers};
+
+  &:hover {
+    background: ${COLORS.black};
+  }
+
+  &:active {
+    scale: 0.95;
+  }
 `;
 
 const PreviewAvatar = ({ id, avatar, avatarProps }) => (
@@ -205,18 +233,16 @@ const Play = () => {
   };
 
   const findPlayer = async () => {
-    const player = await GameService.shared.findPlayer();
+    const player = await GameService.shared.findPlayer(name, playerSide);
 
     setOpponent(player);
   };
 
-  useEffect(() => {
-    if (showingGame) {
-      GameService.shared.joinWaitingList(name, playerSide);
+  const joinWaitingList = () => {
+    GameService.shared.joinWaitingList(name, playerSide, selectedAvatar);
 
-      setJoinedWaitingList(true);
-    }
-  }, [showingGame]);
+    setJoinedWaitingList(true);
+  };
 
   const avatarPickerView = (
     <Container>
@@ -234,6 +260,7 @@ const Play = () => {
             placeholder="Your Name"
             value={name}
             onChange={e => setName(e.target.value)}
+            maxLength={10}
           />
 
           <Button onClick={handlePlay}>
@@ -278,11 +305,11 @@ const Play = () => {
             />
           </ClippedAndRounded>
 
-          <span>{name}</span>
+          <PlayerInfoName>{name}</PlayerInfoName>
         </FlexDiv>
 
-        <FlexDiv gap="20px">
-          {opponent ? (
+        <FlexDiv gap="10px">
+          {joinedWaitingList ? (
             <PlayerSidePreview
               src={playerSide === playerSides.X ? XSymbol : OSymbol}
               selected
@@ -305,6 +332,12 @@ const Play = () => {
             </>
           )}
         </FlexDiv>
+
+        {joinedWaitingList || (
+          <ConfirmButton onClick={joinWaitingList}>
+            <Check />
+          </ConfirmButton>
+        )}
       </PlayerInfoBubble>
 
       <Divider fit />
@@ -315,12 +348,12 @@ const Play = () => {
             <ClippedAndRounded>
               <Avatar
                 size={80}
-                name={selectedAvatar}
+                name={opponent.avatarId}
                 {...avatarProps}
               />
             </ClippedAndRounded>
 
-            <span>{opponent.name}</span>
+            <PlayerInfoName>{opponent.name}</PlayerInfoName>
           </FlexDiv>
 
           <PlayerSidePreview

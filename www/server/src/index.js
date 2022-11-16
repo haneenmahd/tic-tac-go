@@ -59,24 +59,14 @@ app.post("/rooms/new", (req, res) => {
 });
 
 io.on("connection", socket => {
-  socket.on("join-waiting-list", (playerName, side) => {
-    const player = new Player(socket.id, playerName, side);
+  socket.on("join-waiting-list", (playerName, side, avatarId) => {
+    const player = new Player(socket.id, playerName, side, avatarId);
 
     queuedPlayers.join(player);
     socket.join("prematch");
   });
 
-  socket.on("ready", (playerName, side) => {
-    socket.leave("prematch");
-
-    const player = new Player(socket.id, playerName, side);
-
-    queuedPlayers.findAndSet(player, "ready", true);
-
-    socket.join("ready");
-  });
-
-  // USE ".once" if there is an error
+  // DEBUG: EXPERIMENTAL
   socket.on("join", (roomId, playerName, cb) => {
     const room = rooms.find(room => room.id === roomId);
 
