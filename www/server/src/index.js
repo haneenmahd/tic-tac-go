@@ -7,6 +7,8 @@ import Queue from "./core/Queue.js";
 import { PlayerMove } from "./data/game.js";
 import Player from "./core/Player.js";
 
+const PORT = process.env.PORT || 4000;
+
 const app = express();
 
 const corsOptions = {
@@ -20,13 +22,17 @@ const io = new Server(server, {
   cors: corsOptions,
 });
 
-const PORT = process.env.PORT || 4000;
-
 const rooms = [];
 const queuedPlayers = new Queue();
 
-app.get("/player/find", (req, res) => {
-  const player = queuedPlayers.findRandom();
+app.get("/player/find/:playerName/:playerSide", (req, res) => {
+  const { playerName, playerSide } = req.params;
+
+  let player = queuedPlayers.findRandom();
+
+  if (player.name === playerName && playerSide === player.side) {
+    player = queuedPlayers.findRandom();
+  }
 
   res.status(200).send(player);
 });
@@ -57,6 +63,17 @@ io.on("connection", socket => {
     const player = new Player(socket.id, playerName, side);
 
     queuedPlayers.join(player);
+    socket.join("prematch");
+  });
+
+  socket.on("ready", (playerName, side) => {
+    socket.leave("prematch");
+
+    const player = new Player(socket.id, playerName, side);
+
+    queuedPlayers.findAndSet(player, "ready", true);
+
+    socket.join("ready");
   });
 
   // USE ".once" if there is an error
