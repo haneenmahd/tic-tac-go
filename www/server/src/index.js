@@ -59,17 +59,21 @@ io.on("connection", socket => {
   socket.on("find-player", cb => {
     if (waitingList.queue.length > 0) {
       const partner = waitingList.findRandom();
+
       if (
         partner.name !== socket.player.name &&
         partner.side !== socket.player.side
       ) {
-        socket.broadcast.to(partner.id).emit("player-found", socket.player);
+        socket.partner = partner;
+        socket.broadcast
+          .to(socket.partner.id)
+          .emit("player-found", socket.player);
 
-        waitingList.remove(partner);
+        waitingList.remove(socket.partner);
         waitingList.remove(socket.player);
         // removing both current player and the opponent
 
-        cb(partner);
+        cb(socket.partner);
       }
     }
   });
