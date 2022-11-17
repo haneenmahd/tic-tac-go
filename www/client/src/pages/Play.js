@@ -252,7 +252,7 @@ const Play = () => {
 
     setJoinedWaitingList(true);
 
-    GameService.shared.findPlayer(name, playerSide, setRoomToken);
+    GameService.shared.findPlayer(setOpponent);
   };
 
   const avatarPickerView = (

@@ -16,12 +16,14 @@ class GameService {
     this.ws.emit("join-waiting-list", playerName, playerside, avatarId);
   }
 
-  findPlayer(playerName, playerSide, setRoomToken) {
-    this.ws.emit("find-player", playerName, playerSide, roomToken =>
-      setRoomToken(roomToken)
-    );
+  findPlayer(setOpponent) {
+    this.ws.emit("find-player", partner => {
+      setOpponent(partner);
+    });
 
-    this.ws.on("player-found", roomToken => setRoomToken(roomToken));
+    this.ws.on("player-found", player => {
+      setOpponent(player);
+    });
   }
 
   joinRoom(roomId, cb) {

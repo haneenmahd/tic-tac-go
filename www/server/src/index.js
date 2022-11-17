@@ -24,19 +24,7 @@ const io = new Server(server, {
 });
 
 const rooms = [];
-const queuedPlayers = new Queue();
-
-app.get("/player/find/:playerName/:playerSide", (req, res) => {
-  const { playerName, playerSide } = req.params;
-
-  let player = queuedPlayers.findRandom();
-
-  if (player.name === playerName && playerSide === player.side) {
-    player = queuedPlayers.findRandom();
-  }
-
-  res.status(200).send(player);
-});
+const waitingList = new Queue();
 
 app.get("/rooms/info/:roomId", (req, res) => {
   const { roomId } = req.params;
@@ -63,22 +51,27 @@ io.on("connection", socket => {
   socket.on("join-waiting-list", (playerName, side, avatarId) => {
     const player = new Player(socket.id, playerName, side, avatarId);
 
-    queuedPlayers.join(player);
-    socket.join("prematch");
+    socket.player = player;
+
+    waitingList.join(player);
   });
 
-  socket.on("find-player", (playerName, playerSide, cb) => {
-    let player = queuedPlayers.findRandom();
-    const roomToken = crypto
-      .createHash("sha256")
-      .update(socket.id, player.id)
-      .digest("hex"); // sha256 hash
+  socket.on("find-player", cb => {
+    if (waitingList.queue.length > 0) {
+      const partner = waitingList.findRandom();
+      if (
+        partner.name !== socket.player.name &&
+        partner.side !== socket.player.side
+      ) {
+        socket.broadcast.to(partner.id).emit("player-found", socket.player);
 
-    if (player.name === playerName && playerSide === player.side) {
-      player = queuedPlayers.findRandom();
+        waitingList.remove(partner);
+        waitingList.remove(socket.player);
+        // removing both current player and the opponent
+
+        cb(partner);
+      }
     }
-
-    cb(roomToken);
   });
 
   // DEBUG: EXPERIMENTAL
@@ -90,8 +83,6 @@ io.on("connection", socket => {
       : PlayerMove.X;
 
     if (room.addPlayer(socket.id, playerName, side)) {
-      console.log(`${socket.id} has now joined room #${roomId}`);
-
       socket.join(roomId);
 
       socket.broadcast.emit("join");
@@ -113,11 +104,9 @@ io.on("connection", socket => {
   });
 
   socket.on("disconnect", () => {
-    const player = queuedPlayers.queue.find(player => player.id === socket.id); // id is assigned from socket.id
+    const player = waitingList.queue.find(player => player.id === socket.id); // id is assigned from socket.id
 
-    queuedPlayers.remove(player);
-
-    console.log("KICKING OUT", player);
+    waitingList.remove(player);
   });
 });
 
