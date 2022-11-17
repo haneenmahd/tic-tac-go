@@ -21,7 +21,6 @@ import GameService from "../network/GameService";
 import { Check } from "react-feather";
 
 const PageContainer = styled(FlexDiv)`
-  padding: 50px 0 0 0;
   justify-content: space-between;
 `;
 
@@ -43,6 +42,7 @@ const Container = styled.div`
 
 const GameInfoContainer = styled.div`
   width: 100%;
+  margin: 30px;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -200,6 +200,7 @@ const GameRoundContainer = styled.div`
   align-items: center;
   justify-content: center;
   gap: 12px;
+  margin: 0 35px;
 `;
 
 const GameRound = styled.div`
@@ -217,10 +218,16 @@ const GameRound = styled.div`
   animation: ${FadeIn} 1s ${TRANSITIONS.load};
 `;
 
-const VersusText = styled.span`
+const ScoreCard = styled.div`
   font-weight: 500;
   font-size: 18px;
   line-height: 22px;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
 `;
 
 const ConfirmButton = styled.button`
@@ -254,12 +261,18 @@ const GameBoard = styled.div`
 `;
 
 const Play = () => {
+  // PREMATCH
   const [name, setName] = useState("");
   const [selectedAvatar, setSelectedAvatar] = useState(generateId());
   const [showingGame, setShowingGame] = useState(false);
   const [playerSide, setPlayerSide] = useState("X");
   const [joinedWaitingList, setJoinedWaitingList] = useState(false);
   const [opponent, setOpponent] = useState(null);
+
+  // GAME
+  const [squares, setSquares] = useState(Array(9).fill(null));
+  const [playerScore, setPlayerScore] = useState(0);
+  const [opponentScore, setOpponentScore] = useState(0);
 
   const playerSides = {
     X: "X",
@@ -396,8 +409,17 @@ const Play = () => {
 
         <GameRoundContainer>
           {opponent && <GameRound>Round 1</GameRound>}
-          <Divider maxWidth />
-          {opponent && <VersusText>VS</VersusText>}
+
+          {/* Show a divider when in prematch */}
+          {opponent === null && <Divider maxWidth />}
+
+          {opponent && (
+            <ScoreCard>
+              <span>{playerScore}</span>
+              <Divider maxWidth />
+              <span>{opponentScore}</span>
+            </ScoreCard>
+          )}
         </GameRoundContainer>
 
         {opponent ? (
