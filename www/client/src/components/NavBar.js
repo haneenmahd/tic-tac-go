@@ -51,7 +51,7 @@ const LinkLessNav = () => (
   <LinkLessNavContainer>
     <HomeLink />
 
-    <Divider max />
+    <Divider maxWidth />
   </LinkLessNavContainer>
 );
 
