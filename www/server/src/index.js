@@ -48,6 +48,9 @@ app.post("/rooms/new", (req, res) => {
 });
 
 io.on("connection", socket => {
+  const squares = Array(9).fill(null);
+  let roomToken;
+
   socket.on("join-waiting-list", (playerName, side, avatarId) => {
     const player = new Player(socket.id, playerName, side, avatarId);
 
@@ -64,47 +67,41 @@ io.on("connection", socket => {
         partner.name !== socket.player.name &&
         partner.side !== socket.player.side
       ) {
+        roomToken = crypto
+          .createHash("sha256")
+          .update(partner.id + socket.player.id)
+          .digest("hex");
+
         socket.partner = partner;
         socket.broadcast
           .to(socket.partner.id)
-          .emit("player-found", socket.player);
+          .emit("player-found", socket.player, roomToken);
 
+        socket.join(roomToken);
+
+        // removing both current player and the opponent
         waitingList.remove(socket.partner);
         waitingList.remove(socket.player);
-        // removing both current player and the opponent
 
-        cb(socket.partner);
+        cb(socket.partner, roomToken);
       }
     }
   });
 
-  // DEBUG: EXPERIMENTAL
-  socket.on("join", (roomId, playerName, cb) => {
-    const room = rooms.find(room => room.id === roomId);
+  socket.on("join-room", room => {
+    console.log(
+      `${socket.player.name} with ${socket.partner?.name} in ${room}`
+    );
 
-    const side = room.players.find(player => player.side === PlayerMove.X)
-      ? PlayerMove.O
-      : PlayerMove.X;
-
-    if (room.addPlayer(socket.id, playerName, side)) {
-      socket.join(roomId);
-
-      socket.broadcast.emit("join");
-
-      cb(side, room.squares);
-    } else {
-      cb(null, null);
-    }
+    socket.join(room);
   });
 
-  socket.on("mark", (roomId, pos, move, cb) => {
-    const room = rooms.find(room => room.id === roomId);
+  socket.on("mark", (pos, move, cb) => {
+    squares[pos] = move;
 
-    room.squares[pos] = move;
+    io.to(roomToken).emit("mark", squares);
 
-    io.to(roomId).emit("mark", room.squares);
-
-    cb(room.squares);
+    cb(squares);
   });
 
   socket.on("disconnect", () => {
