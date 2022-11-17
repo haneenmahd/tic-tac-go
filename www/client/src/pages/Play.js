@@ -19,6 +19,7 @@ import XSymbol from "../assets/svg/moves/X.svg";
 import SearchIcon from "../assets/svg/icons/search-filled.svg";
 import GameService from "../network/GameService";
 import { Check } from "react-feather";
+import Game from "../components/Game";
 
 const PageContainer = styled(FlexDiv)`
   justify-content: space-between;
@@ -256,16 +257,7 @@ const ScoreCard = styled.div`
   gap: 15px;
 `;
 
-const GameBoard = styled.div`
-  width: 469px;
-  height: 469px;
-  background: #f9f9f9;
-  border-radius: 58px;
-  margin: 60px 0;
-`;
-
 const Play = () => {
-  // PREMATCH
   const [name, setName] = useState("");
   const [selectedAvatar, setSelectedAvatar] = useState(generateId());
   const [showingGame, setShowingGame] = useState(false);
@@ -273,8 +265,6 @@ const Play = () => {
   const [joinedWaitingList, setJoinedWaitingList] = useState(false);
   const [opponent, setOpponent] = useState(null);
 
-  // GAME
-  const [squares, setSquares] = useState(Array(9).fill(null));
   const [playerScore, setPlayerScore] = useState(0);
   const [opponentScore, setOpponentScore] = useState(0);
 
@@ -357,8 +347,6 @@ const Play = () => {
       </AvatarPickerGrid>
     </Container>
   );
-
-  const gameView = <GameBoard>{/* GRIDS with 9 and also borders*/}</GameBoard>;
 
   const preMatchView = (
     <Container
@@ -462,7 +450,14 @@ const Play = () => {
           </SearchPlayerInfoBubble>
         )}
       </GameInfoContainer>
-      {opponent && gameView}
+      {opponent && (
+        <Game
+          playerSide={playerSide}
+          opponentSide={opponent.side}
+          setPlayerScore={setPlayerScore}
+          setOpponentScore={setOpponentScore}
+        />
+      )}
     </Container>
   );
 

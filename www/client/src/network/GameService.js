@@ -1,5 +1,5 @@
 import axios from "axios";
-import io from "socket.io-client";
+import io, { Socket } from "socket.io-client";
 
 class GameService {
   static apiUrl = "http://localhost:4000";
@@ -17,25 +17,29 @@ class GameService {
   }
 
   findPlayer(setOpponent) {
-    this.ws.emit("find-player", partner => {
+    this.ws.emit("find-player", (partner, roomToken) => {
       setOpponent(partner);
+
+      this.ws.emit("join-room", roomToken);
     });
 
-    this.ws.on("player-found", player => {
+    this.ws.on("player-found", (player, roomToken) => {
       setOpponent(player);
+
+      this.ws.emit("join-room", roomToken);
     });
   }
 
-  joinRoom(roomId, cb) {
-    this.ws.emit("join", roomId, (side, squares) => {
-      cb(side, squares);
-    });
+  joinRoom(roomToken) {
+    this.ws.emit("join-room", roomToken);
   }
 
-  markMove(roomId, pos, move, cb) {
-    this.ws.emit("mark", roomId, pos, move, squares => {
+  markMove(pos, move, cb) {
+    this.ws.emit("mark", pos, move, squares => {
       cb(squares);
     });
+
+    this.ws.on("mark", squares => console.log(squares));
   }
 
   calculateWinner(squares) {
