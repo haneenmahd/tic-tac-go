@@ -40,13 +40,8 @@ const Container = styled.div`
   animation: ${FadeIn} 1s ${TRANSITIONS.load};
 `;
 
-const GameInfoContainer = styled.div`
-  width: 100%;
+const GameContainer = styled.div`
   margin: 30px;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
 `;
 
 const SelectedAvatarAnimation = keyframes`
@@ -141,7 +136,7 @@ const PlayerInfoBubble = styled.div`
   align-items: center;
   padding: 28px 25px;
   gap: 20px;
-  width: 338px;
+  min-width: 338px;
   height: 126px;
   border: 1px solid #ececec;
   border-radius: 100px;
@@ -193,6 +188,37 @@ const PlayerSidePreview = styled.img`
         `}
 `;
 
+const ConfirmButton = styled.button`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 40px;
+  width: 40px;
+  padding: 10px;
+  font-size: 0.8rem;
+  color: ${COLORS.white};
+  background: #00000090;
+  border-radius: 100px;
+  border: 2px dashed #000;
+  transition: ${TRANSITIONS.hovers};
+
+  &:hover {
+    background: ${COLORS.black};
+  }
+
+  &:active {
+    scale: 0.95;
+  }
+`;
+
+const GameInfoContainer = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+`;
+
 const GameRoundContainer = styled.div`
   width: 10%;
   display: flex;
@@ -230,34 +256,12 @@ const ScoreCard = styled.div`
   gap: 15px;
 `;
 
-const ConfirmButton = styled.button`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 40px;
-  width: 40px;
-  padding: 10px;
-  font-size: 0.8rem;
-  color: ${COLORS.white};
-  background: #00000090;
-  border-radius: 100px;
-  border: 2px dashed #000;
-  transition: ${TRANSITIONS.hovers};
-
-  &:hover {
-    background: ${COLORS.black};
-  }
-
-  &:active {
-    scale: 0.95;
-  }
-`;
-
 const GameBoard = styled.div`
   width: 469px;
   height: 469px;
   background: #f9f9f9;
   border-radius: 58px;
+  margin: 60px 0;
 `;
 
 const Play = () => {
@@ -466,7 +470,9 @@ const Play = () => {
     <PageContainer
       direction="column"
       flexHeight>
-      {showingGame ? preMatchView : avatarPickerView}
+      <GameContainer>
+        {showingGame ? preMatchView : avatarPickerView}
+      </GameContainer>
 
       <LinkLessNav />
     </PageContainer>
