@@ -24,7 +24,7 @@ root.render(
         <Route
           path="/play"
           element={
-            <AppWraper>
+            <AppWraper hideFooter>
               <Play />
             </AppWraper>
           }
