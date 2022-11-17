@@ -3,7 +3,6 @@ import styled, { css, keyframes } from "styled-components";
 import {
   ClippedAndRounded,
   COLORS,
-  Divider,
   FlexDiv,
   PadBox,
   TRANSITIONS,
@@ -12,6 +11,7 @@ import { LinkLessNav } from "../components/NavBar";
 import Avatar from "boring-avatars";
 import generateId from "../utils/generateId";
 import Button from "../components/Button";
+import Divider from "../components/Divider";
 import ArrowUp from "../assets/svg/icons/arrow-up.svg";
 import TextField from "../components/TextField";
 import OSymbol from "../assets/svg/moves/O.svg";
@@ -20,6 +20,11 @@ import SearchIcon from "../assets/svg/icons/search-filled.svg";
 import GameService from "../network/GameService";
 import { Check } from "react-feather";
 
+const PageContainer = styled(FlexDiv)`
+  padding: 50px 0 0 0;
+  justify-content: space-between;
+`;
+
 const FadeIn = keyframes`
   from {
     opacity: 0;
@@ -27,13 +32,21 @@ const FadeIn = keyframes`
 `;
 
 const Container = styled.div`
-  min-height: calc(100vh - 90px - 96px);
+  min-height: calc(100vh - 90px);
   width: 100%;
   display: flex;
-  flex-direction: ${p => p.direction || "column"};
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   animation: ${FadeIn} 1s ${TRANSITIONS.load};
+`;
+
+const GameInfoContainer = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
 `;
 
 const SelectedAvatarAnimation = keyframes`
@@ -180,7 +193,7 @@ const PlayerSidePreview = styled.img`
         `}
 `;
 
-const MetaInfo = styled.div`
+const GameRoundContainer = styled.div`
   width: 10%;
   display: flex;
   flex-direction: column;
@@ -233,15 +246,12 @@ const ConfirmButton = styled.button`
   }
 `;
 
-const PreviewAvatar = ({ id, avatar, avatarProps }) => (
-  <SelectedAvatar key={id}>
-    <Avatar
-      size={225}
-      name={avatar}
-      {...avatarProps}
-    />
-  </SelectedAvatar>
-);
+const GameBoard = styled.div`
+  width: 469px;
+  height: 469px;
+  background: #f9f9f9;
+  border-radius: 58px;
+`;
 
 const Play = () => {
   const [name, setName] = useState("");
@@ -285,11 +295,13 @@ const Play = () => {
 
   const avatarPickerView = (
     <Container>
-      <PreviewAvatar
-        id={generateId()}
-        avatar={selectedAvatar}
-        avatarProps={avatarProps}
-      />
+      <SelectedAvatar key={generateId()}>
+        <Avatar
+          size={225}
+          name={selectedAvatar}
+          {...avatarProps}
+        />
+      </SelectedAvatar>
 
       <PadBox padding="50px 0">
         <FlexDiv
@@ -329,108 +341,113 @@ const Play = () => {
     </Container>
   );
 
+  const gameView = <GameBoard>{/* GRIDS with 9 and also borders*/}</GameBoard>;
+
   const preMatchView = (
     <Container
       direction="row"
       gap="36px"
       key={null}>
-      <PlayerInfoBubble>
-        <FlexDiv gap="20px">
-          <ClippedAndRounded>
-            <Avatar
-              size={80}
-              name={selectedAvatar}
-              {...avatarProps}
-            />
-          </ClippedAndRounded>
-
-          <PlayerInfoName>{name}</PlayerInfoName>
-        </FlexDiv>
-
-        <FlexDiv gap="10px">
-          {joinedWaitingList ? (
-            <PlayerSidePreview
-              src={playerSide === playerSides.X ? XSymbol : OSymbol}
-              selected
-            />
-          ) : (
-            <>
-              <PlayerSidePreview
-                src={OSymbol}
-                alt="O symbol"
-                selected={playerSide === playerSides.O}
-                onClick={() => setPlayerSide(playerSides.O)}
-              />
-
-              <PlayerSidePreview
-                src={XSymbol}
-                alt="X symbol"
-                selected={playerSide === playerSides.X}
-                onClick={() => setPlayerSide(playerSides.X)}
-              />
-            </>
-          )}
-        </FlexDiv>
-
-        {joinedWaitingList || (
-          <ConfirmButton onClick={joinWaitingList}>
-            <Check />
-          </ConfirmButton>
-        )}
-      </PlayerInfoBubble>
-
-      <MetaInfo>
-        {opponent && <GameRound>Round 1</GameRound>}
-        <Divider max />
-        {opponent && <VersusText>VS</VersusText>}
-      </MetaInfo>
-
-      {opponent ? (
+      <GameInfoContainer>
         <PlayerInfoBubble>
           <FlexDiv gap="20px">
             <ClippedAndRounded>
               <Avatar
                 size={80}
-                name={opponent.avatarId}
+                name={selectedAvatar}
                 {...avatarProps}
               />
             </ClippedAndRounded>
 
-            <PlayerInfoName>{opponent.name}</PlayerInfoName>
+            <PlayerInfoName>{name}</PlayerInfoName>
           </FlexDiv>
 
-          <PlayerSidePreview
-            src={opponent.side === playerSides.X ? XSymbol : OSymbol}
-            selected
-          />
+          <FlexDiv gap="10px">
+            {joinedWaitingList ? (
+              <PlayerSidePreview
+                src={playerSide === playerSides.X ? XSymbol : OSymbol}
+                selected
+              />
+            ) : (
+              <>
+                <PlayerSidePreview
+                  src={OSymbol}
+                  alt="O symbol"
+                  selected={playerSide === playerSides.O}
+                  onClick={() => setPlayerSide(playerSides.O)}
+                />
+
+                <PlayerSidePreview
+                  src={XSymbol}
+                  alt="X symbol"
+                  selected={playerSide === playerSides.X}
+                  onClick={() => setPlayerSide(playerSides.X)}
+                />
+              </>
+            )}
+          </FlexDiv>
+
+          {joinedWaitingList || (
+            <ConfirmButton onClick={joinWaitingList}>
+              <Check />
+            </ConfirmButton>
+          )}
         </PlayerInfoBubble>
-      ) : (
-        <SearchPlayerInfoBubble searching={joinedWaitingList}>
-          <FlexDiv gap="20px">
-            <img
-              src={SearchIcon}
-              alt="opponent searching icon"
-            />
 
-            <span>
-              {joinedWaitingList
-                ? "Searching for opponent"
-                : "Choose your side"}
-            </span>
-          </FlexDiv>
-        </SearchPlayerInfoBubble>
-      )}
+        <GameRoundContainer>
+          {opponent && <GameRound>Round 1</GameRound>}
+          <Divider maxWidth />
+          {opponent && <VersusText>VS</VersusText>}
+        </GameRoundContainer>
+
+        {opponent ? (
+          <PlayerInfoBubble>
+            <FlexDiv gap="20px">
+              <ClippedAndRounded>
+                <Avatar
+                  size={80}
+                  name={opponent.avatarId}
+                  {...avatarProps}
+                />
+              </ClippedAndRounded>
+
+              <PlayerInfoName>{opponent.name}</PlayerInfoName>
+            </FlexDiv>
+
+            <PlayerSidePreview
+              src={opponent.side === playerSides.X ? XSymbol : OSymbol}
+              selected
+            />
+          </PlayerInfoBubble>
+        ) : (
+          <SearchPlayerInfoBubble searching={joinedWaitingList}>
+            <FlexDiv gap="20px">
+              <img
+                src={SearchIcon}
+                alt="opponent searching icon"
+              />
+
+              <span>
+                {joinedWaitingList
+                  ? "Searching for opponent"
+                  : "Choose your side"}
+              </span>
+            </FlexDiv>
+          </SearchPlayerInfoBubble>
+        )}
+      </GameInfoContainer>
+      {opponent && gameView}
     </Container>
   );
 
   return (
-    <FlexDiv
+    <PageContainer
       direction="column"
       flexHeight>
-      <LinkLessNav />
-
       {showingGame ? preMatchView : avatarPickerView}
-    </FlexDiv>
+
+      <LinkLessNav />
+    </PageContainer>
   );
 };
 
