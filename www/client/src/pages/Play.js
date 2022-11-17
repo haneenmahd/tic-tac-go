@@ -136,7 +136,6 @@ const PlayerInfoBubble = styled.div`
 
 const PlayerInfoName = styled.p`
   font-weight: 500;
-  text-wrap: wrap;
 `;
 
 const BlinkAnimation = keyframes`
@@ -181,6 +180,36 @@ const PlayerSidePreview = styled.img`
         `}
 `;
 
+const MetaInfo = styled.div`
+  width: 10%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+`;
+
+const GameRound = styled.div`
+  width: 63px;
+  height: 21px;
+  background: #dcf0f0;
+  border-radius: 30px;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 15px;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: ${FadeIn} 1s ${TRANSITIONS.load};
+`;
+
+const VersusText = styled.span`
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 22px;
+`;
+
 const ConfirmButton = styled.button`
   display: flex;
   align-items: center;
@@ -220,8 +249,7 @@ const Play = () => {
   const [showingGame, setShowingGame] = useState(false);
   const [playerSide, setPlayerSide] = useState("X");
   const [joinedWaitingList, setJoinedWaitingList] = useState(false);
-  const [roomToken, setRoomToken] = useState("");
-  const [opponent, setOpponent] = useState();
+  const [opponent, setOpponent] = useState(null);
 
   const playerSides = {
     X: "X",
@@ -351,7 +379,11 @@ const Play = () => {
         )}
       </PlayerInfoBubble>
 
-      <Divider fit />
+      <MetaInfo>
+        {opponent && <GameRound>Round 1</GameRound>}
+        <Divider max />
+        {opponent && <VersusText>VS</VersusText>}
+      </MetaInfo>
 
       {opponent ? (
         <PlayerInfoBubble>
