@@ -17,6 +17,11 @@ const Container = styled.div`
 const LinkLessNavContainer = styled(Container)`
   align-items: center;
   gap: 56px;
+
+  /* Modifying the link style to be consistently padded */
+  a {
+    padding: 5px 15px;
+  }
 `;
 
 const Text = styled.span`
