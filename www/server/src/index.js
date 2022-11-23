@@ -23,33 +23,10 @@ const io = new Server(server, {
   cors: corsOptions,
 });
 
-const rooms = [];
 const waitingList = new Queue();
-
-app.get("/rooms/info/:roomId", (req, res) => {
-  const { roomId } = req.params;
-
-  const room = rooms.find(room => room.id === roomId);
-
-  res.status(200).send({
-    playerCount: room.players.length,
-    squares: room.squares,
-  });
-});
-
-app.post("/rooms/new", (req, res) => {
-  const room = new Room();
-
-  rooms.push(room);
-
-  res.status(200).send({
-    id: room.id,
-  });
-});
 
 io.on("connection", socket => {
   const squares = Array(9).fill(null);
-  let roomToken;
 
   socket.on("join-waiting-list", (playerName, side, avatarId) => {
     const player = new Player(socket.id, playerName, side, avatarId);
@@ -67,7 +44,7 @@ io.on("connection", socket => {
         partner.name !== socket.player.name &&
         partner.side !== socket.player.side
       ) {
-        roomToken = crypto
+        socket.roomToken = crypto
           .createHash("sha256")
           .update(partner.id + socket.player.id)
           .digest("hex");
@@ -75,15 +52,15 @@ io.on("connection", socket => {
         socket.partner = partner;
         socket.broadcast
           .to(socket.partner.id)
-          .emit("player-found", socket.player, roomToken);
+          .emit("player-found", socket.player, socket.roomToken);
 
-        socket.join(roomToken);
+        socket.join(socket.roomToken);
 
         // removing both current player and the opponent
         waitingList.remove(socket.partner);
         waitingList.remove(socket.player);
 
-        cb(socket.partner, roomToken);
+        cb(socket.partner, socket.roomToken);
       }
     }
   });
@@ -99,7 +76,7 @@ io.on("connection", socket => {
   socket.on("mark", (pos, move, cb) => {
     squares[pos] = move;
 
-    io.to(roomToken).emit("mark", squares);
+    socket.to(socket.roomToken).emit("mark", squares);
 
     cb(squares);
   });
