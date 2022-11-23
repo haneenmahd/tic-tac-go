@@ -1,10 +1,19 @@
 import axios from "axios";
-import io, { Socket } from "socket.io-client";
+import io from "socket.io-client";
 
 class GameService {
   static apiUrl = "http://localhost:4000";
   static shared = new GameService();
-  ws = io("ws://localhost:4000");
+  ws = null;
+
+  /**
+   * Initialises the socket.
+   *
+   * So that the socket is only called when neededs
+   */
+  init() {
+    this.ws = io("ws://localhost:4000");
+  }
 
   async createNewRoom() {
     const res = await axios.post(`${GameService.apiUrl}/rooms/new`);
