@@ -293,6 +293,8 @@ const Play = () => {
   };
 
   const joinWaitingList = () => {
+    GameService.shared.init();
+
     GameService.shared.joinWaitingList(name, playerSide, selectedAvatar);
 
     setJoinedWaitingList(true);
