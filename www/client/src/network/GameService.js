@@ -13,6 +13,11 @@ class GameService {
    */
   init() {
     this.ws = io("ws://localhost:4000");
+
+    // cleanup
+    window.addEventListener("beforeunload", () => {
+      this.ws.emit("disconnect");
+    });
   }
 
   async createNewRoom() {

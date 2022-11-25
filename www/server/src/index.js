@@ -3,7 +3,6 @@ import http from "http";
 import cors from "cors";
 import express from "express";
 import { Server } from "socket.io";
-import Room from "./core/Room.js";
 import Queue from "./core/Queue.js";
 import { PlayerMove } from "./data/game.js";
 import Player from "./core/Player.js";
@@ -66,10 +65,6 @@ io.on("connection", socket => {
   });
 
   socket.on("join-room", room => {
-    console.log(
-      `${socket.player.name} with ${socket.partner?.name} in ${room}`
-    );
-
     socket.join(room);
   });
 
@@ -78,6 +73,8 @@ io.on("connection", socket => {
 
     socket.to(socket.roomToken).emit("mark", squares);
 
+    console.log(socket.rooms);
+
     cb(squares);
   });
 
@@ -85,6 +82,8 @@ io.on("connection", socket => {
     const player = waitingList.queue.find(player => player.id === socket.id); // id is assigned from socket.id
 
     waitingList.remove(player);
+
+    socket.disconnect();
   });
 });
 
