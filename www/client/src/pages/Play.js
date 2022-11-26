@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import styled, { css, keyframes } from "styled-components";
 import {
   ClippedAndRounded,
@@ -394,26 +394,26 @@ const Play = () => {
             )}
           </FlexDiv>
 
-          {joinedWaitingList || (
+          {!joinedWaitingList ? (
             <ConfirmButton onClick={joinWaitingList}>
               <Check />
             </ConfirmButton>
-          )}
+          ) : null}
         </PlayerInfoBubble>
 
         <GameRoundContainer>
-          {opponent && <GameRound>Round 1</GameRound>}
+          {opponent ? <GameRound>Round 1</GameRound> : null}
 
           {/* Show a divider when in prematch */}
-          {opponent === null && <Divider maxWidth />}
+          {!opponent ? <Divider maxWidth /> : null}
 
-          {opponent && (
+          {opponent ? (
             <ScoreCard>
               <span>{playerScore}</span>
               <Divider maxWidth />
               <span>{opponentScore}</span>
             </ScoreCard>
-          )}
+          ) : null}
         </GameRoundContainer>
 
         {opponent ? (
@@ -452,14 +452,15 @@ const Play = () => {
           </SearchPlayerInfoBubble>
         )}
       </GameInfoContainer>
-      {opponent && (
+
+      {opponent ? (
         <Game
           playerSide={playerSide}
           opponentSide={opponent.side}
           setPlayerScore={setPlayerScore}
           setOpponentScore={setOpponentScore}
         />
-      )}
+      ) : null}
     </Container>
   );
 
