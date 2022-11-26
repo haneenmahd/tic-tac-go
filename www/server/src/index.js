@@ -25,16 +25,23 @@ const io = new Server(server, {
 const waitingList = new Queue();
 
 io.on("connection", socket => {
-  console.log("Connecting to socket", socket.id);
+  const data = {
+    player: null,
+    roomToken: null,
+    partner: null,
+    squares: Array(9).fill(null),
+  };
 
-  const squares = Array(9).fill(null);
+  socket.on("join-room", room => {
+    socket.join(room);
+  });
 
   socket.on("join-waiting-list", (playerName, side, avatarId) => {
     const player = new Player(socket.id, playerName, side, avatarId);
 
-    socket.player = player;
+    data.player = player;
 
-    waitingList.join(player);
+    waitingList.join(data.player);
   });
 
   socket.on("find-player", cb => {
@@ -42,48 +49,38 @@ io.on("connection", socket => {
       const partner = waitingList.findRandom();
 
       if (
-        socket.player.name !== partner.name &&
-        socket.player.side !== partner.side
+        data.player.name !== partner.name &&
+        data.player.side !== partner.side
       ) {
-        socket.roomToken = crypto
-          .createHash("sha256")
-          .update(partner.id + socket.player.id)
-          .digest("hex");
+        data.partner = partner;
 
-        socket.partner = partner;
         socket.broadcast
-          .to(socket.partner.id)
-          .emit("player-found", socket.player, socket.roomToken);
+          .to(data.partner.id)
+          .emit("player-found", data.player, data.roomToken);
 
-        socket.join(socket.roomToken);
+        socket.join(data.roomToken);
 
         // removing both current player and the opponent
-        waitingList.remove(socket.partner);
-        waitingList.remove(socket.player);
+        waitingList.remove(data.partner);
+        waitingList.remove(data.player);
 
-        cb(socket.partner, socket.roomToken);
+        cb(data.partner, data.roomToken);
       }
     }
   });
 
-  socket.on("join-room", room => {
-    socket.join(room);
-  });
-
   socket.on("mark", (pos, move, cb) => {
-    squares[pos] = move;
+    data.squares[pos] = move;
 
-    socket.to(socket.roomToken).emit("mark", squares);
+    socket.broadcast.to(data.roomToken).emit("opponent-mark", data.squares);
 
-    cb(squares);
+    cb(data.squares);
   });
 
   socket.on("disconnect", () => {
     const player = waitingList.queue.find(player => player.id === socket.id); // id is assigned from socket.id
 
     waitingList.remove(player);
-
-    console.log("Disconnecting from socket", socket.id);
 
     socket.disconnect();
   });
