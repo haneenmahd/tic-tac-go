@@ -4,6 +4,11 @@ class Player {
     this.name = name;
     this.side = side;
     this.avatarId = avatarId;
+    this.score = 0;
+  }
+
+  updateScore() {
+    this.score += 1;
   }
 }
 
