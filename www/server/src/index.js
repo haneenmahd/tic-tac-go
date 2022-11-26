@@ -25,6 +25,8 @@ const io = new Server(server, {
 const waitingList = new Queue();
 
 io.on("connection", socket => {
+  console.log("Connecting to socket", socket.id);
+
   const squares = Array(9).fill(null);
 
   socket.on("join-waiting-list", (playerName, side, avatarId) => {
@@ -40,8 +42,8 @@ io.on("connection", socket => {
       const partner = waitingList.findRandom();
 
       if (
-        partner.name !== socket.player.name &&
-        partner.side !== socket.player.side
+        socket.player.name !== partner.name &&
+        socket.player.side !== partner.side
       ) {
         socket.roomToken = crypto
           .createHash("sha256")
@@ -73,8 +75,6 @@ io.on("connection", socket => {
 
     socket.to(socket.roomToken).emit("mark", squares);
 
-    console.log(socket.rooms);
-
     cb(squares);
   });
 
@@ -82,6 +82,8 @@ io.on("connection", socket => {
     const player = waitingList.queue.find(player => player.id === socket.id); // id is assigned from socket.id
 
     waitingList.remove(player);
+
+    console.log("Disconnecting from socket", socket.id);
 
     socket.disconnect();
   });
