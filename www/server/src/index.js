@@ -30,7 +30,7 @@ io.on("connection", socket => {
     roomToken: null,
     partner: null,
     squares: null,
-  }; // use unique scores with roomid instead of shared ones
+  }; // use shared scores with roomid instead of unique ones
 
   socket.on("join-room", room => {
     socket.join(room);
