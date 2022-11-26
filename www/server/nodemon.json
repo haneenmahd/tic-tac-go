@@ -1,0 +1,5 @@
+{
+    "ext": "*.ts",
+    "verbose": false,
+    "exec": "npm run serve"
+}
