@@ -13,11 +13,6 @@ class GameService {
    */
   init() {
     this.ws = io("ws://localhost:4000");
-
-    // cleanup
-    window.addEventListener("beforeunload", () => {
-      this.ws.emit("disconnect");
-    });
   }
 
   async createNewRoom() {
@@ -48,12 +43,12 @@ class GameService {
     this.ws.emit("join-room", roomToken);
   }
 
-  markMove(pos, move, cb) {
-    this.ws.emit("mark", pos, move, squares => {
-      cb(squares);
-    });
+  markMove(pos, move, setSquares) {
+    this.ws.emit("mark", pos, move, setSquares);
+  }
 
-    this.ws.on("mark", squares => console.log(squares));
+  recieveMove(setSquares) {
+    this.ws.on("opponent-mark", setSquares);
   }
 
   calculateWinner(squares) {

@@ -23,10 +23,10 @@ const Square = styled.div`
 `;
 
 const Game = ({
-  setPlayerScore,
-  setOpponentScore,
   playerSide,
   opponentSide,
+  setPlayerScore,
+  setOpponentScore,
 }) => {
   const [squares, setSquares] = useState(Array(9).fill(null));
 
@@ -35,10 +35,10 @@ const Game = ({
       return;
     }
 
-    GameService.shared.markMove(i, "I WILL WIN", squares =>
-      setSquares(squares)
-    );
+    GameService.shared.markMove(i, playerSide, setSquares);
   };
+
+  GameService.shared.recieveMove(setSquares);
 
   return (
     <Board>
