@@ -1,11 +1,13 @@
+import crypto from "crypto";
 import http from "http";
 import cors from "cors";
 import express from "express";
 import { Server } from "socket.io";
-import Room from "./core/Room.js";
 import Queue from "./core/Queue.js";
 import { PlayerMove } from "./data/game.js";
 import Player from "./core/Player.js";
+
+const PORT = process.env.PORT || 4000;
 
 const app = express();
 
@@ -20,82 +22,67 @@ const io = new Server(server, {
   cors: corsOptions,
 });
 
-const PORT = process.env.PORT || 4000;
-
-const rooms = [];
-const queuedPlayers = new Queue();
-
-app.get("/player/find", (req, res) => {
-  const player = queuedPlayers.findRandom();
-
-  res.status(200).send(player);
-});
-
-app.get("/rooms/info/:roomId", (req, res) => {
-  const { roomId } = req.params;
-
-  const room = rooms.find(room => room.id === roomId);
-
-  res.status(200).send({
-    playerCount: room.players.length,
-    squares: room.squares,
-  });
-});
-
-app.post("/rooms/new", (req, res) => {
-  const room = new Room();
-
-  rooms.push(room);
-
-  res.status(200).send({
-    id: room.id,
-  });
-});
+const waitingList = new Queue();
 
 io.on("connection", socket => {
-  socket.on("join-waiting-list", (playerName, side) => {
-    const player = new Player(socket.id, playerName, side);
+  const data = {
+    player: null,
+    roomToken: null,
+    partner: null,
+    squares: Array(9).fill(null),
+  };
 
-    queuedPlayers.join(player);
+  socket.on("join-room", room => {
+    socket.join(room);
   });
 
-  // USE ".once" if there is an error
-  socket.on("join", (roomId, playerName, cb) => {
-    const room = rooms.find(room => room.id === roomId);
+  socket.on("join-waiting-list", (playerName, side, avatarId) => {
+    const player = new Player(socket.id, playerName, side, avatarId);
 
-    const side = room.players.find(player => player.side === PlayerMove.X)
-      ? PlayerMove.O
-      : PlayerMove.X;
+    data.player = player;
 
-    if (room.addPlayer(socket.id, playerName, side)) {
-      console.log(`${socket.id} has now joined room #${roomId}`);
+    waitingList.join(data.player);
+  });
 
-      socket.join(roomId);
+  socket.on("find-player", cb => {
+    if (waitingList.queue.length > 0) {
+      const partner = waitingList.findRandom();
 
-      socket.broadcast.emit("join");
+      if (
+        data.player.name !== partner.name &&
+        data.player.side !== partner.side
+      ) {
+        data.partner = partner;
 
-      cb(side, room.squares);
-    } else {
-      cb(null, null);
+        socket.broadcast
+          .to(data.partner.id)
+          .emit("player-found", data.player, data.roomToken);
+
+        socket.join(data.roomToken);
+
+        // removing both current player and the opponent
+        waitingList.remove(data.partner);
+        waitingList.remove(data.player);
+
+        cb(data.partner, data.roomToken);
+      }
     }
   });
 
-  socket.on("mark", (roomId, pos, move, cb) => {
-    const room = rooms.find(room => room.id === roomId);
+  socket.on("mark", (pos, move, cb) => {
+    data.squares[pos] = move;
 
-    room.squares[pos] = move;
+    socket.broadcast.to(data.roomToken).emit("opponent-mark", data.squares);
 
-    io.to(roomId).emit("mark", room.squares);
-
-    cb(room.squares);
+    cb(data.squares);
   });
 
   socket.on("disconnect", () => {
-    const player = queuedPlayers.queue.find(player => player.id === socket.id); // id is assigned from socket.id
+    const player = waitingList.queue.find(player => player.id === socket.id); // id is assigned from socket.id
 
-    queuedPlayers.remove(player);
+    waitingList.remove(player);
 
-    console.log("KICKING OUT", player);
+    socket.disconnect();
   });
 });
 

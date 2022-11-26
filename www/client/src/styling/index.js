@@ -29,7 +29,7 @@ export const FlexDiv = styled.div`
 `;
 
 export const Divider = styled.div`
-  width: ${props => (props.fit ? "10%" : "405px")};
+  width: ${props => (props.fit ? "10%" : props.maxWidth ? "100%" : "405px")};
   height: 0px;
   border: 1px solid ${COLORS.fadedGray};
 `;

@@ -13,7 +13,7 @@ const TextField = styled.input`
   transition: ${TRANSITIONS.focus};
 
   &:focus {
-    border-color: ${COLORS.black};
+    border-color: ${COLORS.hoverTextBlack};
   }
 `;
 

@@ -4,7 +4,16 @@ import io from "socket.io-client";
 class GameService {
   static apiUrl = "http://localhost:4000";
   static shared = new GameService();
-  ws = io("ws://localhost:4000");
+  ws = null;
+
+  /**
+   * Initialises the socket.
+   *
+   * So that the socket is only called when neededs
+   */
+  init() {
+    this.ws = io("ws://localhost:4000");
+  }
 
   async createNewRoom() {
     const res = await axios.post(`${GameService.apiUrl}/rooms/new`);
@@ -12,26 +21,61 @@ class GameService {
     return res.data;
   }
 
-  joinWaitingList(playerName, side) {
-    this.ws.emit("join-waiting-list", playerName, side);
+  joinWaitingList(playerName, playerside, avatarId) {
+    this.ws.emit("join-waiting-list", playerName, playerside, avatarId);
   }
 
-  async findPlayer() {
-    const res = await axios.get(`${GameService.apiUrl}/player/find`);
+  findPlayer(setOpponent) {
+    this.ws.emit("find-player", (partner, roomToken) => {
+      setOpponent(partner);
 
-    return res.data;
-  }
+      this.ws.emit("join-room", roomToken);
+    });
 
-  joinRoom(roomId, cb) {
-    this.ws.emit("join", roomId, (side, squares) => {
-      cb(side, squares);
+    this.ws.on("player-found", (player, roomToken) => {
+      setOpponent(player);
+
+      this.ws.emit("join-room", roomToken);
     });
   }
 
-  markMove(roomId, pos, move, cb) {
-    this.ws.emit("mark", roomId, pos, move, squares => {
-      cb(squares);
-    });
+  joinRoom(roomToken) {
+    this.ws.emit("join-room", roomToken);
+  }
+
+  markMove(pos, move, setSquares) {
+    this.ws.emit("mark", pos, move, setSquares);
+  }
+
+  recieveMove(setSquares) {
+    this.ws.on("opponent-mark", setSquares);
+  }
+
+  calculateWinner(squares) {
+    const lines = [
+      [0, 1, 2],
+      [3, 4, 5],
+      [6, 7, 8],
+      [0, 3, 6],
+      [1, 4, 7],
+      [2, 5, 8],
+      [0, 4, 8],
+      [2, 4, 6],
+    ];
+
+    for (let i = 0; i < lines.length; i++) {
+      const [a, b, c] = lines[i];
+
+      if (
+        squares[a] &&
+        squares[a] === squares[b] &&
+        squares[a] === squares[c]
+      ) {
+        return squares[a];
+      }
+    }
+
+    return null;
   }
 }
 

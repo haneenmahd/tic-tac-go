@@ -1,5 +1,6 @@
 import styled from "styled-components";
-import NavLink from "../components/NavLink";
+import NavLink from "./NavLink";
+import Divider from "./Divider";
 import { COLORS, FlexDiv } from "../styling";
 import Icon from "../assets/svg/logo.svg";
 
@@ -11,6 +12,16 @@ const Container = styled.div`
   padding: 33px 30px;
   width: 100vw;
   height: 90px;
+`;
+
+const LinkLessNavContainer = styled(Container)`
+  align-items: center;
+  gap: 56px;
+
+  /* Modifying the link style to be consistently padded */
+  a {
+    padding: 5px 15px;
+  }
 `;
 
 const Text = styled.span`
@@ -42,9 +53,11 @@ const NavBar = () => {
 };
 
 const LinkLessNav = () => (
-  <Container>
+  <LinkLessNavContainer>
     <HomeLink />
-  </Container>
+
+    <Divider maxWidth />
+  </LinkLessNavContainer>
 );
 
 export { LinkLessNav };

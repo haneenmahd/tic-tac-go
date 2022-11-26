@@ -20,7 +20,7 @@ const AppWraper = styled.div`
   animation: ${FadeIn} 1s ${TRANSITIONS.load};
 `;
 
-const App = props => {
+const App = ({ hideFooter, children }) => {
   const ScrollToTop = () => {
     const { pathname } = useLocation();
 
@@ -31,10 +31,8 @@ const App = props => {
   return (
     <>
       <ScrollToTop />
-      <AppWraper>
-        {props.children}
-        <Footer />
-      </AppWraper>
+      <AppWraper>{children}</AppWraper>
+      {hideFooter || <Footer />}
     </>
   );
 };
