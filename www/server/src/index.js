@@ -4,7 +4,6 @@ import cors from "cors";
 import express from "express";
 import { Server } from "socket.io";
 import Queue from "./core/Queue.js";
-import { PlayerMove } from "./data/game.js";
 import Player from "./core/Player.js";
 
 const PORT = process.env.PORT || 4000;
@@ -29,12 +28,8 @@ io.on("connection", socket => {
     player: null,
     roomToken: null,
     partner: null,
-    squares: null,
+    squares: Array(9).fill(null),
   }; // use shared scores with roomid instead of unique ones
-
-  socket.on("join-room", room => {
-    socket.join(room);
-  });
 
   socket.on("join-waiting-list", (playerName, side, avatarId) => {
     const player = new Player(socket.id, playerName, side, avatarId);
@@ -53,6 +48,7 @@ io.on("connection", socket => {
         data.player.side !== partner.side
       ) {
         data.partner = partner;
+        data.roomToken = "random_token"; // random token
 
         socket.broadcast
           .to(data.partner.id)
@@ -69,9 +65,11 @@ io.on("connection", socket => {
     }
   });
 
-  socket.on("mark", (pos, move, cb) => {
-    data.squares[pos] = move;
+  socket.on("join-room", room => {
+    socket.join(room);
+  });
 
+  socket.on("mark", (pos, move, cb) => {
     socket.broadcast.to(data.roomToken).emit("opponent-mark", data.squares);
 
     cb(data.squares);
