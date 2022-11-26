@@ -29,8 +29,8 @@ io.on("connection", socket => {
     player: null,
     roomToken: null,
     partner: null,
-    squares: Array(9).fill(null),
-  };
+    squares: null,
+  }; // use unique scores with roomid instead of shared ones
 
   socket.on("join-room", room => {
     socket.join(room);
