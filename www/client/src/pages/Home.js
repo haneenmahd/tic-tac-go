@@ -50,17 +50,17 @@ const HeroImage = styled.img`
 `;
 
 const Home = () => {
-  const [roomId, setRoomId] = useState("");
+  const [roomToken, setRoomToken] = useState("");
   const navigate = useNavigate();
 
   const handleCreateRoom = async () => {
     const res = await GameService.shared.createNewRoom();
 
-    setRoomId(res.id);
+    setRoomToken(res.id);
   };
 
   const handleJoinRoom = () => {
-    navigate(`/play/join/${roomId}`);
+    navigate(`/play/join/${roomToken}`);
 
     // still got to define the route and component for /play/join/
   };
@@ -89,8 +89,8 @@ const Home = () => {
 
           <HeroActions>
             <TextField
-              value={roomId}
-              onChange={e => setRoomId(e.target.value)}
+              value={roomToken}
+              onChange={e => setRoomToken(e.target.value)}
               type="text"
               placeholder="Room ID"
             />
