@@ -15,12 +15,6 @@ class GameService {
     this.ws = io("ws://localhost:4000");
   }
 
-  async createNewRoom() {
-    const res = await axios.post(`${GameService.apiUrl}/rooms/new`);
-
-    return res.data;
-  }
-
   joinWaitingList(playerName, playerside, avatarId) {
     this.ws.emit("join-waiting-list", playerName, playerside, avatarId);
   }
