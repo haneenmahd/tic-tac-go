@@ -1,5 +1,6 @@
-{
-    "ext": "*.ts",
+{   
+    "watch": ["src"],
+    "ext": "ts, json",
     "verbose": false,
     "exec": "npm run serve"
 }
