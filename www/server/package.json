@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "type": "module",
-  "main": "src/index.ts",
+  "main": "src/server.ts",
   "scripts": {
     "test": "NODE_OPTIONS=--experimental-vm-modules npx jest",
     "serve": "tsx .",
