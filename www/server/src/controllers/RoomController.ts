@@ -1,14 +1,14 @@
 import crypto from "crypto";
 import { Server, Socket } from "socket.io";
-import socket from "src/socket";
 import { Players, RoomJoinMessage } from "src/types";
 import Player from "../game/Player";
 
 export default class RoomController {
     players: Players = {};
+    roomId?: string;
 
     public async joinRoom(socket: Socket, room: string) {
-        socket.join(room);
+        await socket.join(room);
     }
     
     public async joinGame(
@@ -23,12 +23,16 @@ export default class RoomController {
 
         if (connectedPlayers.length > 0) {
             const opponent = connectedPlayers[0];
-            const roomId = crypto.randomBytes(5).toString("hex");
+            this.roomId = crypto.randomBytes(5).toString("hex");
 
             // player has started playing
             player.startPlaying();
-            socket.emit("room_join", roomId)
-            socket.to(opponent.id).emit("room_join", roomId);
+            socket.emit("room_join", this.roomId)
+            socket.to(opponent.id).emit("room_join", this.roomId);
+
+            // start game with an initial starting player
+            // the player will be the one with symbol x
+            // emit a new event
         } else {
             this.roomJoinError(socket);
         }

@@ -6,6 +6,8 @@ export type Players = {
     [id: string]: Player;
 }
 
+export type PlayMatrix = Array<Array<string | null>>;
+
 export interface HTTPError extends Error {
     syscall: string;
     code: "EACCES" | "EADDRINUSE";
@@ -16,6 +18,10 @@ export interface RoomJoinMessage {
     symbol: PlayerSymbol,
     avatarId: string;
     score: number;
+}
+
+export interface UpdateGameMessage {
+    matrix: PlayMatrix;
 }
 
 export enum PlayerSymbol {
