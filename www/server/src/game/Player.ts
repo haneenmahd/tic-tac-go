@@ -24,6 +24,10 @@ class Player {
   startPlaying() {
     this.isPlaying = true;
   }
+
+  stopPlaying() {
+    this.isPlaying = false;
+  }
 }
 
 export default Player;
