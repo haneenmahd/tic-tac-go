@@ -8,7 +8,7 @@ class GameController {
         gameRoom: string,
         message: UpdateGameMessage
     ) {
-        socket.to(gameRoom).emit("on_game_update", message);
+        socket.broadcast.to(gameRoom).emit("on_game_update", message);
     }
 }
 
