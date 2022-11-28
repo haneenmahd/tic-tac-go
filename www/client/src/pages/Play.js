@@ -170,7 +170,7 @@ const SearchPlayerInfoBubble = styled(PlayerInfoBubble)`
     `}
 `;
 
-const PlayerSidePreview = styled.img`
+const SymbolPreview = styled.img`
   height: 30px;
   width: 30px;
   cursor: pointer;
@@ -261,14 +261,14 @@ const Play = () => {
   const [name, setName] = useState("");
   const [selectedAvatar, setSelectedAvatar] = useState(generateId());
   const [showingGame, setShowingGame] = useState(false);
-  const [playerSide, setPlayerSide] = useState("X");
-  const [joinedWaitingList, setJoinedWaitingList] = useState(false);
+  const [symbol, setSymbol] = useState("X");
+  const [joinedGame, setJoinedGame] = useState(false);
   const [opponent, setOpponent] = useState(null);
 
   const [playerScore, setPlayerScore] = useState(0);
   const [opponentScore, setOpponentScore] = useState(0);
 
-  const playerSides = {
+  const symbols = {
     X: "X",
     O: "O",
   };
@@ -292,14 +292,21 @@ const Play = () => {
     setShowingGame(true);
   };
 
-  const joinWaitingList = () => {
+  const joinGame = () => {
     GameService.shared.init();
 
-    GameService.shared.joinWaitingList(name, playerSide, selectedAvatar);
+    GameService.shared.joinGame(name, symbol, selectedAvatar, () =>
+      setJoinedGame(true)
+    );
 
-    setJoinedWaitingList(true);
+    // requires init() to run, or else null exception error
+    GameService.shared.onConnect(() => {
+      GameService.shared.onRoomJoinRequest(opponent => {
+        setOpponent(opponent);
+      });
 
-    GameService.shared.findPlayer(setOpponent);
+      GameService.shared.onRoomJoinError(error => alert(error));
+    });
   };
 
   const avatarPickerView = (
@@ -370,32 +377,32 @@ const Play = () => {
           </FlexDiv>
 
           <FlexDiv gap="10px">
-            {joinedWaitingList ? (
-              <PlayerSidePreview
-                src={playerSide === playerSides.X ? XSymbol : OSymbol}
+            {joinedGame ? (
+              <SymbolPreview
+                src={symbol === symbols.X ? XSymbol : OSymbol}
                 selected
               />
             ) : (
               <>
-                <PlayerSidePreview
+                <SymbolPreview
                   src={OSymbol}
                   alt="O symbol"
-                  selected={playerSide === playerSides.O}
-                  onClick={() => setPlayerSide(playerSides.O)}
+                  selected={symbol === symbols.O}
+                  onClick={() => setSymbol(symbols.O)}
                 />
 
-                <PlayerSidePreview
+                <SymbolPreview
                   src={XSymbol}
                   alt="X symbol"
-                  selected={playerSide === playerSides.X}
-                  onClick={() => setPlayerSide(playerSides.X)}
+                  selected={symbol === symbols.X}
+                  onClick={() => setSymbol(symbols.X)}
                 />
               </>
             )}
           </FlexDiv>
 
-          {!joinedWaitingList ? (
-            <ConfirmButton onClick={joinWaitingList}>
+          {!joinedGame ? (
+            <ConfirmButton onClick={joinGame}>
               <Check />
             </ConfirmButton>
           ) : null}
@@ -430,13 +437,13 @@ const Play = () => {
               <PlayerInfoName>{opponent.name}</PlayerInfoName>
             </FlexDiv>
 
-            <PlayerSidePreview
-              src={opponent.side === playerSides.X ? XSymbol : OSymbol}
+            <SymbolPreview
+              src={opponent.side === symbols.X ? XSymbol : OSymbol}
               selected
             />
           </PlayerInfoBubble>
         ) : (
-          <SearchPlayerInfoBubble searching={joinedWaitingList}>
+          <SearchPlayerInfoBubble searching={joinedGame}>
             <FlexDiv gap="20px">
               <img
                 src={SearchIcon}
@@ -444,9 +451,7 @@ const Play = () => {
               />
 
               <span>
-                {joinedWaitingList
-                  ? "Searching for opponent"
-                  : "Choose your side"}
+                {joinedGame ? "Searching for opponent" : "Choose your side"}
               </span>
             </FlexDiv>
           </SearchPlayerInfoBubble>
@@ -455,8 +460,8 @@ const Play = () => {
 
       {opponent ? (
         <Game
-          playerSide={playerSide}
-          opponentSide={opponent.side}
+          symbol={symbol}
+          opponentSymbol={opponent.side}
           setPlayerScore={setPlayerScore}
           setOpponentScore={setOpponentScore}
         />
