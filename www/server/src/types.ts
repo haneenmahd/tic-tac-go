@@ -17,7 +17,6 @@ export interface RoomJoinMessage {
     name: string,
     symbol: PlayerSymbol,
     avatarId: string;
-    score: number;
 }
 
 export interface UpdateGameMessage {
