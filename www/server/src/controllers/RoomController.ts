@@ -27,19 +27,20 @@ export default class RoomController {
 
             // player has started playing
             player.startPlaying();
-            socket.emit("room_join", this.roomId)
-            socket.to(opponent.id).emit("room_join", this.roomId);
+            socket.emit("room_join_request", this.roomId, opponent);
+            socket.to(opponent.id).emit("room_join_request", this.roomId, player);
 
             // start game with an initial starting player
             // the player will be the one with symbol x
             // emit a new event
-        } else {
-            this.roomJoinError(socket);
         }
     }
 
     public removePlayer(socket: Socket) {
-        delete this.players[socket.id]; // socket.id is equivalent to player.id
+        if (this.players[socket.id]) {
+            this.players[socket.id].stopPlaying();
+            delete this.players[socket.id]; // socket.id is equivalent to player.id
+        }
     }
 
     protected roomJoinError(socket: Socket) {
