@@ -5,7 +5,6 @@ import "./index.css";
 import AppWraper from "./AppWrapper";
 import Home from "./pages/Home";
 import Play from "./pages/Play";
-import Test from "./pages/Socket";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -27,15 +26,6 @@ root.render(
           element={
             <AppWraper hideFooter>
               <Play />
-            </AppWraper>
-          }
-        />
-
-        <Route
-          path="/test"
-          element={
-            <AppWraper>
-              <Test />
             </AppWraper>
           }
         />
