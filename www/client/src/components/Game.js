@@ -15,39 +15,52 @@ const Board = styled.div`
 `;
 
 const Square = styled.div`
-  height: 100%;
-  width: 100%;
+  height: 100px;
+  width: 100px;
   display: flex;
   align-items: center;
   justify-content: center;
 `;
 
-const Game = ({
-  playerSide,
-  opponentSide,
-  setPlayerScore,
-  setOpponentScore,
-}) => {
-  const [squares, setSquares] = useState(Array(9).fill(null));
+const Game = ({ symbol, opponentSymbol, setPlayerScore, setOpponentScore }) => {
+  const [matrix, setMatrix] = useState([
+    [null, null, null],
+    [null, null, null],
+    [null, null, null],
+  ]); // update the way to render (row, columns)
 
-  const handleClick = i => {
-    if (GameService.shared.calculateWinner(squares) || squares[i]) {
+  GameService.shared.onUpdateGame(matrix => setMatrix(matrix));
+
+  const updateGame = () => {
+    GameService.shared.updateGame(matrix);
+  };
+
+  const handleClick = (row, column) => {
+    if (GameService.shared.calculateWinner(matrix) || matrix[row][column]) {
       return;
     }
 
-    GameService.shared.markMove(i, playerSide, setSquares);
-  };
+    const newMatrix = [...matrix];
 
-  GameService.shared.recieveMove(setSquares);
+    newMatrix[row][column] = symbol;
+
+    setMatrix(newMatrix);
+
+    updateGame();
+  };
 
   return (
     <Board>
-      {squares.map((square, i) => (
-        <Square
-          onClick={() => handleClick(i)}
-          key={i}>
-          {square}
-        </Square>
+      {matrix.map((row, rowIdx) => (
+        <div key={rowIdx}>
+          {row.map((column, colIdx) => (
+            <Square
+              onClick={() => handleClick(rowIdx, colIdx)}
+              key={colIdx}>
+              {column || "_"}
+            </Square>
+          ))}
+        </div>
       ))}
     </Board>
   );
