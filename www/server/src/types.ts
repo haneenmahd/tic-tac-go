@@ -6,6 +6,8 @@ export type Players = {
     [id: string]: Player;
 }
 
+export type PlayerSymbol =  "X" | "O";
+
 export type PlayMatrix = Array<Array<string | null>>;
 
 export interface HTTPError extends Error {
@@ -21,9 +23,4 @@ export interface RoomJoinMessage {
 
 export interface UpdateGameMessage {
     matrix: PlayMatrix;
-}
-
-export enum PlayerSymbol {
-    X,
-    O
 }
