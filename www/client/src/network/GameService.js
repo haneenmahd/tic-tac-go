@@ -58,29 +58,54 @@ class GameService {
     this.ws.on("room_join_error", ({ error }) => cb(error));
   }
 
-  calculateWinner(squares) {
-    const lines = [
-      [0, 1, 2],
-      [3, 4, 5],
-      [6, 7, 8],
-      [0, 3, 6],
-      [1, 4, 7],
-      [2, 5, 8],
-      [0, 4, 8],
-      [2, 4, 6],
-    ];
+  calculateWinner(matrix, playerSymbol) {
+    for (let i = 0; i < matrix.length; i++) {
+      let row = [];
 
-    for (let row = 0; row < lines.length; row++) {
-      const [a, b, c] = lines[row];
+      for (let j = 0; j < matrix.length; j++) {
+        row.push(matrix[i][j]);
+      }
 
-      if (
-        squares[a] &&
-        squares[a] === squares[b] &&
-        squares[a] === squares[c]
-      ) {
-        return squares[a];
+      if (row.every(value => value && value === playerSymbol)) {
+        return true;
+      } else if (row.every(value => value && value !== playerSymbol)) {
+        return false;
       }
     }
+
+    for (let i = 0; i < matrix.length; i++) {
+      let column = [];
+
+      for (let j = 0; j < matrix.length; j++) {
+        column.push(matrix[j][i]);
+      }
+
+      if (column.every(value => value && value === playerSymbol)) {
+        return true;
+      } else if (column.every(value => value && value !== playerSymbol)) {
+        return false;
+      }
+    }
+
+    if (matrix[1][1]) {
+      if (matrix[0][0] === matrix[1][1] && matrix[2][2] === matrix[1][1]) {
+        if (matrix[1][1] === playerSymbol) {
+          return true;
+        } else {
+          return false;
+        }
+      }
+
+      if (matrix[2][0] === matrix[1][1] && matrix[0][2] === matrix[1][1]) {
+        if (matrix[1][1] === playerSymbol) {
+          return true;
+        } else {
+          return false;
+        }
+      }
+    }
+
+    if (matrix.every(m => m.every(v => v !== playerSymbol))) return undefined; // a tie
 
     return null;
   }
