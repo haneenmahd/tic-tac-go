@@ -18,8 +18,8 @@ import OSymbol from "../assets/svg/moves/O.svg";
 import XSymbol from "../assets/svg/moves/X.svg";
 import SearchIcon from "../assets/svg/icons/search-filled.svg";
 import GameService from "../network/GameService";
-import { Check } from "react-feather";
 import Game from "../components/Game";
+import { Check } from "react-feather";
 
 const PageContainer = styled(FlexDiv)`
   justify-content: space-between;
@@ -265,6 +265,7 @@ const Play = () => {
   const [joinedGame, setJoinedGame] = useState(false);
   const [opponent, setOpponent] = useState(null);
 
+  const [isPlayerTurn, setPlayerTurn] = useState(false);
   const [playerScore, setPlayerScore] = useState(0);
   const [opponentScore, setOpponentScore] = useState(0);
 
@@ -303,6 +304,12 @@ const Play = () => {
     GameService.shared.onConnect(() => {
       GameService.shared.onRoomJoinRequest(opponent => {
         setOpponent(opponent);
+
+        if (!opponent.starter) {
+          setPlayerTurn(true);
+        } else {
+          setPlayerTurn(false);
+        }
       });
 
       GameService.shared.onRoomJoinError(error => alert(error));
@@ -464,6 +471,8 @@ const Play = () => {
           opponentSymbol={opponent.side}
           setPlayerScore={setPlayerScore}
           setOpponentScore={setOpponentScore}
+          isPlayerTurn={isPlayerTurn}
+          setPlayerTurn={setPlayerTurn}
         />
       ) : null}
     </Container>
