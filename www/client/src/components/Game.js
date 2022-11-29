@@ -29,30 +29,43 @@ const Column = styled.div`
   width: calc(${BOARD_RESOLUTION} / 3);
 `;
 
-const Game = ({ symbol, opponentSymbol, setPlayerScore, setOpponentScore }) => {
+const Game = ({
+  symbol,
+  opponentSymbol,
+  setPlayerScore,
+  setOpponentScore,
+  isPlayerTurn,
+  setPlayerTurn,
+}) => {
   const [matrix, setMatrix] = useState([
     [null, null, null],
     [null, null, null],
     [null, null, null],
   ]);
 
-  GameService.shared.onUpdateGame(matrix => setMatrix(matrix));
+  GameService.shared.onUpdateGame(matrix => {
+    setMatrix(matrix);
+    setPlayerTurn(true);
+  });
 
   const updateGame = () => {
     GameService.shared.updateGame(matrix);
+    setPlayerTurn(false);
   };
 
   const handleClick = (row, column) => {
-    if (GameService.shared.calculateWinner(matrix) || matrix[row][column]) {
+    if (
+      !isPlayerTurn ||
+      GameService.shared.calculateWinner(matrix) ||
+      matrix[row][column]
+    ) {
       return;
     }
 
     const newMatrix = [...matrix];
-
     newMatrix[row][column] = symbol;
 
     setMatrix(newMatrix);
-
     updateGame();
   };
 
