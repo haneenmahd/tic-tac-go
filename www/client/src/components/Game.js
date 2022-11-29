@@ -34,7 +34,7 @@ const Game = ({ symbol, opponentSymbol, setPlayerScore, setOpponentScore }) => {
     [null, null, null],
     [null, null, null],
     [null, null, null],
-  ]); // update the way to render (row, columns)
+  ]);
 
   GameService.shared.onUpdateGame(matrix => setMatrix(matrix));
 
