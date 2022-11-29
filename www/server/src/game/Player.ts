@@ -1,4 +1,4 @@
-import { PlayerSymbol } from "src/types";
+import type { PlayerSymbol } from "src/types";
 
 class Player {
   id: string;

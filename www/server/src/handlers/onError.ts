@@ -1,4 +1,4 @@
-import { HTTPError, HTTPPort } from "src/types";
+import type { HTTPError, HTTPPort } from "src/types";
 
 export default function onError(error: HTTPError, port: HTTPPort) {
     if (error.syscall !== "listen") {
