@@ -29,10 +29,6 @@ export default class RoomController {
             player.startPlaying();
             socket.emit("room_join_request", this.roomId, opponent);
             socket.to(opponent.id).emit("room_join_request", this.roomId, player);
-
-            // start game with an initial starting player
-            // the player will be the one with symbol x
-            // emit a new event
         }
     }
 
