@@ -1,5 +1,5 @@
 import { Server, Socket } from "socket.io";
-import { UpdateGameMessage } from "src/types";
+import type { UpdateGameMessage } from "src/types";
 
 class GameController {
     public async updateGame(
@@ -8,7 +8,7 @@ class GameController {
         gameRoom: string,
         message: UpdateGameMessage
     ) {
-        socket.to(gameRoom).emit("on_game_update", message);
+        socket.broadcast.to(gameRoom).emit("on_game_update", message);
     }
 }
 

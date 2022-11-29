@@ -10,8 +10,8 @@ export default class MainController {
         socket: Socket,
         io: Server
     ) {
-        socket.on("join_room", room => this.roomController.joinRoom(socket, room))
         socket.on("join_game", message => this.roomController.joinGame(socket, message));
+        socket.on("join_room", room => this.roomController.joinRoom(socket, room));
         socket.on("update_game", message => this.gameController.updateGame(socket, io, this.roomController.roomId!, message));
     }
 

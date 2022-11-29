@@ -2,11 +2,13 @@ import { useState } from "react";
 import styled from "styled-components";
 import GameService from "../network/GameService";
 
+const BOARD_RESOLUTION = "469px"; // 469x469
+
 const Board = styled.div`
+  grid-template-columns: repeat(3, calc(${BOARD_RESOLUTION} / 3));
   place-items: center;
   display: grid;
   justify-items: center;
-  grid-template-columns: calc(469px / 3) calc(469px / 3) calc(469px / 3);
   width: 469px;
   height: 469px;
   background: #f9f9f9;
@@ -14,40 +16,71 @@ const Board = styled.div`
   margin: 60px 0;
 `;
 
-const Square = styled.div`
-  height: 100%;
-  width: 100%;
+const Row = styled.div`
+  width: calc(${BOARD_RESOLUTION} / 3);
+  height: calc(${BOARD_RESOLUTION});
+`;
+
+const Column = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  height: calc(${BOARD_RESOLUTION} / 3);
+  width: calc(${BOARD_RESOLUTION} / 3);
 `;
 
 const Game = ({
-  playerSide,
-  opponentSide,
+  symbol,
+  opponentSymbol,
   setPlayerScore,
   setOpponentScore,
+  isPlayerTurn,
+  setPlayerTurn,
 }) => {
-  const [squares, setSquares] = useState(Array(9).fill(null));
+  const [matrix, setMatrix] = useState([
+    [null, null, null],
+    [null, null, null],
+    [null, null, null],
+  ]);
 
-  const handleClick = i => {
-    if (GameService.shared.calculateWinner(squares) || squares[i]) {
+  GameService.shared.onUpdateGame(matrix => {
+    setMatrix(matrix);
+    setPlayerTurn(true);
+  });
+
+  const updateGame = () => {
+    GameService.shared.updateGame(matrix);
+    setPlayerTurn(false);
+  };
+
+  const handleClick = (row, column) => {
+    if (
+      !isPlayerTurn ||
+      GameService.shared.calculateWinner(matrix) ||
+      matrix[row][column]
+    ) {
       return;
     }
 
-    GameService.shared.markMove(i, playerSide, setSquares);
-  };
+    const newMatrix = [...matrix];
+    newMatrix[row][column] = symbol;
 
-  GameService.shared.recieveMove(setSquares);
+    setMatrix(newMatrix);
+    updateGame();
+  };
 
   return (
     <Board>
-      {squares.map((square, i) => (
-        <Square
-          onClick={() => handleClick(i)}
-          key={i}>
-          {square}
-        </Square>
+      {matrix.map((row, rowIdx) => (
+        <Row key={rowIdx}>
+          {row.map((column, colIdx) => (
+            <Column
+              onClick={() => handleClick(rowIdx, colIdx)}
+              key={colIdx}>
+              {column || "_"}
+            </Column>
+          ))}
+        </Row>
       ))}
     </Board>
   );

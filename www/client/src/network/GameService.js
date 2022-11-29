@@ -1,4 +1,3 @@
-import axios from "axios";
 import io from "socket.io-client";
 
 class GameService {
@@ -15,34 +14,48 @@ class GameService {
     this.ws = io("ws://localhost:4000");
   }
 
-  joinWaitingList(playerName, playerside, avatarId) {
-    this.ws.emit("join-waiting-list", playerName, playerside, avatarId);
+  /**
+   * A simple wrapper function for `socket.on("connect")`
+   * @param {void} cb
+   */
+  onConnect(cb) {
+    this.ws.on("connect", cb);
   }
 
-  findPlayer(setOpponent) {
-    this.ws.emit("find-player", (partner, roomToken) => {
-      setOpponent(partner);
+  joinRoom(room) {
+    this.ws.emit("join_room", room);
+  }
 
-      this.ws.emit("join-room", roomToken);
+  onRoomJoinRequest(cb) {
+    this.ws.on("room_join_request", (roomId, opponent) => {
+      this.joinRoom(roomId);
+
+      cb(opponent);
+    });
+  }
+
+  joinGame(name, symbol, avatarId, cb) {
+    this.ws.emit("join_game", {
+      name,
+      symbol,
+      avatarId,
     });
 
-    this.ws.on("player-found", (player, roomToken) => {
-      setOpponent(player);
+    cb();
+  }
 
-      this.ws.emit("join-room", roomToken);
+  updateGame(matrix) {
+    this.ws.emit("update_game", {
+      matrix,
     });
   }
 
-  joinRoom(roomToken) {
-    this.ws.emit("join-room", roomToken);
+  onUpdateGame(cb) {
+    this.ws.on("on_game_update", ({ matrix }) => cb(matrix));
   }
 
-  markMove(pos, move, setSquares) {
-    this.ws.emit("mark", pos, move, setSquares);
-  }
-
-  recieveMove(setSquares) {
-    this.ws.on("opponent-mark", setSquares);
+  onRoomJoinError(cb) {
+    this.ws.on("room_join_error", ({ error }) => cb(error));
   }
 
   calculateWinner(squares) {
@@ -57,8 +70,8 @@ class GameService {
       [2, 4, 6],
     ];
 
-    for (let i = 0; i < lines.length; i++) {
-      const [a, b, c] = lines[i];
+    for (let row = 0; row < lines.length; row++) {
+      const [a, b, c] = lines[row];
 
       if (
         squares[a] &&
