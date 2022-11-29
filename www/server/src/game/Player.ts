@@ -7,14 +7,17 @@ class Player {
   avatarId: string;
   score: number;
   isPlaying: boolean;
+  /** player to start the game */
+  starter: boolean;
   
   constructor(id: string, name: string, symbol: PlayerSymbol, avatarId: string) {
     this.id = id;
     this.name = name;
     this.symbol = symbol;
-    this.avatarId = avatarId;
     this.score = 0;
     this.isPlaying = false;
+    this.avatarId = avatarId;
+    this.starter = symbol === "X" ? true : false;
   }
 
   updateScore() {
