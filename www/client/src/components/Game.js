@@ -2,11 +2,13 @@ import { useState } from "react";
 import styled from "styled-components";
 import GameService from "../network/GameService";
 
+const BOARD_RESOLUTION = "469px"; // 469x469
+
 const Board = styled.div`
+  grid-template-columns: repeat(3, calc(${BOARD_RESOLUTION} / 3));
   place-items: center;
   display: grid;
   justify-items: center;
-  grid-template-columns: calc(469px / 3) calc(469px / 3) calc(469px / 3);
   width: 469px;
   height: 469px;
   background: #f9f9f9;
@@ -14,12 +16,17 @@ const Board = styled.div`
   margin: 60px 0;
 `;
 
-const Square = styled.div`
-  height: 100px;
-  width: 100px;
+const Row = styled.div`
+  width: calc(${BOARD_RESOLUTION} / 3);
+  height: calc(${BOARD_RESOLUTION});
+`;
+
+const Column = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  height: calc(${BOARD_RESOLUTION} / 3);
+  width: calc(${BOARD_RESOLUTION} / 3);
 `;
 
 const Game = ({ symbol, opponentSymbol, setPlayerScore, setOpponentScore }) => {
@@ -52,15 +59,15 @@ const Game = ({ symbol, opponentSymbol, setPlayerScore, setOpponentScore }) => {
   return (
     <Board>
       {matrix.map((row, rowIdx) => (
-        <div key={rowIdx}>
+        <Row key={rowIdx}>
           {row.map((column, colIdx) => (
-            <Square
+            <Column
               onClick={() => handleClick(rowIdx, colIdx)}
               key={colIdx}>
               {column || "_"}
-            </Square>
+            </Column>
           ))}
-        </div>
+        </Row>
       ))}
     </Board>
   );

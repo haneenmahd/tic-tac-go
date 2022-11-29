@@ -71,8 +71,8 @@ class GameService {
       [2, 4, 6],
     ];
 
-    for (let i = 0; i < lines.length; i++) {
-      const [a, b, c] = lines[i];
+    for (let row = 0; row < lines.length; row++) {
+      const [a, b, c] = lines[row];
 
       if (
         squares[a] &&
