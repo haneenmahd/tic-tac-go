@@ -59,54 +59,30 @@ class GameService {
   }
 
   calculateWinner(matrix, playerSymbol) {
-    for (let i = 0; i < matrix.length; i++) {
-      let row = [];
-
-      for (let j = 0; j < matrix.length; j++) {
-        row.push(matrix[i][j]);
-      }
-
-      if (row.every(value => value && value === playerSymbol)) {
-        return true;
-      } else if (row.every(value => value && value !== playerSymbol)) {
-        return false;
+    // Check rows for a winner
+    for (let row = 0; row < matrix.length; row++) {
+      if (matrix[row][0] === matrix[row][1] && matrix[row][1] === matrix[row][2]) {
+        return matrix[row][0] === playerSymbol;
       }
     }
 
-    for (let i = 0; i < matrix.length; i++) {
-      let column = [];
-
-      for (let j = 0; j < matrix.length; j++) {
-        column.push(matrix[j][i]);
-      }
-
-      if (column.every(value => value && value === playerSymbol)) {
-        return true;
-      } else if (column.every(value => value && value !== playerSymbol)) {
-        return false;
+    // Check columns for a winner
+    for (let col = 0; col < matrix.length; col++) {
+      if (matrix[0][col] === matrix[1][col] && matrix[1][col] === matrix[2][col]) {
+        return matrix[0][col] === playerSymbol;
       }
     }
 
-    if (matrix[1][1]) {
-      if (matrix[0][0] === matrix[1][1] && matrix[2][2] === matrix[1][1]) {
-        if (matrix[1][1] === playerSymbol) {
-          return true;
-        } else {
-          return false;
-        }
-      }
-
-      if (matrix[2][0] === matrix[1][1] && matrix[0][2] === matrix[1][1]) {
-        if (matrix[1][1] === playerSymbol) {
-          return true;
-        } else {
-          return false;
-        }
-      }
+    // Check diagonals for a winner
+    if (matrix[0][0] === matrix[1][1] && matrix[1][1] === matrix[2][2]) {
+      return matrix[0][0] === playerSymbol;
     }
 
-    if (matrix.every(m => m.every(v => v !== playerSymbol))) return undefined; // a tie
+    if (matrix[0][2] === matrix[1][1] && matrix[1][1] === matrix[2][0]) {
+      return matrix[0][2] === playerSymbol;
+    }
 
+    // If no winners were found, return null
     return null;
   }
 }
