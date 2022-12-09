@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styled, { css, keyframes } from "styled-components";
 import {
   ClippedAndRounded,
@@ -445,7 +445,7 @@ const Play = () => {
             </FlexDiv>
 
             <SymbolPreview
-              src={opponent.side === symbols.X ? XSymbol : OSymbol}
+              src={opponent.symbol === symbols.X ? XSymbol : OSymbol}
               selected
             />
           </PlayerInfoBubble>
@@ -468,7 +468,7 @@ const Play = () => {
       {opponent ? (
         <Game
           symbol={symbol}
-          opponentSymbol={opponent.side}
+          opponentSymbol={opponent.symbol}
           setPlayerScore={setPlayerScore}
           setOpponentScore={setOpponentScore}
           isPlayerTurn={isPlayerTurn}
