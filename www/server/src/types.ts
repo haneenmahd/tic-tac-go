@@ -6,7 +6,7 @@ export type Players = {
     [id: string]: Player;
 }
 
-export type PlayerSymbol =  "X" | "O";
+export type PlayerSymbol = "X" | "O";
 
 export type PlayMatrix = Array<Array<string | null>>;
 
@@ -23,4 +23,8 @@ export interface RoomJoinMessage {
 
 export interface UpdateGameMessage {
     matrix: PlayMatrix;
+}
+
+export interface UpdateScoreMessage {
+    score: number;
 }
