@@ -62,24 +62,24 @@ class GameService {
     // Check rows for a winner
     for (let row = 0; row < matrix.length; row++) {
       if (matrix[row][0] === matrix[row][1] && matrix[row][1] === matrix[row][2]) {
-        return matrix[row][0] === playerSymbol;
+        return matrix[row][0];
       }
     }
 
     // Check columns for a winner
     for (let col = 0; col < matrix.length; col++) {
       if (matrix[0][col] === matrix[1][col] && matrix[1][col] === matrix[2][col]) {
-        return matrix[0][col] === playerSymbol;
+        return matrix[0][col];
       }
     }
 
     // Check diagonals for a winner
     if (matrix[0][0] === matrix[1][1] && matrix[1][1] === matrix[2][2]) {
-      return matrix[0][0] === playerSymbol;
+      return matrix[0][0];
     }
 
     if (matrix[0][2] === matrix[1][1] && matrix[1][1] === matrix[2][0]) {
-      return matrix[0][2] === playerSymbol;
+      return matrix[0][2];
     }
 
     // If no winners were found, return null
