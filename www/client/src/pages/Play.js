@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import styled, { css, keyframes } from "styled-components";
 import {
   ClippedAndRounded,
