@@ -19,6 +19,13 @@ class GameController {
     ) {
         socket.broadcast.to(gameRoom).emit("on_game_score_update", message);
     }
+
+    public async clearGame(
+        socket: Socket,
+        gameRoom: string
+    ) {
+        socket.broadcast.to(gameRoom).emit("on_clear_game");
+    }
 }
 
 export default GameController;

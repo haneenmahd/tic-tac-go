@@ -32,6 +32,7 @@ const Column = styled.div`
 const Game = ({
   symbol,
   opponentSymbol,
+  playerScore,
   setPlayerScore,
   setOpponentScore,
   isPlayerTurn,
@@ -48,10 +49,29 @@ const Game = ({
     setPlayerTurn(true);
   });
 
+  GameService.shared.onUpdateScore(score => {
+    setOpponentScore(score);
+    console.log(playerScore, score);
+  });
+
   const updateGame = () => {
     GameService.shared.updateGame(matrix);
     setPlayerTurn(false);
   };
+
+  const updateScore = () => {
+    GameService.shared.updateScore(playerScore);
+  };
+
+  const clearMatrix = () => {
+    setMatrix([
+      [null, null, null],
+      [null, null, null],
+      [null, null, null],
+    ]);
+  };
+
+  GameService.shared.onClearGame(clearMatrix);
 
   const handleClick = (row, column) => {
     if (
@@ -59,6 +79,13 @@ const Game = ({
       GameService.shared.calculateWinner(matrix) ||
       matrix[row][column]
     ) {
+      if (GameService.shared.calculateWinner(matrix) === symbol) {
+        setPlayerScore(playerScore + 1);
+        updateScore();
+        GameService.shared.clearGame();
+        clearMatrix();
+      }
+
       return;
     }
 

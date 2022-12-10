@@ -45,13 +45,27 @@ class GameService {
   }
 
   updateGame(matrix) {
-    this.ws.emit("update_game", {
-      matrix,
-    });
+    this.ws.emit("update_game", { matrix });
   }
 
   onUpdateGame(cb) {
     this.ws.on("on_game_update", ({ matrix }) => cb(matrix));
+  }
+
+  updateScore(score) {
+    this.ws.emit("update_game_score", { score });
+  }
+
+  onUpdateScore(cb) {
+    this.ws.on("on_game_score_update", ({ score }) => cb(score));
+  }
+
+  clearGame() {
+    this.ws.emit("clear_game");
+  }
+
+  onClearGame(cb) {
+    this.ws.on("on_clear_game", cb);
   }
 
   onRoomJoinError(cb) {
