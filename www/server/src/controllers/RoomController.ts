@@ -10,7 +10,7 @@ export default class RoomController {
     public async joinRoom(socket: Socket, room: string) {
         await socket.join(room);
     }
-    
+
     public async joinGame(
         socket: Socket,
         message: RoomJoinMessage
@@ -21,7 +21,7 @@ export default class RoomController {
 
         const connectedPlayers = Object.values(this.players).filter(p => p.id !== socket.id && p.isPlaying === false);
 
-        if (connectedPlayers.length > 0) {
+        if (connectedPlayers.length > 0 && connectedPlayers[0].symbol !== player.symbol) {
             const opponent = connectedPlayers[0];
             this.roomId = crypto.randomBytes(5).toString("hex");
 
