@@ -31,8 +31,3 @@ body {
   font: 16px system-ui, sans-serif;
   background-color: #fff;
 }
-
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
-    monospace;
-}
