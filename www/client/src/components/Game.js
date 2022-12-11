@@ -31,7 +31,6 @@ const Column = styled.div`
 
 const Game = ({
   symbol,
-  opponentSymbol,
   playerScore,
   setPlayerScore,
   setOpponentScore,
