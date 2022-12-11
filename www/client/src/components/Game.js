@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import GameService from "../network/GameService";
 
@@ -51,16 +51,11 @@ const Game = ({
 
   GameService.shared.onUpdateScore(score => {
     setOpponentScore(score);
-    console.log(playerScore, score);
   });
 
   const updateGame = () => {
     GameService.shared.updateGame(matrix);
     setPlayerTurn(false);
-  };
-
-  const updateScore = () => {
-    GameService.shared.updateScore(playerScore);
   };
 
   const clearMatrix = () => {
@@ -79,13 +74,6 @@ const Game = ({
       GameService.shared.calculateWinner(matrix) ||
       matrix[row][column]
     ) {
-      if (GameService.shared.calculateWinner(matrix) === symbol) {
-        setPlayerScore(playerScore + 1);
-        updateScore();
-        GameService.shared.clearGame();
-        clearMatrix();
-      }
-
       return;
     }
 
@@ -95,6 +83,20 @@ const Game = ({
     setMatrix(newMatrix);
     updateGame();
   };
+
+  useEffect(() => {
+    if (GameService.shared.calculateWinner(matrix) === symbol) {
+      setPlayerScore(score => score + 1);
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [matrix]);
+
+  useEffect(() => {
+    GameService.shared.updateScore(playerScore);
+    GameService.shared.clearGame();
+    clearMatrix();
+  }, [playerScore]);
 
   return (
     <Board>
