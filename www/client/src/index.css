@@ -28,6 +28,8 @@ a {
 body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  font: 16px system-ui, sans-serif;
+  background-color: #fff;
 }
 
 code {
