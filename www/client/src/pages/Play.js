@@ -468,7 +468,6 @@ const Play = () => {
       {opponent ? (
         <Game
           symbol={symbol}
-          opponentSymbol={opponent.symbol}
           playerScore={playerScore}
           setPlayerScore={setPlayerScore}
           setOpponentScore={setOpponentScore}
