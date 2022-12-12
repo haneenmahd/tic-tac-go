@@ -6,12 +6,15 @@ export const QUERIES = {
 
 export const COLORS = {
   black: "#000",
-  hoverTextBlack: "#00000050",
   gray: "#8B8B8B",
+  white: "#fff",
+  blue: "#DCF0F0",
+  fadedBlue: "#F6FDFD",
   fadedGray: "#ececec",
   lightGray: "#dfdfdf",
-  white: "#fff",
+  hoverTextBlack: "#00000050",
   hoverBackground: "#00000010",
+  secondaryHoverBackground: "#BDE3E3"
 };
 
 export const TRANSITIONS = {

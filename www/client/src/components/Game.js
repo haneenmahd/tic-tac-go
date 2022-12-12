@@ -55,6 +55,7 @@ const SymbolPreview = styled.img`
 
 const Game = ({
   symbol,
+  setRound,
   playerScore,
   setPlayerScore,
   setOpponentScore,
@@ -117,8 +118,8 @@ const Game = ({
 
   useEffect(() => {
     GameService.shared.updateScore(playerScore);
-    GameService.shared.clearGame();
-    clearMatrix();
+    // GameService.shared.clearGame();
+    // clearMatrix();
   }, [playerScore]);
 
   return (

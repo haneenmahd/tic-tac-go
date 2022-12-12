@@ -14,6 +14,7 @@ import generateId from "../utils/generateId";
 import Button from "../components/Button";
 import Divider from "../components/Divider";
 import ArrowUp from "../assets/svg/icons/arrow-up.svg";
+import ArrowRight from "../assets/svg/icons/arrow-right.svg";
 import TextField from "../components/TextField";
 import OSymbol from "../assets/svg/symbols/O.svg";
 import XSymbol from "../assets/svg/symbols/X.svg";
@@ -263,6 +264,36 @@ const ScoreCard = styled.div`
   gap: 15px;
 `;
 
+const GameActions = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 0px;
+  gap: 29px;
+`;
+
+const GameActionButton = styled(Button)`
+  font-weight: 500;
+  padding: 0 20px;
+  color: ${COLORS.black};
+  background: ${COLORS.blue};
+
+  &:hover {
+    background: ${COLORS.secondaryHoverBackground};
+  }
+`;
+
+const GameActionButtonSecondary = styled(GameActionButton)`
+  font-weight: normal;
+  border: 1px solid ${COLORS.blue};
+  background: ${COLORS.fadedBlue};
+
+  &:hover {
+    background: ${COLORS.blue}90;
+  }
+`;
+
 const Play = () => {
   const [name, setName] = useState("");
   const [selectedAvatar, setSelectedAvatar] = useState(generateId());
@@ -271,6 +302,7 @@ const Play = () => {
   const [joinedGame, setJoinedGame] = useState(false);
   const [opponent, setOpponent] = useState(null);
 
+  const [round, setRound] = useState(1);
   const [isPlayerTurn, setPlayerTurn] = useState(false);
   const [playerScore, setPlayerScore] = useState(0);
   const [opponentScore, setOpponentScore] = useState(0);
@@ -417,7 +449,9 @@ const Play = () => {
         </PlayerInfoBubble>
 
         <GameRoundContainer>
-          {opponent ? <GameRound>Round 1</GameRound> : null}
+          {opponent ?
+            <GameRound>Round {round}</GameRound>
+            : null}
 
           {/* Show a divider when in prematch */}
           {!opponent ? <Divider maxWidth /> : null}
@@ -467,14 +501,29 @@ const Play = () => {
       </GameInfoContainer>
 
       {opponent ? (
-        <Game
-          symbol={symbol}
-          playerScore={playerScore}
-          setPlayerScore={setPlayerScore}
-          setOpponentScore={setOpponentScore}
-          isPlayerTurn={isPlayerTurn}
-          setPlayerTurn={setPlayerTurn}
-        />
+        <>
+          <Game
+            symbol={symbol}
+            setRound={setRound}
+            playerScore={playerScore}
+            setPlayerScore={setPlayerScore}
+            setOpponentScore={setOpponentScore}
+            isPlayerTurn={isPlayerTurn}
+            setPlayerTurn={setPlayerTurn}
+          />
+
+          <GameActions>
+            <GameActionButton onClick={() => setRound(round + 1)}>
+              Next Round
+
+              <img
+                src={ArrowRight}
+                alt="arrow up icon"
+              />
+            </GameActionButton>
+            <GameActionButtonSecondary>Chat</GameActionButtonSecondary>
+          </GameActions>
+        </>
       ) : null}
     </Container>
   );

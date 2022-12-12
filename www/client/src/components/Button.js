@@ -26,9 +26,9 @@ const Button = styled.button`
 `;
 
 const SecondaryButton = styled(Button)`
+  width: 405px;
   background: ${COLORS.fadedGray};
   border: 1px solid ${COLORS.lightGray};
-  width: 405px;
   color: ${COLORS.black};
 
   &:hover {
