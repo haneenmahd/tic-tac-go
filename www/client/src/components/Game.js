@@ -49,7 +49,6 @@ const SymbolAniamtion = keyframes`
 const SymbolPreview = styled.img`
   height: 100px;
   width: 100px;
-  cursor: default;
   user-select: none;
   animation: ${SymbolAniamtion} 250ms cubic-bezier(0.25, 0.15, 0, 1.13);
 `;
@@ -90,7 +89,7 @@ const Game = ({
     ]);
   };
 
-  // GameService.shared.onClearGame(clearMatrix);
+  GameService.shared.onClearGame(clearMatrix);
 
   const handleClick = (row, column) => {
     if (
@@ -119,7 +118,7 @@ const Game = ({
   useEffect(() => {
     GameService.shared.updateScore(playerScore);
     GameService.shared.clearGame();
-    // clearMatrix();
+    clearMatrix();
   }, [playerScore]);
 
   return (
