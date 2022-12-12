@@ -55,7 +55,7 @@ const SymbolPreview = styled.img`
 
 const Game = ({
   symbol,
-  roundOver,
+  setRound,
   setRoundOver,
   playerScore,
   setPlayerScore,
@@ -92,6 +92,12 @@ const Game = ({
   };
 
   GameService.shared.onClearGame(clearMatrix);
+  GameService.shared.onNextRound(round => {
+    setRound(round);
+
+    GameService.shared.clearGame();
+    clearMatrix();
+  });
 
   const handleClick = (row, column) => {
     if (
@@ -114,14 +120,20 @@ const Game = ({
       setPlayerScore(score => score + 1);
     }
 
+    if (
+      matrix.every(row => row.every(col => col !== null))
+      &&
+      GameService.shared.calculateWinner(matrix) === null
+    ) {
+      setRoundOver(isOver => isOver ? false : true);
+    }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [matrix]);
 
   useEffect(() => {
     GameService.shared.updateScore(playerScore);
-    setRoundOver(true);
-    // GameService.shared.clearGame();
-    // clearMatrix();
+    setRoundOver(isOver => isOver ? false : true);
   }, [playerScore]);
 
   return (

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styled, { css, keyframes } from "styled-components";
 import { Check } from "react-feather";
 import {
@@ -320,6 +320,7 @@ const Play = () => {
       .map(() => generateId())
   );
 
+  const maxRounds = 5;
   const avatarProps = {
     variant: "beam", // support more variants
     colors: ["#92A1C6", "#146A7C", "#F0AB3D", "#C271B4", "#C20D90"],
@@ -357,9 +358,24 @@ const Play = () => {
   };
 
   const handleNextRound = () => {
-    setRound(round => round + 1);
+    setRound(round => {
+      if (round < maxRounds) {
+        round++;
+
+        GameService.shared.nextRound(round);
+      }
+
+      return round;
+    });
+
     setRoundOver(false);
-  }
+  };
+
+  useEffect(() => {
+    if (round > maxRounds) {
+      alert("game over!");
+    }
+  }, [round]);
 
   const avatarPickerView = (
     <Container>
@@ -516,6 +532,7 @@ const Play = () => {
         <>
           <Game
             symbol={symbol}
+            setRound={setRound}
             roundOver={roundOver}
             setRoundOver={setRoundOver}
             playerScore={playerScore}

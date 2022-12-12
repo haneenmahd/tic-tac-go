@@ -60,6 +60,14 @@ class GameService {
     this.ws.on("on_game_score_update", ({ score }) => cb(score));
   }
 
+  nextRound(round) {
+    this.ws.emit("next_round", { round });
+  }
+
+  onNextRound(cb) {
+    this.ws.on("on_next_round", ({ round }) => cb(round));
+  }
+
   clearGame() {
     this.ws.emit("clear_game");
   }
