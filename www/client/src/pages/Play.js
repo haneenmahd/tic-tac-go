@@ -139,8 +139,14 @@ const PlayerInfoBubble = styled.div`
   gap: 20px;
   min-width: 338px;
   height: 126px;
-  border: 1px solid #ececec;
+  border: 2px dashed #ececec;
   border-radius: 100px;
+  box-shadow: 0 0 0 0 rgba(223, 235, 255, 0.32);
+  transition: box-shadow 100ms ease-in-out;
+
+  ${p => p.isPlayerTurn && css`
+      border: 2px solid rgba(223, 235, 255, 1);
+  `}
 `;
 
 const PlayerInfoName = styled.p`
@@ -370,7 +376,7 @@ const Play = () => {
       gap="36px"
       key={null}>
       <GameInfoContainer>
-        <PlayerInfoBubble>
+        <PlayerInfoBubble isPlayerTurn={isPlayerTurn}>
           <FlexDiv gap="20px">
             <ClippedAndRounded>
               <Avatar
@@ -431,7 +437,7 @@ const Play = () => {
         </GameRoundContainer>
 
         {opponent ? (
-          <PlayerInfoBubble>
+          <PlayerInfoBubble isPlayerTurn={!isPlayerTurn}>
             <FlexDiv gap="20px">
               <ClippedAndRounded>
                 <Avatar
