@@ -271,6 +271,12 @@ const GameActions = styled.div`
   align-items: center;
   padding: 0px;
   gap: 29px;
+  transition: opacity 200ms;
+
+  ${p => p.disabled && css`
+    opacity: 0.5;
+    pointer-events: none;
+  `}
 `;
 
 const GameActionButton = styled(Button)`
@@ -303,6 +309,7 @@ const Play = () => {
   const [opponent, setOpponent] = useState(null);
 
   const [round, setRound] = useState(1);
+  const [roundOver, setRoundOver] = useState(false);
   const [isPlayerTurn, setPlayerTurn] = useState(false);
   const [playerScore, setPlayerScore] = useState(0);
   const [opponentScore, setOpponentScore] = useState(0);
@@ -348,6 +355,11 @@ const Play = () => {
       GameService.shared.onRoomJoinError(error => alert(error));
     });
   };
+
+  const handleNextRound = () => {
+    setRound(round => round + 1);
+    setRoundOver(false);
+  }
 
   const avatarPickerView = (
     <Container>
@@ -504,7 +516,8 @@ const Play = () => {
         <>
           <Game
             symbol={symbol}
-            setRound={setRound}
+            roundOver={roundOver}
+            setRoundOver={setRoundOver}
             playerScore={playerScore}
             setPlayerScore={setPlayerScore}
             setOpponentScore={setOpponentScore}
@@ -512,8 +525,9 @@ const Play = () => {
             setPlayerTurn={setPlayerTurn}
           />
 
-          <GameActions>
-            <GameActionButton onClick={() => setRound(round + 1)}>
+          <GameActions disabled={!roundOver}>
+            <GameActionButton
+              onClick={handleNextRound}>
               Next Round
 
               <img
