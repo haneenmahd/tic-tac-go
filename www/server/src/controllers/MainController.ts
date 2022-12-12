@@ -14,7 +14,7 @@ export default class MainController {
         socket.on("join_room", room => this.roomController.joinRoom(socket, room));
         socket.on("update_game", message => this.gameController.updateGame(socket, this.roomController.roomId!, message));
         socket.on("update_game_score", message => this.gameController.updateScore(socket, this.roomController.roomId!, message));
-        socket.on("next_round", message => this.gameController.updateGame(socket, this.roomController.roomId!, message));
+        socket.on("next_round", message => this.gameController.nextRound(socket, this.roomController.roomId!, message));
         socket.on("clear_game", () => this.gameController.clearGame(socket, this.roomController.roomId!));
     }
 
