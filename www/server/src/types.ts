@@ -28,3 +28,7 @@ export interface UpdateGameMessage {
 export interface UpdateScoreMessage {
     score: number;
 }
+
+export interface NextRoundMessage {
+    round: number;
+}
