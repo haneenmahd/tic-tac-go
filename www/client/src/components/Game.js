@@ -1,6 +1,13 @@
 import { useEffect, useState } from "react";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import GameService from "../network/GameService";
+import OSymbol from "../assets/svg/symbols/O.svg";
+import XSymbol from "../assets/svg/symbols/X.svg";
+
+export const symbols = {
+  X: "X",
+  O: "O",
+};
 
 const BOARD_RESOLUTION = "469px"; // 469x469
 
@@ -27,6 +34,24 @@ const Column = styled.div`
   justify-content: center;
   height: calc(${BOARD_RESOLUTION} / 3);
   width: calc(${BOARD_RESOLUTION} / 3);
+`;
+
+const SymbolAniamtion = keyframes`
+  from {
+    scale: 0;
+  }
+
+  to {
+    scale: 1;
+  }
+`;
+
+const SymbolPreview = styled.img`
+  height: 100px;
+  width: 100px;
+  cursor: default;
+  user-select: none;
+  animation: ${SymbolAniamtion} 250ms cubic-bezier(0.25, 0.15, 0, 1.13);
 `;
 
 const Game = ({
@@ -65,7 +90,7 @@ const Game = ({
     ]);
   };
 
-  GameService.shared.onClearGame(clearMatrix);
+  // GameService.shared.onClearGame(clearMatrix);
 
   const handleClick = (row, column) => {
     if (
@@ -94,7 +119,7 @@ const Game = ({
   useEffect(() => {
     GameService.shared.updateScore(playerScore);
     GameService.shared.clearGame();
-    clearMatrix();
+    // clearMatrix();
   }, [playerScore]);
 
   return (
@@ -105,7 +130,11 @@ const Game = ({
             <Column
               onClick={() => handleClick(rowIdx, colIdx)}
               key={colIdx}>
-              {column || "_"}
+              {column === symbols.X ?
+                <SymbolPreview src={XSymbol} alt="X Symbol" />
+                : column === symbols.O ?
+                  <SymbolPreview src={OSymbol} alt="O Symbol" />
+                  : null}
             </Column>
           ))}
         </Row>

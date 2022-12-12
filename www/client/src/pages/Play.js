@@ -1,5 +1,6 @@
 import { useState } from "react";
 import styled, { css, keyframes } from "styled-components";
+import { Check } from "react-feather";
 import {
   ClippedAndRounded,
   COLORS,
@@ -18,8 +19,7 @@ import OSymbol from "../assets/svg/symbols/O.svg";
 import XSymbol from "../assets/svg/symbols/X.svg";
 import SearchIcon from "../assets/svg/icons/search-filled.svg";
 import GameService from "../network/GameService";
-import Game from "../components/Game";
-import { Check } from "react-feather";
+import Game, { symbols } from "../components/Game";
 
 const PageContainer = styled(FlexDiv)`
   justify-content: space-between;
@@ -274,11 +274,6 @@ const Play = () => {
   const [isPlayerTurn, setPlayerTurn] = useState(false);
   const [playerScore, setPlayerScore] = useState(0);
   const [opponentScore, setOpponentScore] = useState(0);
-
-  const symbols = {
-    X: "X",
-    O: "O",
-  };
 
   const [avatars] = useState(
     Array(12)
