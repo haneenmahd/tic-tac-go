@@ -76,6 +76,14 @@ class GameService {
     this.ws.on("on_clear_game", cb);
   }
 
+  gameOver() {
+    this.ws.emit("game_over");
+  }
+
+  onGameOver(cb) {
+    this.ws.on("on_game_over", cb);
+  }
+
   onRoomJoinError(cb) {
     this.ws.on("room_join_error", ({ error }) => cb(error));
   }

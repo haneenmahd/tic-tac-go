@@ -145,7 +145,7 @@ const PlayerInfoBubble = styled.div`
   box-shadow: 0 0 0 0 rgba(223, 235, 255, 0.32);
   transition: box-shadow 100ms ease-in-out;
 
-  ${p => p.isPlayerTurn && css`
+  ${p => p.gameOver === false && p.isPlayerTurn && css`
       border: 2px solid rgba(223, 235, 255, 1);
   `}
 `;
@@ -313,6 +313,7 @@ const Play = () => {
   const [isPlayerTurn, setPlayerTurn] = useState(false);
   const [playerScore, setPlayerScore] = useState(0);
   const [opponentScore, setOpponentScore] = useState(0);
+  const [gameOver, setGameOver] = useState(false);
 
   const [avatars] = useState(
     Array(12)
@@ -363,6 +364,8 @@ const Play = () => {
         round++;
 
         GameService.shared.nextRound(round);
+      } else if (round === maxRounds) {
+        setGameOver(true);
       }
 
       return round;
@@ -372,10 +375,11 @@ const Play = () => {
   };
 
   useEffect(() => {
-    if (round > maxRounds) {
+    if (gameOver) {
+      GameService.shared.gameOver();
       alert("game over!");
     }
-  }, [round]);
+  }, [gameOver]);
 
   const avatarPickerView = (
     <Container>
@@ -431,7 +435,9 @@ const Play = () => {
       gap="36px"
       key={null}>
       <GameInfoContainer>
-        <PlayerInfoBubble isPlayerTurn={isPlayerTurn}>
+        <PlayerInfoBubble
+          gameOver={gameOver}
+          isPlayerTurn={isPlayerTurn}>
           <FlexDiv gap="20px">
             <ClippedAndRounded>
               <Avatar
@@ -532,6 +538,8 @@ const Play = () => {
         <>
           <Game
             symbol={symbol}
+            gameOver={gameOver}
+            setGameOver={setGameOver}
             setRound={setRound}
             roundOver={roundOver}
             setRoundOver={setRoundOver}

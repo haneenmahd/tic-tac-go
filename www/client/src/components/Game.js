@@ -55,6 +55,8 @@ const SymbolPreview = styled.img`
 
 const Game = ({
   symbol,
+  gameOver,
+  setGameOver,
   setRound,
   setRoundOver,
   playerScore,
@@ -93,15 +95,18 @@ const Game = ({
 
   GameService.shared.onClearGame(clearMatrix);
   GameService.shared.onNextRound(round => {
+    setRoundOver(false);
     setRound(round);
 
     GameService.shared.clearGame();
     clearMatrix();
   });
+  GameService.shared.onGameOver(() => setGameOver(true));
 
   const handleClick = (row, column) => {
     if (
       !isPlayerTurn ||
+      gameOver ||
       GameService.shared.calculateWinner(matrix) ||
       matrix[row][column]
     ) {
@@ -125,7 +130,7 @@ const Game = ({
       &&
       GameService.shared.calculateWinner(matrix) === null
     ) {
-      setRoundOver(isOver => isOver ? false : true);
+      setRoundOver(true);
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -135,6 +140,7 @@ const Game = ({
     GameService.shared.updateScore(playerScore);
     setRoundOver(isOver => isOver ? false : true);
   }, [playerScore]);
+  // useCallback() for preventing mutliple renders and improving performances
 
   return (
     <Board>

@@ -32,6 +32,13 @@ class GameController {
     ) {
         socket.broadcast.to(gameRoom).emit("on_clear_game");
     }
+
+    public async gameOver(
+        socket: Socket,
+        gameRoom: string
+    ) {
+        socket.broadcast.to(gameRoom).emit("on_game_over");
+    }
 }
 
 export default GameController;
