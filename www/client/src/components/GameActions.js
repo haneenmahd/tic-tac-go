@@ -1,6 +1,6 @@
 import React from 'react';
 import styled, { css } from 'styled-components';
-import { COLORS } from '../styling';
+import { COLORS, QUERIES } from '../styling';
 import Button from './Button';
 
 
@@ -17,6 +17,10 @@ const GameActionsContainer = styled.div`
     opacity: 0.5;
     pointer-events: none;
   `}
+
+  @media screen and (${QUERIES.small}) {
+    flex-direction: column;
+  }
 `;
 
 const GameActionButton = styled(Button)`
@@ -41,27 +45,29 @@ const GameActionButtonSecondary = styled(GameActionButton)`
 `;
 
 const GameActions = ({
-    disabled,
-    primaryAction,
-    secondaryAction,
-    primaryIcon,
-    secondaryIcon
+  disabled,
+  primaryTitle,
+  primaryAction,
+  primaryIcon,
+  secondaryTitle,
+  secondaryAction,
+  secondaryIcon
 }) => {
-    return (
-        <GameActionsContainer disabled={disabled}>
-            <GameActionButton onClick={primaryAction}>
-                Next Round
+  return (
+    <GameActionsContainer disabled={disabled}>
+      <GameActionButton onClick={primaryAction}>
+        {primaryTitle}
 
-                {primaryIcon}
-            </GameActionButton>
+        {primaryIcon}
+      </GameActionButton>
 
-            <GameActionButtonSecondary onClick={secondaryAction}>
-                Chat
+      <GameActionButtonSecondary onClick={secondaryAction}>
+        {secondaryTitle}
 
-                {secondaryIcon}
-            </GameActionButtonSecondary>
-        </GameActionsContainer>
-    );
+        {secondaryIcon}
+      </GameActionButtonSecondary>
+    </GameActionsContainer>
+  );
 }
 
 export default GameActions;

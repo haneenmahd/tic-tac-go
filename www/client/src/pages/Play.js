@@ -7,12 +7,12 @@ import {
   FlexDiv,
   PadBox,
   TRANSITIONS,
+  Divider
 } from "../styling";
 import { LinkLessNav } from "../components/NavBar";
 import Avatar from "boring-avatars";
 import generateId from "../utils/generateId";
 import Button from "../components/Button";
-import Divider from "../components/Divider";
 import ArrowUp from "../assets/svg/icons/arrow-up.svg";
 import ArrowRight from "../assets/svg/icons/arrow-right.svg";
 import TextField from "../components/TextField";
@@ -21,6 +21,7 @@ import XSymbol from "../assets/svg/symbols/X.svg";
 import SearchIcon from "../assets/svg/icons/search-filled.svg";
 import GameService from "../network/GameService";
 import Game, { symbols } from "../components/Game";
+import GameActions from "../components/GameActions";
 
 const PageContainer = styled(FlexDiv)`
   justify-content: space-between;
@@ -254,42 +255,6 @@ const ScoreCard = styled.div`
   align-items: center;
   justify-content: space-between;
   gap: 15px;
-`;
-
-const GameActions = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  padding: 0px;
-  gap: 29px;
-  transition: opacity 200ms;
-
-  ${p => p.disabled && css`
-    opacity: 0.5;
-    pointer-events: none;
-  `}
-`;
-
-const GameActionButton = styled(Button)`
-  font-weight: 500;
-  padding: 0 20px;
-  color: ${COLORS.black};
-  background: ${COLORS.blue};
-
-  &:hover {
-    background: ${COLORS.secondaryHoverBackground};
-  }
-`;
-
-const GameActionButtonSecondary = styled(GameActionButton)`
-  font-weight: normal;
-  border: 1px solid ${COLORS.blue};
-  background: ${COLORS.fadedBlue};
-
-  &:hover {
-    background: ${COLORS.blue}90;
-  }
 `;
 
 const Play = () => {
@@ -542,18 +507,18 @@ const Play = () => {
             setPlayerTurn={setPlayerTurn}
           />
 
-          <GameActions disabled={!roundOver}>
-            <GameActionButton
-              onClick={handleNextRound}>
-              Next Round
-
+          <GameActions
+            disabled={!roundOver}
+            primaryTitle="Next Round"
+            primaryAction={handleNextRound}
+            primaryIcon={
               <img
                 src={ArrowRight}
                 alt="arrow up icon"
               />
-            </GameActionButton>
-            <GameActionButtonSecondary>Chat</GameActionButtonSecondary>
-          </GameActions>
+            }
+            secondaryTitle="Chat"
+          />
         </>
       ) : null}
     </Container>
