@@ -21,7 +21,7 @@ const Footer = () => (
     <FooterLink to="/about">About</FooterLink>
     <FooterLink to="/support">Support</FooterLink>
     <FooterLink to="/privacy-policy">Privacy</FooterLink>
-    <Divider />
+    <Divider maxWidth />
   </Container>
 );
 
