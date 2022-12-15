@@ -21,6 +21,7 @@ export const TRANSITIONS = {
   hovers: "150ms cubic-bezier(0.72, 0.04, 0.04, 1.01)",
   focus: "200ms cubic-bezier(0.72, 0.04, 0.04, 1.01)",
   load: "cubic-bezier(0.69, -0.03, 0.2, 1)",
+  smoothHovers: "cubic-bezier(0.57, 0.38, 0.26, 0.95)"
 };
 
 export const FlexDiv = styled.div`

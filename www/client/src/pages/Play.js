@@ -48,14 +48,14 @@ const GameContainer = styled.div`
 
 const SelectedAvatarAnimation = keyframes`
   from {
-    height: 0;
-    width: 0;
+    transform: translate(0%, -200%) skewY(100deg);
   }
 `;
 
 const SelectedAvatar = styled.div`
   position: relative;
   cursor: pointer;
+  animation: ${SelectedAvatarAnimation} .5s ${TRANSITIONS.smoothHovers};
 
   &::before {
     content: "Good luck <3";
@@ -95,40 +95,28 @@ const AvatarPickerGrid = styled.div`
 `;
 
 const AvatarOption = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  border-radius: 100px;
   cursor: pointer;
-  filter: drop-shadow(0 0 0);
-  transition: ${TRANSITIONS.hovers};
-
-  svg {
-    stroke: transparent;
-    stroke-dasharray: 5;
-    stroke-dashoffset: 5;
-    stroke-linecap: round;
-    transition: ${TRANSITIONS.focus};
-  }
+  box-shadow: 0 0 0 0px ${COLORS.fadedGray};
+  transition: transform .5s ${TRANSITIONS.smoothHovers}, 
+              box-shadow .5s ${TRANSITIONS.smoothHovers};
 
   &:hover {
-    scale: 1.05;
+    transform: rotate3d(-1, 1, 1, 20deg) scale(1.2);
+    transition: ${TRANSITIONS.hovers};
   }
 
   &:active {
     scale: 0.99;
   }
 
-  ${p =>
-    p.selected &&
-    css`
-      svg {
-        stroke-dasharray: 0;
-        stroke-dashoffset: 0;
-        stroke: black;
-      }
-
-      svg rect,
-      svg path {
-        animation: ${SelectedAvatarAnimation} 1s ${TRANSITIONS.load};
-      }
-    `}
+  ${p => p.selected && css`
+    box-shadow: 0 0 0 5px ${COLORS.black};
+  `}
 `;
 
 const PlayerInfoBubble = styled.div`
@@ -383,7 +371,7 @@ const Play = () => {
 
   const avatarPickerView = (
     <Container>
-      <SelectedAvatar key={generateId()}>
+      <SelectedAvatar key={selectedAvatar}>
         <Avatar
           size={225}
           name={selectedAvatar}
