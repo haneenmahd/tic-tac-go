@@ -1,7 +1,6 @@
 import styled from "styled-components";
 import NavLink from "../components/NavLink";
-import { COLORS } from "../styling";
-import Divider from "./Divider";
+import { COLORS, Divider } from "../styling";
 
 const Container = styled.div`
   display: flex;

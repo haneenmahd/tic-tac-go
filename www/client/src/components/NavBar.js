@@ -1,7 +1,6 @@
 import styled from "styled-components";
 import NavLink from "./NavLink";
-import Divider from "./Divider";
-import { COLORS, FlexDiv } from "../styling";
+import { COLORS, FlexDiv, Divider } from "../styling";
 import Icon from "../assets/svg/logo.svg";
 
 const Container = styled.div`
