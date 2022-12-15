@@ -133,6 +133,10 @@ const PlayerInfoBubble = styled.div`
   box-shadow: 0 0 0 0 rgba(223, 235, 255, 0.32);
   transition: box-shadow 100ms ease-in-out;
 
+  ${p => p.isPlayerTurn && css`
+    border: 2px solid rgba(223, 235, 255, 1);
+  `}
+
   ${p => p.gameOver === false && p.isPlayerTurn && css`
       border: 2px solid rgba(223, 235, 255, 1);
   `}
