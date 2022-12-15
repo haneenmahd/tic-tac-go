@@ -2,6 +2,7 @@ import styled from "styled-components";
 
 export const QUERIES = {
   large: "min-width: 801px",
+  small: "max-width: 480px"
 };
 
 export const COLORS = {
