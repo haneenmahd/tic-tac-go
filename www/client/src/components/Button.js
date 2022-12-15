@@ -6,12 +6,15 @@ const Button = styled.button`
   flex-direction: row;
   align-items: center;
   justify-content: center;
+  font-size: 15px;
   gap: 0.5rem;
   min-width: 91px;
   height: 45px;
   padding: 0 0.8rem;
+  cursor: pointer;
   background: ${COLORS.black};
   color: ${COLORS.white};
+  border: none;
   border-radius: 30px;
   outline: none;
   transition: ${TRANSITIONS.hovers};

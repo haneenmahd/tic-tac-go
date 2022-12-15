@@ -4,6 +4,7 @@ import { COLORS, TRANSITIONS } from "../styling";
 const TextField = styled.input`
   width: 294px;
   height: 45px;
+  font-size: 15px;
   background: #ffffff;
   border: 1px solid ${COLORS.lightGray};
   border-radius: 30px;
