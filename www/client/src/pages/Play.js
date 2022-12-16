@@ -22,6 +22,7 @@ import SearchIcon from "../assets/svg/icons/search-filled.svg";
 import GameService from "../network/GameService";
 import Game, { symbols } from "../components/Game";
 import GameActions from "../components/GameActions";
+import GameResult from "../components/GameResult";
 
 const PageContainer = styled(FlexDiv)`
   justify-content: space-between;
@@ -334,7 +335,6 @@ const Play = () => {
   useEffect(() => {
     if (gameOver) {
       GameService.shared.gameOver();
-      alert("game over!");
     }
   }, [gameOver]);
 
@@ -386,7 +386,7 @@ const Play = () => {
     </Container>
   );
 
-  const preMatchView = (
+  const matchView = (
     <Container
       direction="row"
       gap="36px"
@@ -529,7 +529,17 @@ const Play = () => {
       direction="column"
       flexHeight>
       <GameContainer>
-        {showingGame ? preMatchView : avatarPickerView}
+        {showingGame && !gameOver ? matchView : null}
+        {!showingGame && !gameOver ? avatarPickerView : null}
+        {showingGame && gameOver ? <GameResult
+          avatarProps={avatarProps}
+          playerName={name}
+          playerAvatar={selectedAvatar}
+          opponentName={opponent.name}
+          opponentAvatar={opponent.avatarId}
+          opponentScore={opponentScore}
+          playerScore={playerScore}
+        /> : null}
       </GameContainer>
 
       <LinkLessNav />
