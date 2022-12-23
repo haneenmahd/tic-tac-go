@@ -1,14 +1,21 @@
 import { useState } from "react";
 import styled from "styled-components";
-import { COLORS, Divider, FlexDiv, PadBox } from "../styling";
+import { COLORS, Divider, QUERIES } from "../styling";
 import GameService from "../network/GameService";
 import NavBar from "../components/NavBar";
 import Button, { SecondaryButton } from "../components/Button";
 import TextField from "../components/TextField";
-import ArrowUp from "../assets/svg/icons/arrow-up.svg";
+import { ReactComponent as ArrowRight } from "../assets/svg/icons/arrow-right.svg";
 import Plus from "../assets/svg/icons/plus.svg";
 import GameMobileShowcase from "../assets/png/game-mobile.png";
 import { useNavigate } from "react-router-dom";
+
+const Container = styled.main`
+  height: 100vh;
+  max-width: 100vw;
+  display: flex;
+  flex-direction: column;
+`;
 
 const Hero = styled.div`
   display: flex;
@@ -20,10 +27,21 @@ const Hero = styled.div`
   min-height: calc(100vh - 90px - 96px);
 `;
 
-const HeroSubContainer = styled(FlexDiv)`
+const HeroSubContainer = styled.div`
+  display: flex;
   max-width: 40%;
   flex-direction: column;
   align-items: flex-start;
+
+  @media screen and (${QUERIES.small}) {
+    max-width: 100%;
+  }
+`;
+
+const HeroTextContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 `;
 
 const HeroTitle = styled.h1`
@@ -39,43 +57,44 @@ const HeroDescription = styled.p`
   line-height: 30px;
 `;
 
-const HeroActions = styled(FlexDiv)`
+const HeroActions = styled.div`
+  display: flex;
   gap: 20px;
   padding: 30px 0;
+
+  @media screen and (${QUERIES.small}) {
+    width: 100%;
+
+    button {
+      width: 100%;
+      gap: 1.5rem;
+    }
+  }
 `;
 
 const HeroImage = styled.img`
   max-width: 350px;
   height: auto;
+
+  @media screen and (${QUERIES.small}) {
+    display: none;
+  }
 `;
 
 const Home = () => {
-  const [roomToken, setRoomToken] = useState("");
   const navigate = useNavigate();
 
-  const handleCreateRoom = async () => {
-    const res = await GameService.shared.createNewRoom();
-
-    setRoomToken(res.id);
-  };
-
-  const handleJoinRoom = () => {
-    navigate(`/play/join/${roomToken}`);
-
-    // still got to define the route and component for /play/join/
+  const handlePlay = () => {
+    navigate('/play');
   };
 
   return (
-    <FlexDiv
-      direction="column"
-      flexHeight>
+    <Container>
       <NavBar />
 
       <Hero>
         <HeroSubContainer>
-          <FlexDiv
-            direction="column"
-            gap="10px">
+          <HeroTextContainer>
             <HeroTitle>
               Play Tic Tac Toe together online with more fun, live chat and
               private rooms.
@@ -85,35 +104,15 @@ const Home = () => {
               family. With Competition Mode, you are open to play with more than
               2 players.
             </HeroDescription>
-          </FlexDiv>
+          </HeroTextContainer>
 
           <HeroActions>
-            <TextField
-              value={roomToken}
-              onChange={e => setRoomToken(e.target.value)}
-              type="text"
-              placeholder="Room ID"
-            />
-            <Button onClick={handleJoinRoom}>
-              <img
-                src={ArrowUp}
-                alt="arrow up icon"
-              />
-              Join
+            <Button onClick={handlePlay}>
+              <ArrowRight stroke="white" />
+
+              Play
             </Button>
           </HeroActions>
-
-          <Divider />
-
-          <PadBox padding="20px 0">
-            <SecondaryButton onClick={handleCreateRoom}>
-              <img
-                src={Plus}
-                alt="plus icon"
-              />
-              Create your room
-            </SecondaryButton>
-          </PadBox>
         </HeroSubContainer>
 
         <HeroImage
@@ -121,7 +120,7 @@ const Home = () => {
           alt="2 players in a multiplayer tic tac toe game with Bob with a score of 1 and Hetty with 3."
         />
       </Hero>
-    </FlexDiv>
+    </Container>
   );
 };
 
