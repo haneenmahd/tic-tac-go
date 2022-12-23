@@ -8,11 +8,11 @@ export const QUERIES = {
 export const COLORS = {
   black: "#000",
   gray: "#8B8B8B",
-  white: "#fff",
+  white: "#FFF",
   blue: "#DCF0F0",
   fadedBlue: "#F6FDFD",
-  fadedGray: "#ececec",
-  lightGray: "#dfdfdf",
+  fadedGray: "#ECECEC",
+  lightGray: "#DFDFDF",
   hoverTextBlack: "#00000050",
   hoverBackground: "#00000010",
   secondaryHoverBackground: "#BDE3E3"
