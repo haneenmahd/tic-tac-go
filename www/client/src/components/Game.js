@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import styled, { keyframes } from "styled-components";
+import styled, { css, keyframes } from "styled-components";
+import { COLORS } from "../styling";
 import GameService from "../network/GameService";
 import OSymbol from "../assets/svg/symbols/O.svg";
 import XSymbol from "../assets/svg/symbols/X.svg";
@@ -12,15 +13,69 @@ export const symbols = {
 const BOARD_RESOLUTION = "469px"; // 469x469
 
 const Board = styled.div`
-  grid-template-columns: repeat(3, calc(${BOARD_RESOLUTION} / 3));
-  place-items: center;
-  display: grid;
-  justify-items: center;
+  position: relative;
   width: 469px;
   height: 469px;
   background: #f9f9f9;
   border-radius: 58px;
   margin: 60px 0;
+  overflow: hidden;
+`;
+
+const BoardForeground = styled.div`
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  grid-template-columns: repeat(3, calc(${BOARD_RESOLUTION} / 3));
+  place-items: center;
+  display: grid;
+  justify-items: center;
+  z-index: 2;
+`;
+
+const BoardBackground = styled.div`
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const BackgroudHorizontalContainer = styled.div`
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 150px;
+`;
+
+const BackgroudVerticalContainer = styled.div`
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 150px;
+`;
+
+const BoardSeperator = styled.div`
+  background: ${COLORS.lightGray};
+  border-radius: 30px;
+  /* DEBUG */
+  ${p => p.horizontal ? css`
+    height: 3px;
+    width: 90%;
+  ` : css`
+    height: 90%;
+    width: 3px;
+  `}
 `;
 
 const Row = styled.div`
@@ -144,21 +199,36 @@ const Game = ({
 
   return (
     <Board>
-      {matrix.map((row, rowIdx) => (
-        <Row key={rowIdx}>
-          {row.map((column, colIdx) => (
-            <Column
-              onClick={() => handleClick(rowIdx, colIdx)}
-              key={colIdx}>
-              {column === symbols.X ?
-                <SymbolPreview src={XSymbol} alt="X Symbol" />
-                : column === symbols.O ?
-                  <SymbolPreview src={OSymbol} alt="O Symbol" />
-                  : null}
-            </Column>
-          ))}
-        </Row>
-      ))}
+      <BoardForeground>
+        {matrix.map((row, rowIdx) => (
+          <Row key={rowIdx}>
+            {row.map((column, colIdx) => (
+              <Column
+                onClick={() => handleClick(rowIdx, colIdx)}
+                key={colIdx}>
+                {column === symbols.X ?
+                  <SymbolPreview src={XSymbol} alt="X Symbol" />
+                  : column === symbols.O ?
+                    <SymbolPreview src={OSymbol} alt="O Symbol" />
+                    : null}
+              </Column>
+            ))}
+          </Row>
+        ))}
+      </BoardForeground>
+      <BoardBackground>
+        <BackgroudHorizontalContainer>
+          <BoardSeperator horizontal />
+
+          <BoardSeperator horizontal />
+        </BackgroudHorizontalContainer>
+
+        <BackgroudVerticalContainer>
+          <BoardSeperator />
+
+          <BoardSeperator />
+        </BackgroudVerticalContainer>
+      </BoardBackground>
     </Board>
   );
 };
