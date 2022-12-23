@@ -4,7 +4,6 @@ import { Check } from "react-feather";
 import {
   ClippedAndRounded,
   COLORS,
-  PadBox,
   TRANSITIONS,
   Divider
 } from "../styling";

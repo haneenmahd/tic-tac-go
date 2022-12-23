@@ -1,12 +1,9 @@
-import { useState } from "react";
+
 import styled from "styled-components";
-import { COLORS, Divider, QUERIES } from "../styling";
-import GameService from "../network/GameService";
+import { COLORS, QUERIES } from "../styling";
 import NavBar from "../components/NavBar";
-import Button, { SecondaryButton } from "../components/Button";
-import TextField from "../components/TextField";
+import Button from "../components/Button";
 import { ReactComponent as ArrowRight } from "../assets/svg/icons/arrow-right.svg";
-import Plus from "../assets/svg/icons/plus.svg";
 import GameMobileShowcase from "../assets/png/game-mobile.png";
 import { useNavigate } from "react-router-dom";
 
