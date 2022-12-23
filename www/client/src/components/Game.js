@@ -68,7 +68,7 @@ const BackgroudVerticalContainer = styled.div`
 const BoardSeperator = styled.div`
   background: ${COLORS.lightGray};
   border-radius: 30px;
-  /* DEBUG */
+
   ${p => p.horizontal ? css`
     height: 3px;
     width: 90%;
@@ -216,6 +216,7 @@ const Game = ({
           </Row>
         ))}
       </BoardForeground>
+
       <BoardBackground>
         <BackgroudHorizontalContainer>
           <BoardSeperator horizontal />
