@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { COLORS, TRANSITIONS } from "../styling";
 
 const TextField = styled.input`
-  width: 294px;
+  width: 100%;
   height: 45px;
   font-size: 15px;
   background: #ffffff;
