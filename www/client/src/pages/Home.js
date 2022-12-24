@@ -1,4 +1,4 @@
-
+import { useState, useEffect } from "react";
 import styled from "styled-components";
 import { COLORS, QUERIES } from "../styling";
 import NavBar from "../components/NavBar";
@@ -8,10 +8,15 @@ import GameMobileShowcase from "../assets/png/game-mobile.png";
 import { useNavigate } from "react-router-dom";
 
 const Container = styled.main`
-  height: 100vh;
-  max-width: 100vw;
+  height: 100%;
+  width: 100%;
   display: flex;
   flex-direction: column;
+  align-items: center;
+
+  @media screen and (${QUERIES.small}) {
+    justify-content: space-between;
+  }
 `;
 
 const Hero = styled.div`
@@ -22,6 +27,11 @@ const Hero = styled.div`
   padding: 0 30px;
   gap: 30px;
   min-height: calc(100vh - 90px - 96px);
+
+  @media screen and (${QUERIES.small}) {
+    min-height: 100%;
+    margin-top: 50%;
+  }
 `;
 
 const HeroSubContainer = styled.div`
@@ -38,20 +48,31 @@ const HeroSubContainer = styled.div`
 const HeroTextContainer = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 2rem;
 `;
 
-const HeroTitle = styled.h1`
-  font-weight: 500;
-  font-size: 30px;
-  color: ${COLORS.black};
-  line-height: 40px;
+const HeroTitle = styled.div`
+  display: flex;
+  flex-direction: row;
+  
+  @media screen and (${QUERIES.small}) {
+    
+  }
+`;
+
+const HeroText = styled.h1`
+  color: ${p => p.active ? "transparent" : COLORS.black};
+  font-size: 2.5rem;
+  background: repeating-radial-gradient(#000 -20.22%, #0C8F8F 76.38%, rgba(0, 0, 0, 0) 93.28%);
+  background-clip: text;
+  font-weight: 800;
+  transition: color 250ms ease-in;
 `;
 
 const HeroDescription = styled.p`
-  font-size: 18px;
+  font-size: 1rem;
   color: ${COLORS.gray};
-  line-height: 30px;
+  line-height: 1.8rem;
 `;
 
 const HeroActions = styled.div`
@@ -69,14 +90,60 @@ const HeroActions = styled.div`
   }
 `;
 
+const CTAButton = styled(Button)`
+  position: relative;
+
+  @media screen and (${QUERIES.small}) {
+    &::before {
+    content: "";
+    position: absolute;
+    top: 0.5rem;
+    height: 100px;
+    width: 300px;
+    background: repeating-radial-gradient(#000 -20.22%, #0C8F8F 76.38%, #000 93.28%);
+    filter: blur(50px);
+    z-index: -1;
+  }
+  }
+`;
+
 const HeroImage = styled.img`
   max-width: 350px;
   height: auto;
 
   @media screen and (${QUERIES.small}) {
-    display: none;
+   display: none;
   }
 `;
+
+const HeroContent = () => {
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  useEffect(() => {
+    const timeout = setInterval(() => {
+      if (activeIndex >= 2) {
+        setActiveIndex(0);
+      } else {
+        setActiveIndex(index => index + 1);
+      }
+    }, 1000);
+
+    return () => clearInterval(timeout);
+  });
+
+  return (
+    <HeroTextContainer>
+      <HeroTitle>
+        <HeroText active={activeIndex === 0}>Tic.</HeroText>
+        <HeroText active={activeIndex === 1}>Tac.</HeroText>
+        <HeroText active={activeIndex === 2}>Go.</HeroText>
+      </HeroTitle>
+      <HeroDescription>
+        Play Tic Tac Toe with random people around the world. You will be paired to a random player and you both will playing the game simultaneously. You will have 5 rounds, the one with the greater score wins.
+      </HeroDescription>
+    </HeroTextContainer>
+  );
+}
 
 const Home = () => {
   const navigate = useNavigate();
@@ -91,24 +158,14 @@ const Home = () => {
 
       <Hero>
         <HeroSubContainer>
-          <HeroTextContainer>
-            <HeroTitle>
-              Play Tic Tac Toe together online with more fun, live chat and
-              private rooms.
-            </HeroTitle>
-            <HeroDescription>
-              Create rooms so that you can hang out and spend time with your
-              family. With Competition Mode, you are open to play with more than
-              2 players.
-            </HeroDescription>
-          </HeroTextContainer>
+          <HeroContent />
 
           <HeroActions>
-            <Button onClick={handlePlay}>
+            <CTAButton onClick={handlePlay} noScaling>
               <ArrowRight stroke="white" />
 
               Play
-            </Button>
+            </CTAButton>
           </HeroActions>
         </HeroSubContainer>
 
