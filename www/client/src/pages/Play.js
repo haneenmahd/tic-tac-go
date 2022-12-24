@@ -80,6 +80,12 @@ const SelectedAvatar = styled.div`
     opacity: 1;
     top: 0;
   }
+
+  @media screen and (${QUERIES.small}) {
+    max-width: 100%;
+    height: auto;
+    margin: 0 1rem;
+  }
 `;
 
 const Form = styled.div`
@@ -366,7 +372,7 @@ const Play = () => {
     <Container>
       <SelectedAvatar key={selectedAvatar}>
         <Avatar
-          size={225}
+          size="100%"
           name={selectedAvatar}
           {...avatarProps}
         />
