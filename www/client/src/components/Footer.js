@@ -10,6 +10,10 @@ const Container = styled.div`
   padding: 33px 30px;
   gap: 2rem;
   width: 100vw;
+
+  @media screen and (${QUERIES.small}) {
+    justify-content: center;
+  }
 `;
 
 const FooterLink = styled(NavLink)`
