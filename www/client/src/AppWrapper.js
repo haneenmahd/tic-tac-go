@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import Footer from "./components/Footer";
 import styled, { keyframes } from "styled-components";
-import { TRANSITIONS } from "./styling";
+import { QUERIES, TRANSITIONS } from "./styling";
 
 const FadeIn = keyframes`
     from {
@@ -17,6 +17,10 @@ const FadeIn = keyframes`
 const AppWraper = styled.div`
   min-height: calc(100vh - 96px - 90px);
   animation: ${FadeIn} 1s ${TRANSITIONS.load};
+
+  @media screen and (${QUERIES.small}) {
+    min-height: calc(100vh - 90px);
+  }
 `;
 
 const App = ({ hideFooter, children }) => {
