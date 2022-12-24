@@ -93,6 +93,10 @@ const Form = styled.div`
   flex-direction: row;
   gap: 20px;
   padding: 50px 0;
+
+  @media screen and (${QUERIES.small}) {
+    flex-direction: column;
+  }
 `;
 
 const AvatarPickerGrid = styled.div`
