@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { COLORS, TRANSITIONS } from "../styling";
 
 const Button = styled.button`
@@ -14,18 +14,26 @@ const Button = styled.button`
   cursor: pointer;
   background: ${COLORS.black};
   color: ${COLORS.white};
-  border: none;
+  border: 1px hidden ${COLORS.black};
   border-radius: 30px;
   outline: none;
   transition: ${TRANSITIONS.hovers};
 
   &:hover {
-    background-color: ${COLORS.gray};
+    background-color: ${COLORS.white};
+    border-style: solid;
+    color: ${COLORS.black};
+
+    svg {
+      stroke: ${COLORS.black};
+    }
   }
 
-  &:active {
-    scale: 0.99;
-  }
+  ${p => !p.noScaling && css`
+    &:active {
+      scale: 0.99;
+    }
+  `}
 `;
 
 const SecondaryButton = styled(Button)`
