@@ -15,6 +15,7 @@ const Container = styled.main`
   align-items: center;
 
   @media screen and (${QUERIES.small}) {
+    height: calc(100vh - 90px);
     justify-content: space-between;
   }
 `;
@@ -30,7 +31,6 @@ const Hero = styled.div`
 
   @media screen and (${QUERIES.small}) {
     min-height: 100%;
-    margin-top: 50%;
   }
 `;
 
