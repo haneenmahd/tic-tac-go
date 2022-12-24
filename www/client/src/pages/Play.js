@@ -12,7 +12,7 @@ import { LinkLessNav } from "../components/NavBar";
 import Avatar from "boring-avatars";
 import generateId from "../utils/generateId";
 import Button from "../components/Button";
-import ArrowUp from "../assets/svg/icons/arrow-up.svg";
+import { ReactComponent as ArrowUp } from "../assets/svg/icons/arrow-up.svg";
 import { ReactComponent as ArrowRight } from "../assets/svg/icons/arrow-right.svg";
 import TextField from "../components/TextField";
 import OSymbol from "../assets/svg/symbols/O.svg";
@@ -391,10 +391,7 @@ const Play = () => {
         />
 
         <Button onClick={handlePlay}>
-          <img
-            src={ArrowUp}
-            alt="plus icon"
-          />
+          <ArrowUp stroke="white" />
           Play
         </Button>
       </Form>
