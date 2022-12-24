@@ -5,7 +5,8 @@ import {
   ClippedAndRounded,
   COLORS,
   TRANSITIONS,
-  Divider
+  Divider,
+  QUERIES
 } from "../styling";
 import { LinkLessNav } from "../components/NavBar";
 import Avatar from "boring-avatars";
@@ -89,17 +90,22 @@ const Form = styled.div`
 `;
 
 const AvatarPickerGrid = styled.div`
-  width: 100%;
-  display: grid;
-  grid-gap: 44px;
+  width: 60%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 44px;
   padding: 10px 0;
   justify-content: center;
-  grid-template-columns: repeat(6, 100px);
+  transition: all 300ms;
 
-  @media screen and (max-width: 48rem) {
+  @media screen and (${QUERIES.medium}) {
     width: 80%;
-    grid-template-columns: repeat(3, 100px);
-    grid-gap: 22px;
+  }
+
+  @media screen and (${QUERIES.small}) {
+    width: 100%;
+    gap: 22px;
   }
 `;
 
