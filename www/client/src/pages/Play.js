@@ -145,18 +145,26 @@ const AvatarOption = styled.div`
 `;
 
 const PlayerInfoBubble = styled.div`
+  min-height: 126px;
+  max-width: 100%;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+  gap: 1rem;
   padding: 28px 25px;
-  gap: 20px;
-  min-width: 338px;
-  height: 126px;
   border: 2px dashed #ececec;
   border-radius: 100px;
   box-shadow: 0 0 0 0 rgba(223, 235, 255, 0.32);
   transition: box-shadow 100ms ease-in-out;
+
+  @media screen and (${QUERIES.small}) {
+    flex-direction: column;
+    max-width: 100%;
+    padding: 3rem;
+    gap: 2rem;
+    border-radius: 3rem;
+  }
 
   ${p => p.isPlayerTurn && css`
     border: 2px solid rgba(223, 235, 255, 1);
@@ -165,12 +173,38 @@ const PlayerInfoBubble = styled.div`
   ${p => p.gameOver === false && p.isPlayerTurn && css`
       border: 2px solid rgba(223, 235, 255, 1);
   `}
+
 `;
 
 const AvatarContainer = styled.div`
   display: flex;
   align-items: center;
-  gap: 20px;
+  gap: 1rem;
+
+  @media screen and (${QUERIES.small}) {
+    gap: 1rem;
+
+    svg {
+      height: 50px;
+      width: 50px;
+    }
+  }
+
+  svg {
+    height: 80px;
+    width: 80px;
+  }
+`;
+
+const AvatarActions = styled.div`
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  gap: 1rem;
+
+  @media screen and (${QUERIES.small}) {
+    gap: 2rem;
+  }
 `;
 
 const SymbolPreviewContainer = styled.div`
@@ -253,6 +287,11 @@ const GameInfoContainer = styled.div`
   flex-direction: row;
   align-items: center;
   justify-content: center;
+
+  @media screen and (${QUERIES.small}) {
+    flex-direction: column;
+    gap: 2rem;
+  }
 `;
 
 const GameRoundContainer = styled.div`
@@ -425,7 +464,7 @@ const Play = () => {
           <AvatarContainer>
             <ClippedAndRounded>
               <Avatar
-                size={80}
+                size="100%"
                 name={selectedAvatar}
                 {...avatarProps}
               />
@@ -434,36 +473,38 @@ const Play = () => {
             <PlayerInfoName>{name}</PlayerInfoName>
           </AvatarContainer>
 
-          <SymbolPreviewContainer>
-            {joinedGame ? (
-              <SymbolPreview
-                src={symbol === symbols.X ? XSymbol : OSymbol}
-                selected
-              />
-            ) : (
-              <>
+          <AvatarActions>
+            <SymbolPreviewContainer>
+              {joinedGame ? (
                 <SymbolPreview
-                  src={OSymbol}
-                  alt="O symbol"
-                  selected={symbol === symbols.O}
-                  onClick={() => setSymbol(symbols.O)}
+                  src={symbol === symbols.X ? XSymbol : OSymbol}
+                  selected
                 />
+              ) : (
+                <>
+                  <SymbolPreview
+                    src={OSymbol}
+                    alt="O symbol"
+                    selected={symbol === symbols.O}
+                    onClick={() => setSymbol(symbols.O)}
+                  />
 
-                <SymbolPreview
-                  src={XSymbol}
-                  alt="X symbol"
-                  selected={symbol === symbols.X}
-                  onClick={() => setSymbol(symbols.X)}
-                />
-              </>
-            )}
-          </SymbolPreviewContainer>
+                  <SymbolPreview
+                    src={XSymbol}
+                    alt="X symbol"
+                    selected={symbol === symbols.X}
+                    onClick={() => setSymbol(symbols.X)}
+                  />
+                </>
+              )}
+            </SymbolPreviewContainer>
 
-          {!joinedGame ? (
-            <ConfirmButton onClick={joinGame}>
-              <Check />
-            </ConfirmButton>
-          ) : null}
+            {!joinedGame ? (
+              <ConfirmButton onClick={joinGame}>
+                <Check />
+              </ConfirmButton>
+            ) : null}
+          </AvatarActions>
         </PlayerInfoBubble>
 
         <GameRoundContainer>
@@ -488,7 +529,7 @@ const Play = () => {
             <AvatarContainer>
               <ClippedAndRounded>
                 <Avatar
-                  size={80}
+                  size="100%"
                   name={opponent.avatarId}
                   {...avatarProps}
                 />
