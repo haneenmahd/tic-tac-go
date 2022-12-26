@@ -51,7 +51,8 @@ const GameActions = ({
   primaryIcon,
   secondaryTitle,
   secondaryAction,
-  secondaryIcon
+  secondaryIcon,
+  noSecondary
 }) => {
   return (
     <GameActionsContainer disabled={disabled}>
@@ -61,11 +62,13 @@ const GameActions = ({
         {primaryIcon}
       </GameActionButton>
 
-      <GameActionButtonSecondary onClick={secondaryAction}>
-        {secondaryTitle}
+      {noSecondary ? null :
+        <GameActionButtonSecondary onClick={secondaryAction}>
+          {secondaryTitle}
 
-        {secondaryIcon}
-      </GameActionButtonSecondary>
+          {secondaryIcon}
+        </GameActionButtonSecondary>
+      }
     </GameActionsContainer>
   );
 }
