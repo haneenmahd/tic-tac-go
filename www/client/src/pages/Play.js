@@ -628,7 +628,7 @@ const Play = () => {
             primaryIcon={
               <ArrowRight stroke="black" />
             }
-            secondaryTitle="Chat"
+            noSecondary
           />
         </>
       ) : null}
