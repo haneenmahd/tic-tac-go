@@ -4,17 +4,16 @@ import { Check } from "react-feather";
 import {
   ClippedAndRounded,
   COLORS,
-  FlexDiv,
-  PadBox,
   TRANSITIONS,
-  Divider
+  Divider,
+  QUERIES
 } from "../styling";
 import { LinkLessNav } from "../components/NavBar";
 import Avatar from "boring-avatars";
 import generateId from "../utils/generateId";
 import Button from "../components/Button";
-import ArrowUp from "../assets/svg/icons/arrow-up.svg";
-import ArrowRight from "../assets/svg/icons/arrow-right.svg";
+import { ReactComponent as ArrowUp } from "../assets/svg/icons/arrow-up.svg";
+import { ReactComponent as ArrowRight } from "../assets/svg/icons/arrow-right.svg";
 import TextField from "../components/TextField";
 import OSymbol from "../assets/svg/symbols/O.svg";
 import XSymbol from "../assets/svg/symbols/X.svg";
@@ -24,7 +23,9 @@ import Game, { symbols } from "../components/Game";
 import GameActions from "../components/GameActions";
 import GameResult from "../components/GameResult";
 
-const PageContainer = styled(FlexDiv)`
+const PageContainer = styled.div`
+  display: flex;
+  flex-direction: column;
   justify-content: space-between;
 `;
 
@@ -79,20 +80,42 @@ const SelectedAvatar = styled.div`
     opacity: 1;
     top: 0;
   }
+
+  @media screen and (${QUERIES.small}) {
+    max-width: 100%;
+    height: auto;
+    margin: 0 1rem;
+  }
+`;
+
+const Form = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  padding: 50px 0;
+
+  @media screen and (${QUERIES.small}) {
+    flex-direction: column;
+  }
 `;
 
 const AvatarPickerGrid = styled.div`
-  width: 100%;
-  display: grid;
-  grid-gap: 44px;
+  width: 60%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 44px;
   padding: 10px 0;
   justify-content: center;
-  grid-template-columns: repeat(6, 100px);
+  transition: all 300ms;
 
-  @media screen and (max-width: 48rem) {
+  @media screen and (${QUERIES.medium}) {
     width: 80%;
-    grid-template-columns: repeat(3, 100px);
-    grid-gap: 22px;
+  }
+
+  @media screen and (${QUERIES.small}) {
+    width: 100%;
+    gap: 22px;
   }
 `;
 
@@ -121,19 +144,49 @@ const AvatarOption = styled.div`
   `}
 `;
 
+const GameInfoContainer = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+
+  @media screen and (${QUERIES.small}) {
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  ${p => p.showingGame && css`
+    @media screen and (${QUERIES.small}) {
+      flex-direction: row;
+      gap: 0.8rem;
+      height: 80px;
+      margin: 1rem 0;
+      margin-top: 2rem;
+  `}
+`;
+
 const PlayerInfoBubble = styled.div`
+  min-height: 126px;
+  max-width: 100%;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+  gap: 1rem;
   padding: 28px 25px;
-  gap: 20px;
-  min-width: 338px;
-  height: 126px;
   border: 2px dashed #ececec;
   border-radius: 100px;
   box-shadow: 0 0 0 0 rgba(223, 235, 255, 0.32);
   transition: box-shadow 100ms ease-in-out;
+
+  @media screen and (${QUERIES.small}) {
+    flex-direction: column;
+    max-width: 100%;
+    padding: 3rem;
+    gap: 2rem;
+    border-radius: 3rem;
+  }
 
   ${p => p.isPlayerTurn && css`
     border: 2px solid rgba(223, 235, 255, 1);
@@ -142,6 +195,66 @@ const PlayerInfoBubble = styled.div`
   ${p => p.gameOver === false && p.isPlayerTurn && css`
       border: 2px solid rgba(223, 235, 255, 1);
   `}
+
+  ${p => p.showingGame && css`
+    @media screen and (${QUERIES.small}) {
+        padding: 0;
+        gap: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        border: none;
+        margin: 0 2rem;
+        filter: brightness(100%) opacity(1);
+        transition: all 200ms ease-in-out;
+
+      p {
+        display: none;
+      }
+    }
+
+    ${p => p.isPlayerTurn || css`
+      @media screen and (${QUERIES.small}) {
+        filter: brightness(80%) opacity(0.8);
+      }
+    `}
+  `}
+`;
+
+const AvatarContainer = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+
+  @media screen and (${QUERIES.small}) {
+    gap: 1rem;
+
+    svg {
+      height: 50px;
+      width: 50px;
+    }
+  }
+
+  svg {
+    height: 80px;
+    width: 80px;
+  }
+`;
+
+const AvatarActions = styled.div`
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  gap: 1rem;
+
+  @media screen and (${QUERIES.small}) {
+    gap: 2rem;
+  }
+`;
+
+const SymbolPreviewContainer = styled.div`
+  display: flex;
+  gap: 10px;
 `;
 
 const PlayerInfoName = styled.p`
@@ -213,14 +326,6 @@ const ConfirmButton = styled.button`
   }
 `;
 
-const GameInfoContainer = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-`;
-
 const GameRoundContainer = styled.div`
   width: 10%;
   display: flex;
@@ -229,6 +334,13 @@ const GameRoundContainer = styled.div`
   justify-content: center;
   gap: 12px;
   margin: 0 35px;
+
+  ${p => p.showingGame && css`
+    @media screen and (${QUERIES.small}) {
+      gap: 0.5rem;
+      margin: 0 1rem;
+    }
+  `}
 `;
 
 const GameRound = styled.div`
@@ -256,6 +368,12 @@ const ScoreCard = styled.div`
   align-items: center;
   justify-content: space-between;
   gap: 15px;
+
+  ${p => p.showingGame && css`
+    @media screen and (${QUERIES.small}) {
+       width: auto;
+    }
+  `}
 `;
 
 const Play = () => {
@@ -342,32 +460,25 @@ const Play = () => {
     <Container>
       <SelectedAvatar key={selectedAvatar}>
         <Avatar
-          size={225}
+          size="100%"
           name={selectedAvatar}
           {...avatarProps}
         />
       </SelectedAvatar>
 
-      <PadBox padding="50px 0">
-        <FlexDiv
-          direction="row"
-          gap="20px">
-          <TextField
-            placeholder="Your Name"
-            value={name}
-            onChange={e => setName(e.target.value)}
-            maxLength={10}
-          />
+      <Form>
+        <TextField
+          placeholder="Your Name"
+          value={name}
+          onChange={e => setName(e.target.value)}
+          maxLength={10}
+        />
 
-          <Button onClick={handlePlay}>
-            <img
-              src={ArrowUp}
-              alt="plus icon"
-            />
-            Play
-          </Button>
-        </FlexDiv>
-      </PadBox>
+        <Button onClick={handlePlay}>
+          <ArrowUp stroke="white" />
+          Play
+        </Button>
+      </Form>
 
       <AvatarPickerGrid>
         {avatars.map((avatar, id) => (
@@ -391,55 +502,58 @@ const Play = () => {
       direction="row"
       gap="36px"
       key={null}>
-      <GameInfoContainer>
+      <GameInfoContainer showingGame={opponent}>
         <PlayerInfoBubble
           gameOver={gameOver}
-          isPlayerTurn={isPlayerTurn}>
-          <FlexDiv gap="20px">
+          isPlayerTurn={isPlayerTurn}
+          showingGame={opponent}>
+          <AvatarContainer>
             <ClippedAndRounded>
               <Avatar
-                size={80}
+                size="100%"
                 name={selectedAvatar}
                 {...avatarProps}
               />
             </ClippedAndRounded>
 
             <PlayerInfoName>{name}</PlayerInfoName>
-          </FlexDiv>
+          </AvatarContainer>
 
-          <FlexDiv gap="10px">
-            {joinedGame ? (
-              <SymbolPreview
-                src={symbol === symbols.X ? XSymbol : OSymbol}
-                selected
-              />
-            ) : (
-              <>
+          <AvatarActions>
+            <SymbolPreviewContainer>
+              {joinedGame ? (
                 <SymbolPreview
-                  src={OSymbol}
-                  alt="O symbol"
-                  selected={symbol === symbols.O}
-                  onClick={() => setSymbol(symbols.O)}
+                  src={symbol === symbols.X ? XSymbol : OSymbol}
+                  selected
                 />
+              ) : (
+                <>
+                  <SymbolPreview
+                    src={OSymbol}
+                    alt="O symbol"
+                    selected={symbol === symbols.O}
+                    onClick={() => setSymbol(symbols.O)}
+                  />
 
-                <SymbolPreview
-                  src={XSymbol}
-                  alt="X symbol"
-                  selected={symbol === symbols.X}
-                  onClick={() => setSymbol(symbols.X)}
-                />
-              </>
-            )}
-          </FlexDiv>
+                  <SymbolPreview
+                    src={XSymbol}
+                    alt="X symbol"
+                    selected={symbol === symbols.X}
+                    onClick={() => setSymbol(symbols.X)}
+                  />
+                </>
+              )}
+            </SymbolPreviewContainer>
 
-          {!joinedGame ? (
-            <ConfirmButton onClick={joinGame}>
-              <Check />
-            </ConfirmButton>
-          ) : null}
+            {!joinedGame ? (
+              <ConfirmButton onClick={joinGame}>
+                <Check />
+              </ConfirmButton>
+            ) : null}
+          </AvatarActions>
         </PlayerInfoBubble>
 
-        <GameRoundContainer>
+        <GameRoundContainer showingGame={opponent}>
           {opponent ?
             <GameRound>Round {round}</GameRound>
             : null}
@@ -448,7 +562,7 @@ const Play = () => {
           {!opponent ? <Divider maxWidth /> : null}
 
           {opponent ? (
-            <ScoreCard>
+            <ScoreCard showingGame={opponent}>
               <span>{playerScore}</span>
               <Divider maxWidth />
               <span>{opponentScore}</span>
@@ -457,18 +571,20 @@ const Play = () => {
         </GameRoundContainer>
 
         {opponent ? (
-          <PlayerInfoBubble isPlayerTurn={!isPlayerTurn}>
-            <FlexDiv gap="20px">
+          <PlayerInfoBubble
+            isPlayerTurn={!isPlayerTurn}
+            showingGame={opponent}>
+            <AvatarContainer>
               <ClippedAndRounded>
                 <Avatar
-                  size={80}
+                  size="100%"
                   name={opponent.avatarId}
                   {...avatarProps}
                 />
               </ClippedAndRounded>
 
               <PlayerInfoName>{opponent.name}</PlayerInfoName>
-            </FlexDiv>
+            </AvatarContainer>
 
             <SymbolPreview
               src={opponent.symbol === symbols.X ? XSymbol : OSymbol}
@@ -477,7 +593,7 @@ const Play = () => {
           </PlayerInfoBubble>
         ) : (
           <SearchPlayerInfoBubble searching={joinedGame}>
-            <FlexDiv gap="20px">
+            <AvatarContainer>
               <img
                 src={SearchIcon}
                 alt="opponent searching icon"
@@ -486,7 +602,7 @@ const Play = () => {
               <span>
                 {joinedGame ? "Searching for opponent" : "Choose your side"}
               </span>
-            </FlexDiv>
+            </AvatarContainer>
           </SearchPlayerInfoBubble>
         )}
       </GameInfoContainer>
@@ -512,12 +628,9 @@ const Play = () => {
             primaryTitle="Next Round"
             primaryAction={handleNextRound}
             primaryIcon={
-              <img
-                src={ArrowRight}
-                alt="arrow up icon"
-              />
+              <ArrowRight stroke="black" />
             }
-            secondaryTitle="Chat"
+            noSecondary
           />
         </>
       ) : null}

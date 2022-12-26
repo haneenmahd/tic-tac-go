@@ -1,8 +1,9 @@
 import styled from "styled-components";
 
 export const QUERIES = {
-  large: "min-width: 801px",
-  small: "max-width: 480px"
+  large: "min-width: 768px",
+  medium: "min-width: 600px",
+  small: "max-width: 768px"
 };
 
 export const COLORS = {
@@ -25,22 +26,10 @@ export const TRANSITIONS = {
   smoothHovers: "cubic-bezier(0.57, 0.38, 0.26, 0.95)"
 };
 
-export const FlexDiv = styled.div`
-  display: flex;
-  flex-direction: ${props => props.direction || "row"};
-  align-items: ${props => props.alignment || "center"};
-  justify-content: ${props => props.justify || "center"};
-  gap: ${props => props.gap};
-`;
-
 export const Divider = styled.div`
   width: ${props => (props.fit ? "10%" : props.maxWidth ? "100%" : "405px")};
   height: 1px;
   background-color: ${COLORS.fadedGray};
-`;
-
-export const PadBox = styled.div`
-  padding: ${props => props.padding};
 `;
 
 export const ClippedAndRounded = styled.div`

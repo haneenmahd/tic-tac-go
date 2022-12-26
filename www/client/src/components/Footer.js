@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import NavLink from "../components/NavLink";
-import { COLORS, Divider } from "../styling";
+import { COLORS, Divider, QUERIES } from "../styling";
 
 const Container = styled.div`
   display: flex;
@@ -10,10 +10,20 @@ const Container = styled.div`
   padding: 33px 30px;
   gap: 2rem;
   width: 100vw;
+
+  @media screen and (${QUERIES.small}) {
+    justify-content: center;
+  }
 `;
 
 const FooterLink = styled(NavLink)`
   color: ${COLORS.gray};
+`;
+
+const FooterDivider = styled(Divider)`
+  @media screen and (${QUERIES.small}) {
+    display: none;
+  }
 `;
 
 const Footer = () => (
@@ -21,7 +31,8 @@ const Footer = () => (
     <FooterLink to="/about">About</FooterLink>
     <FooterLink to="/support">Support</FooterLink>
     <FooterLink to="/privacy-policy">Privacy</FooterLink>
-    <Divider maxWidth />
+
+    <FooterDivider maxWidth />
   </Container>
 );
 

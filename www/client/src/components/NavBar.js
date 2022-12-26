@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import NavLink from "./NavLink";
-import { COLORS, FlexDiv, Divider } from "../styling";
+import { COLORS, Divider } from "../styling";
 import Icon from "../assets/svg/logo.svg";
 
 const Container = styled.div`
@@ -11,6 +11,11 @@ const Container = styled.div`
   padding: 33px 30px;
   width: 100vw;
   height: 90px;
+`;
+
+const LogoContainer = styled.div`
+  display: flex;
+  gap: 10px;
 `;
 
 const LinkLessNavContainer = styled(Container)`
@@ -31,13 +36,13 @@ const Text = styled.span`
 
 const HomeLink = () => (
   <NavLink to="/">
-    <FlexDiv gap="11px">
+    <LogoContainer>
       <img
         src={Icon}
         alt="Icon for TicTacGo"
       />
       <Text>TicTacGo</Text>
-    </FlexDiv>
+    </LogoContainer>
   </NavLink>
 );
 
