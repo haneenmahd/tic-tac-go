@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import styled, { css, keyframes } from "styled-components";
 import { COLORS, QUERIES } from "../styling";
 import GameService from "../network/GameService";
