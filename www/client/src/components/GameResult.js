@@ -1,9 +1,9 @@
 import React from 'react';
 import styled, { keyframes } from 'styled-components';
-import { COLORS, Divider, TRANSITIONS } from '../styling';
+import { COLORS, Divider, QUERIES, TRANSITIONS } from '../styling';
 import Avatar from 'boring-avatars';
 import GameActions from './GameActions';
-import ArrowRight from "../assets/svg/icons/arrow-right.svg";
+import { ReactComponent as ArrowRight } from "../assets/svg/icons/arrow-right.svg";
 
 const FadeIn = keyframes`
     from {
@@ -24,6 +24,10 @@ const Container = styled.div`
     max-width: 100vw;
     padding: 3rem;
     animation: ${FadeIn} 1s ${TRANSITIONS.load};
+
+    @media screen and (${QUERIES.small}) {
+        padding: 2rem;
+    }
 `;
 
 const HeaderContainer = styled.div`
@@ -39,6 +43,12 @@ const HeaderContainer = styled.div`
         font-weight: 400;
         font-size: 15px;
         color: ${COLORS.gray}
+    }
+
+    @media screen and (${QUERIES.small}) {
+        * {
+            margin-top: 0.5rem;
+        }
     }
 `;
 
@@ -120,12 +130,9 @@ const GameResult = ({
             <GameActions
                 primaryTitle="Go Home"
                 primaryIcon={
-                    <img
-                        src={ArrowRight}
-                        alt="arrow up icon"
-                    />
+                    <ArrowRight stroke="black" />
                 }
-                secondaryTitle="Continue in Chat"
+                noSecondary
             />
         </Container>
     );
