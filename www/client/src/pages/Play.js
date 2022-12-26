@@ -205,6 +205,8 @@ const PlayerInfoBubble = styled.div`
         gap: 0.5rem;
         border: none;
         margin: 0 2rem;
+        filter: brightness(100%) opacity(1);
+        transition: all 200ms ease-in-out;
 
       p {
         display: none;
@@ -213,7 +215,7 @@ const PlayerInfoBubble = styled.div`
 
     ${p => p.isPlayerTurn || css`
       @media screen and (${QUERIES.small}) {
-        filter: grayscale(40%) brightness(90%);
+        filter: brightness(80%) opacity(0.8);
       }
     `}
   `}
