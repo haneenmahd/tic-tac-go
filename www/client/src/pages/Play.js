@@ -144,6 +144,28 @@ const AvatarOption = styled.div`
   `}
 `;
 
+const GameInfoContainer = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+
+  @media screen and (${QUERIES.small}) {
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  ${p => p.showingGame && css`
+    @media screen and (${QUERIES.small}) {
+      flex-direction: row;
+      gap: 0.8rem;
+      height: 80px;
+      margin: 1rem 0;
+      margin-top: 2rem;
+  `}
+`;
+
 const PlayerInfoBubble = styled.div`
   min-height: 126px;
   max-width: 100%;
@@ -174,6 +196,21 @@ const PlayerInfoBubble = styled.div`
       border: 2px solid rgba(223, 235, 255, 1);
   `}
 
+  ${p => p.showingGame && css`
+    @media screen and (${QUERIES.small}) {
+        padding: 0;
+        gap: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        border: none;
+        margin: 0 2rem;
+
+      p {
+        display: none;
+      }
+    }
+  `}
 `;
 
 const AvatarContainer = styled.div`
@@ -281,19 +318,6 @@ const ConfirmButton = styled.button`
   }
 `;
 
-const GameInfoContainer = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-
-  @media screen and (${QUERIES.small}) {
-    flex-direction: column;
-    gap: 2rem;
-  }
-`;
-
 const GameRoundContainer = styled.div`
   width: 10%;
   display: flex;
@@ -302,6 +326,13 @@ const GameRoundContainer = styled.div`
   justify-content: center;
   gap: 12px;
   margin: 0 35px;
+
+  ${p => p.showingGame && css`
+    @media screen and (${QUERIES.small}) {
+      gap: 0.5rem;
+      margin: 0 1rem;
+    }
+  `}
 `;
 
 const GameRound = styled.div`
@@ -329,6 +360,12 @@ const ScoreCard = styled.div`
   align-items: center;
   justify-content: space-between;
   gap: 15px;
+
+  ${p => p.showingGame && css`
+    @media screen and (${QUERIES.small}) {
+       width: auto;
+    }
+  `}
 `;
 
 const Play = () => {
@@ -457,10 +494,11 @@ const Play = () => {
       direction="row"
       gap="36px"
       key={null}>
-      <GameInfoContainer>
+      <GameInfoContainer showingGame={opponent}>
         <PlayerInfoBubble
           gameOver={gameOver}
-          isPlayerTurn={isPlayerTurn}>
+          isPlayerTurn={isPlayerTurn}
+          showingGame={opponent}>
           <AvatarContainer>
             <ClippedAndRounded>
               <Avatar
@@ -507,7 +545,7 @@ const Play = () => {
           </AvatarActions>
         </PlayerInfoBubble>
 
-        <GameRoundContainer>
+        <GameRoundContainer showingGame={opponent}>
           {opponent ?
             <GameRound>Round {round}</GameRound>
             : null}
@@ -516,7 +554,7 @@ const Play = () => {
           {!opponent ? <Divider maxWidth /> : null}
 
           {opponent ? (
-            <ScoreCard>
+            <ScoreCard showingGame={opponent}>
               <span>{playerScore}</span>
               <Divider maxWidth />
               <span>{opponentScore}</span>
@@ -525,7 +563,9 @@ const Play = () => {
         </GameRoundContainer>
 
         {opponent ? (
-          <PlayerInfoBubble isPlayerTurn={!isPlayerTurn}>
+          <PlayerInfoBubble
+            isPlayerTurn={!isPlayerTurn}
+            showingGame={opponent}>
             <AvatarContainer>
               <ClippedAndRounded>
                 <Avatar
