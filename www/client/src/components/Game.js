@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import styled, { css, keyframes } from "styled-components";
-import { COLORS } from "../styling";
+import { COLORS, QUERIES } from "../styling";
 import GameService from "../network/GameService";
 import OSymbol from "../assets/svg/symbols/O.svg";
 import XSymbol from "../assets/svg/symbols/X.svg";
@@ -20,6 +20,11 @@ const Board = styled.div`
   border-radius: 58px;
   margin: 60px 0;
   overflow: hidden;
+
+  @media screen and (${QUERIES.small}) {
+    width: 300px;
+    height: 300px;
+  }
 `;
 
 const BoardForeground = styled.div`
@@ -31,6 +36,10 @@ const BoardForeground = styled.div`
   display: grid;
   justify-items: center;
   z-index: 2;
+
+  @media screen and (${QUERIES.small}) {
+    grid-template-columns: repeat(3, calc(300px / 3));
+  }
 `;
 
 const BoardBackground = styled.div`
@@ -52,6 +61,10 @@ const BackgroudHorizontalContainer = styled.div`
   align-items: center;
   justify-content: center;
   gap: 150px;
+
+  @media screen and (${QUERIES.small}) {
+    gap: 100px;
+  }
 `;
 
 const BackgroudVerticalContainer = styled.div`
@@ -63,6 +76,10 @@ const BackgroudVerticalContainer = styled.div`
   align-items: center;
   justify-content: center;
   gap: 150px;
+
+  @media screen and (${QUERIES.small}) {
+    gap: 100px;
+  }
 `;
 
 const BoardSeperator = styled.div`
@@ -81,6 +98,11 @@ const BoardSeperator = styled.div`
 const Row = styled.div`
   width: calc(${BOARD_RESOLUTION} / 3);
   height: calc(${BOARD_RESOLUTION});
+
+  @media screen and (${QUERIES.small}) {
+    width: calc(300px / 3);
+    height: 300px;
+  }
 `;
 
 const Column = styled.div`
@@ -89,6 +111,11 @@ const Column = styled.div`
   justify-content: center;
   height: calc(${BOARD_RESOLUTION} / 3);
   width: calc(${BOARD_RESOLUTION} / 3);
+
+  @media screen and (${QUERIES.small}) {
+    width: 100px;
+    height: 100px;
+  }
 `;
 
 const SymbolAniamtion = keyframes`
@@ -106,6 +133,11 @@ const SymbolPreview = styled.img`
   width: 100px;
   user-select: none;
   animation: ${SymbolAniamtion} 250ms cubic-bezier(0.25, 0.15, 0, 1.13);
+
+  @media screen and (${QUERIES.small}) {
+    width: 60px;
+    height: 60px;
+  }
 `;
 
 const Game = ({
