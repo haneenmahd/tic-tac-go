@@ -210,6 +210,12 @@ const PlayerInfoBubble = styled.div`
         display: none;
       }
     }
+
+    ${p => p.isPlayerTurn || css`
+      @media screen and (${QUERIES.small}) {
+        filter: grayscale(40%) brightness(90%);
+      }
+    `}
   `}
 `;
 
