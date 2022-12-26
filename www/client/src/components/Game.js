@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import styled, { css, keyframes } from "styled-components";
 import { COLORS, QUERIES } from "../styling";
 import GameService from "../network/GameService";
@@ -226,8 +226,7 @@ const Game = ({
   useEffect(() => {
     GameService.shared.updateScore(playerScore);
     setRoundOver(isOver => isOver ? false : true);
-  }, [playerScore]);
-  // useCallback() for preventing mutliple renders and improving performances
+  }, [playerScore, setRoundOver]);
 
   return (
     <Board>
