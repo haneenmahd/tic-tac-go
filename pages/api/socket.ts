@@ -1,4 +1,4 @@
-import { Server } from "socket.io";
+import { Server, ServerOptions } from "socket.io";
 import type { NextApiRequest, NextApiResponse } from "next";
 import MainController from "controllers/MainController";
 
@@ -12,7 +12,7 @@ export type SocketResponse = NextApiResponse & {
 
 export default function handler(req: NextApiRequest, res: SocketResponse) {
     if (!res.socket!.server.io) {
-        const io = new Server(res.socket!.server);
+        const io = new Server(res.socket!.server as Partial<ServerOptions>);
         res.socket!.server.io = io;
 
         const mainController = new MainController();
