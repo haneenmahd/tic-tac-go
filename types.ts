@@ -1,5 +1,9 @@
 import Player from "./controllers/Player";
 
+export type Callback<P, T> = (param: P) => T;
+
+export type CallbackNoParams<T> = () => T;
+
 export type HTTPPort = string | number;
 
 export type Players = {
