@@ -1,6 +1,6 @@
 import { Server, Socket } from "socket.io";
-import GameController from "controllers/GameController";
-import RoomController from "controllers/RoomController";
+import GameController from "./GameController";
+import RoomController from "./RoomController";
 
 export default class MainController {
     protected roomController = new RoomController();
