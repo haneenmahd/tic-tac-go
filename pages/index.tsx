@@ -165,7 +165,7 @@ export default function Home() {
             <HeroContent />
 
             <HeroActions>
-              <Link href="/play">
+              <Link href="/play" aria-label="Link to Game page.">
                 <CTAButton noScaling>
                   <ChevronRight size={18} />
 
