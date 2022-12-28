@@ -1,11 +1,14 @@
-import { useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import styled, { css, keyframes } from "styled-components";
-import { COLORS, QUERIES } from "../styling";
-import GameService from "../network/GameService";
-import OSymbol from "../assets/svg/symbols/O.svg";
-import XSymbol from "../assets/svg/symbols/X.svg";
+import { COLORS, QUERIES } from "components/constants";
+import GameService from "services/GameService";
+import OSymbol from "static/svg/O.svg";
+import XSymbol from "static/svg/X.svg";
+import type { PlayMatrix, PlayerSymbol } from "types";
 
-export const symbols = {
+export const symbols: {
+  [name: string]: PlayerSymbol
+} = {
   X: "X",
   O: "O",
 };
@@ -82,7 +85,9 @@ const BackgroudVerticalContainer = styled.div`
   }
 `;
 
-const BoardSeperator = styled.div`
+const BoardSeperator = styled.div<{
+  horizontal?: boolean;
+}>`
   background: ${COLORS.lightGray};
   border-radius: 30px;
 
@@ -119,24 +124,32 @@ const Column = styled.div`
 `;
 
 const SymbolAniamtion = keyframes`
-  from {
-    scale: 0;
-  }
-
-  to {
-    scale: 1;
+  50% {
+    scale: 2.5;
   }
 `;
 
-const SymbolPreview = styled.img`
+const SymbolPreview = styled.div`
   height: 100px;
   width: 100px;
-  user-select: none;
-  animation: ${SymbolAniamtion} 250ms cubic-bezier(0.25, 0.15, 0, 1.13);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  svg {
+    scale: 2; 
+    // Using 'scale' for a temporary fix, but figure out how to show svg with width and height just as an image. https://stackoverflow.com/questions/55175445/cant-import-svg-into-next-js
+    user-select: none;
+    animation: ${SymbolAniamtion} 250ms cubic-bezier(0.25, 0.15, 0, 1.13);
+  }
 
   @media screen and (${QUERIES.small}) {
     width: 60px;
     height: 60px;
+
+    svg {
+      scale: 1.5;
+    }
   }
 `;
 
@@ -151,8 +164,19 @@ const Game = ({
   setOpponentScore,
   isPlayerTurn,
   setPlayerTurn,
+}: {
+  symbol: PlayerSymbol,
+  gameOver: boolean;
+  setGameOver: Dispatch<SetStateAction<boolean>>;
+  setRound: Dispatch<SetStateAction<number>>,
+  setRoundOver: Dispatch<SetStateAction<boolean>>,
+  playerScore: number,
+  setPlayerScore: Dispatch<SetStateAction<number>>,
+  setOpponentScore: Dispatch<SetStateAction<number>>,
+  isPlayerTurn: boolean,
+  setPlayerTurn: Dispatch<SetStateAction<boolean>>
 }) => {
-  const [matrix, setMatrix] = useState([
+  const [matrix, setMatrix] = useState<PlayMatrix>([
     [null, null, null],
     [null, null, null],
     [null, null, null],
@@ -190,7 +214,7 @@ const Game = ({
   });
   GameService.shared.onGameOver(() => setGameOver(true));
 
-  const handleClick = (row, column) => {
+  const handleClick = (row: number, column: number) => {
     if (
       !isPlayerTurn ||
       gameOver ||
@@ -238,9 +262,13 @@ const Game = ({
                 onClick={() => handleClick(rowIdx, colIdx)}
                 key={colIdx}>
                 {column === symbols.X ?
-                  <SymbolPreview src={XSymbol} alt="X Symbol" />
+                  <SymbolPreview>
+                    <XSymbol />
+                  </SymbolPreview>
                   : column === symbols.O ?
-                    <SymbolPreview src={OSymbol} alt="O Symbol" />
+                    <SymbolPreview>
+                      <OSymbol />
+                    </SymbolPreview>
                     : null}
               </Column>
             ))}
