@@ -5,9 +5,9 @@ import Image from "next/image";
 import Head from "next/head";
 import NavBar from "components/NavBar";
 import Button from "components/Button";
+import { ChevronRight } from "react-feather";
 import { COLORS, QUERIES } from "components/constants";
-import ArrowRight from "assets/svg/arrow-right.svg";
-import GameMobileShowcase from "assets/png/game-mobile.png";
+import GameMobileShowcase from "static/png/game-mobile.png";
 
 const Container = styled.main`
   height: 100%;
@@ -169,7 +169,7 @@ export default function Home() {
             <HeroActions>
               <Link href="/play">
                 <CTAButton noScaling>
-                  <Image src={ArrowRight} alt="arrow to the right side" />
+                  <ChevronRight size={18} />
 
                   Play
                 </CTAButton>

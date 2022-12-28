@@ -2,8 +2,7 @@ import styled from "styled-components";
 import NavLink from "./NavLink";
 import Divider from "./Divider";
 import { COLORS } from "./constants";
-import Icon from "assets/svg/logo.svg";
-import Image from "next/image";
+import Icon from "static/svg/logo.svg";
 
 const Container = styled.nav`
   display: flex;
@@ -39,10 +38,8 @@ const Text = styled.span`
 const HomeLink = () => (
   <NavLink href="/">
     <LogoContainer>
-      <Image
-        src={Icon}
-        alt="Icon for TicTacGo"
-      />
+      <Icon />
+
       <Text>TicTacGo</Text>
     </LogoContainer>
   </NavLink>
