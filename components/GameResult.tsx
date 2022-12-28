@@ -1,9 +1,10 @@
 import React from 'react';
 import styled, { keyframes } from 'styled-components';
-import { COLORS, Divider, QUERIES, TRANSITIONS } from '../styling';
-import Avatar from 'boring-avatars';
+import Avatar, { AvatarProps } from 'boring-avatars';
 import GameActions from './GameActions';
-import { ReactComponent as ArrowRight } from "../assets/svg/icons/arrow-right.svg";
+import Divider from './Divider';
+import { COLORS, QUERIES, TRANSITIONS } from './constants';
+import { ArrowRight } from 'react-feather';
 
 const FadeIn = keyframes`
     from {
@@ -81,16 +82,24 @@ const GameResult = ({
     opponentAvatar,
     opponentScore,
     avatarProps
+}: {
+    playerName: string,
+    playerAvatar: string,
+    playerScore: number,
+    opponentName: string,
+    opponentAvatar: string,
+    opponentScore: number,
+    avatarProps: AvatarProps
 }) => {
     const didPlayerWin = playerScore > opponentScore ? true : playerScore < opponentScore ? false : null;
     const title = didPlayerWin ? "Congratulations!" : didPlayerWin === false ? "Bad luck :(" : "Well Played!";
-    const description = (playerWon) => {
-        if (!playerWon) {
+    const description = (playerWonName: string | null) => {
+        if (!playerWonName) {
             return "Both of you have won the game. It was competitive and a great one!";
-        } else if (playerWon === playerName) {
+        } else if (playerWonName === playerName) {
             return "You won the game. Well Played!";
-        } else if (playerWon !== playerName) {
-            return `${playerWon} has won the game. But well played! Good luck with your next game.`;
+        } else if (playerWonName !== playerName) {
+            return `${playerWonName} has won the game. But well played! Good luck with your next game.`;
         }
     };
 
@@ -130,7 +139,7 @@ const GameResult = ({
             <GameActions
                 primaryTitle="Go Home"
                 primaryIcon={
-                    <ArrowRight stroke="black" />
+                    <ArrowRight />
                 }
                 noSecondary
             />
