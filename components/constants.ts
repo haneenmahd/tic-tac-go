@@ -26,7 +26,3 @@ export const TRANSITIONS = {
     smoothHovers: "cubic-bezier(0.57, 0.38, 0.26, 0.95)"
 };
 
-export const ClippedAndRounded = styled.div`
-  border-radius: 100%;
-  overflow: hidden;
-`;
