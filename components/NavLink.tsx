@@ -1,6 +1,6 @@
 import styled from "styled-components";
-import { Link } from "react-router-dom";
-import { TRANSITIONS, COLORS } from "../styling";
+import Link from "next/link";
+import { TRANSITIONS, COLORS } from "./constants";
 
 const NavLink = styled(Link)`
   font-size: 16px;
