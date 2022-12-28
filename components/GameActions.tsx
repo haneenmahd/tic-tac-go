@@ -1,10 +1,12 @@
 import React from 'react';
 import styled, { css } from 'styled-components';
-import { COLORS, QUERIES } from '../styling';
+import { COLORS, QUERIES } from 'components/constants';
 import Button from './Button';
 
 
-const GameActionsContainer = styled.div`
+const GameActionsContainer = styled.div<{
+  disabled?: boolean;
+}>`
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -53,6 +55,15 @@ const GameActions = ({
   secondaryAction,
   secondaryIcon,
   noSecondary
+}: {
+  disabled?: boolean;
+  primaryTitle: string;
+  primaryAction?: React.MouseEventHandler<HTMLButtonElement>;
+  primaryIcon?: JSX.Element;
+  secondaryTitle?: string;
+  secondaryAction?: React.MouseEventHandler<HTMLButtonElement>;
+  secondaryIcon?: JSX.Element;
+  noSecondary?: boolean;
 }) => {
   return (
     <GameActionsContainer disabled={disabled}>
