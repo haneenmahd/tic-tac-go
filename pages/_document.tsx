@@ -30,6 +30,11 @@ export default class MyDocument extends Document {
     return (
       <Html lang="en">
         <Head>
+          <meta name="description" content="Play Tic Tac Toe with random players around the world." />
+          <meta name="keywords" content="online, game, play, tic tac toe, meet friends, meet people, random person, find people, meet people around the world, " />
+          <meta name="robots" content="index, follow"></meta>
+          <meta name="viewport" content="width=device-width, initial-scale=1" />
+          <link rel="icon" href="/favicon.ico" />
           <link rel="preconnect" href="https://rsms.me/" />
           <link rel="stylesheet" href="https://rsms.me/inter/inter.css" />
         </Head>
