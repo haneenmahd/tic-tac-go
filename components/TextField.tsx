@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { COLORS, TRANSITIONS } from "../styling";
+import { COLORS, TRANSITIONS } from "./constants";
 
 const TextField = styled.input`
   width: 100%;
