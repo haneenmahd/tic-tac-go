@@ -1,6 +1,6 @@
 import Player from "controllers/Player";
 import io, { Socket } from "socket.io-client";
-import { Callback, CallbackNoParams, PlayMatrix } from "types";
+import type { Callback, CallbackNoParams, PlayMatrix, PlayerSymbol } from "types";
 
 class GameService {
     static shared = new GameService();
@@ -12,7 +12,8 @@ class GameService {
      *
      * So that the socket is only called when neededs
      */
-    init() {
+    async init() {
+        await fetch("/api/socket")
         this.ws = io();
     }
 
@@ -44,7 +45,7 @@ class GameService {
 
     joinGame(
         name: string,
-        symbol: "X" | "O",
+        symbol: PlayerSymbol,
         avatarId: string,
         cb: CallbackNoParams<void>
     ) {
