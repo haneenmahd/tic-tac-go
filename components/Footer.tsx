@@ -29,9 +29,9 @@ const FooterDivider = styled(Divider)`
 
 const Footer = () => (
   <Container>
-    <FooterLink to="/about">About</FooterLink>
-    <FooterLink to="/support">Support</FooterLink>
-    <FooterLink to="/privacy-policy">Privacy</FooterLink>
+    <FooterLink href="/about">About</FooterLink>
+    <FooterLink href="/support">Support</FooterLink>
+    <FooterLink href="/privacy-policy">Privacy</FooterLink>
 
     <FooterDivider maxWidth />
   </Container>
