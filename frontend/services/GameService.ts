@@ -1,6 +1,5 @@
-import Player from "controllers/Player";
 import io, { Socket } from "socket.io-client";
-import type { Callback, CallbackNoParams, PlayMatrix, PlayerSymbol } from "types";
+import type { Callback, CallbackNoParams, Player, PlayMatrix, PlayerSymbol } from "types";
 
 class GameService {
     static shared = new GameService();
@@ -13,8 +12,11 @@ class GameService {
      * So that the socket is only called when neededs
      */
     async init() {
-        await fetch("/api/socket")
-        this.ws = io({ transports: ["websocket"] });
+        const url = process.env.NODE_ENV === "development" ?
+            "http://localhost:4000" :
+            "add url"; // add production url
+
+        this.ws = io(url!, { transports: ["websocket"] });
     }
 
     /**
