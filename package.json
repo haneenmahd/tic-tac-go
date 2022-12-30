@@ -1,15 +1,9 @@
 {
-  "name": "www",
+  "name": "tic-tac-toe",
   "version": "1.0.0",
-  "description": "",
   "main": "index.js",
-  "scripts": {
-    "format": "prettier --write ."
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "devDependencies": {
-    "prettier": "^2.7.1"
-  }
+  "repository": "git@github.com:haneenmahd/tic-tac-toe.git",
+  "author": "Haneen Mahdin <haneenmahdin@gmail.com>",
+  "license": "MIT",
+  "private": true
 }
