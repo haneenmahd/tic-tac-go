@@ -1,3 +1,5 @@
+import * as crypto from "crypto";
+
 export default class Crypto {
     /**
      * currently conflicts with nextjs client render
@@ -5,8 +7,6 @@ export default class Crypto {
      * when loading the /play page directly without navigating to it.
     */
     static uid(): string | undefined {
-        if (typeof self !== 'undefined' && 'crypto' in self) {
-            return self.crypto.randomUUID();
-        }
+        return crypto.randomBytes(16).toString("hex");
     }
 }

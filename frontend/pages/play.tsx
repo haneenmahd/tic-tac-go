@@ -395,10 +395,22 @@ const ScoreCard = styled.div<{
   `}
 `;
 
-const Play = () => {
+export async function getServerSideProps() {
+  return {
+    props: {
+      avatars: Array(12)
+        .fill(null)
+        .map(() => Crypto.uid()!)
+    }
+  }
+}
+
+export default function Play({ avatars }: {
+  avatars: string[],
+}) {
   const [name, setName] = useState("");
   const [selectedAvatar, setSelectedAvatar] = useState(
-    Crypto.uid()!
+    avatars[0]
   );
   const [showingGame, setShowingGame] = useState(false);
   const [symbol, setSymbol] = useState<PlayerSymbol>("X");
@@ -411,12 +423,6 @@ const Play = () => {
   const [playerScore, setPlayerScore] = useState(0);
   const [opponentScore, setOpponentScore] = useState(0);
   const [gameOver, setGameOver] = useState(false);
-
-  const [avatars] = useState(
-    Array(12)
-      .fill(null)
-      .map(() => Crypto.uid()!)
-  );
 
   const maxRounds = 5;
   const avatarProps: AvatarProps = {
@@ -671,5 +677,3 @@ const Play = () => {
     </PageContainer>
   );
 };
-
-export default Play;
