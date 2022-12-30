@@ -14,7 +14,7 @@ class GameService {
     async init() {
         const url = process.env.NODE_ENV === "development" ?
             "http://localhost:4000" :
-            "add url"; // add production url
+            "https://tic-tac-go-production.up.railway.app";
 
         this.ws = io(url!, { transports: ["websocket"] });
     }
