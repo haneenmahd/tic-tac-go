@@ -14,7 +14,7 @@ class GameService {
      */
     async init() {
         await fetch("/api/socket")
-        this.ws = io();
+        this.ws = io({ transports: ["websocket"] });
     }
 
     /**
