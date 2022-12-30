@@ -15,7 +15,7 @@
         "allowSyntheticDefaultImports": true,
         "experimentalDecorators": true,
         "baseUrl": ".",
-        "outDir": "dist"
+        "noEmit": true
     },
     "include": [
         "src"
