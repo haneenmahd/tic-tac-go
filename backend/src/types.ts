@@ -1,4 +1,4 @@
-import Player from "./controllers/Player";
+import Player from "./data/Player";
 
 export type HTTPPort = string | number;
 
