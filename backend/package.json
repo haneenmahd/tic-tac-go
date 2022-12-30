@@ -7,6 +7,7 @@
   "scripts": {
     "test": "NODE_OPTIONS=--experimental-vm-modules npx jest",
     "serve": "tsx .",
+    "build": "tsc",
     "dev": "nodemon"
   },
   "keywords": [],
@@ -14,6 +15,7 @@
   "license": "ISC",
   "dependencies": {
     "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
     "express": "^4.18.2",
     "socket.io": "^4.5.4",
     "ws": "^8.9.0"
