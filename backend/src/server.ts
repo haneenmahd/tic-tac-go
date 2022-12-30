@@ -2,7 +2,7 @@ import * as http from "http";
 import express from "express";
 import socket from "./socket";
 import onError from "./handlers/onError";
-import { HTTPError } from "types";
+import { HTTPError } from "src/types";
 import onListening from "./handlers/onListening";
 
 const PORT = process.env.PORT || 4000;

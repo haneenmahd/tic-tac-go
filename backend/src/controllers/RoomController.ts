@@ -1,7 +1,7 @@
 import crypto from "crypto";
 import { Server, Socket } from "socket.io";
 import Player from "./Player";
-import type { Players, RoomJoinMessage } from "types";
+import type { Players, RoomJoinMessage } from "src/types";
 
 export default class RoomController {
     players: Players = {};

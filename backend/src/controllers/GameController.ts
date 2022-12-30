@@ -1,5 +1,5 @@
 import { Server, Socket } from "socket.io";
-import type { NextRoundMessage, UpdateGameMessage, UpdateScoreMessage } from "types";
+import type { NextRoundMessage, UpdateGameMessage, UpdateScoreMessage } from "src/types";
 
 class GameController {
     public async updateGame(
