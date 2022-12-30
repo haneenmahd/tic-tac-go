@@ -30,3 +30,9 @@ export default function handler(req: NextApiRequest, res: SocketResponse) {
 
     res.end();
 }
+
+export const config = {
+    api: {
+        bodyParser: false
+    }
+};
