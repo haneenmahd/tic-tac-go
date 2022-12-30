@@ -3,8 +3,6 @@ ENV NODE_ENV "production"
 
 WORKDIR /app
 
-COPY ["package.json", "tsconfig.json"] /
-
 COPY . .
 
 RUN yarn install
