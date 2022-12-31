@@ -21,6 +21,7 @@ import type { PlayerSymbol, Player } from "types";
 import OSymbol from "static/svg/O.svg";
 import XSymbol from "static/svg/X.svg";
 import SearchIcon from "static/svg/search-filled.svg";
+import Head from "next/head";
 
 const PageContainer = styled.div`
   display: flex;
@@ -424,6 +425,8 @@ export default function Play({ avatars }: {
   const [opponentScore, setOpponentScore] = useState(0);
   const [gameOver, setGameOver] = useState(false);
 
+  const pageTitle = showingGame ? `${playerScore} - ${opponentScore}` :
+    "Choose your Avatar";
   const maxRounds = 5;
   const avatarProps: AvatarProps = {
     variant: "beam",
@@ -657,23 +660,29 @@ export default function Play({ avatars }: {
   );
 
   return (
-    <PageContainer>
-      <GameContainer>
-        {showingGame && !gameOver ? matchView : null}
-        {!showingGame && !gameOver ? avatarPickerView : null}
-        {showingGame && gameOver ?
-          <GameResult
-            avatarProps={avatarProps}
-            playerName={name}
-            playerAvatar={selectedAvatar}
-            opponentName={opponent!.name}
-            opponentAvatar={opponent!.avatarId}
-            opponentScore={opponentScore}
-            playerScore={playerScore}
-          /> : null}
-      </GameContainer>
+    <>
+      <Head>
+        <title>{pageTitle}</title>
+      </Head>
 
-      <LinkLessNav />
-    </PageContainer>
+      <PageContainer>
+        <GameContainer>
+          {showingGame && !gameOver ? matchView : null}
+          {!showingGame && !gameOver ? avatarPickerView : null}
+          {showingGame && gameOver ?
+            <GameResult
+              avatarProps={avatarProps}
+              playerName={name}
+              playerAvatar={selectedAvatar}
+              opponentName={opponent!.name}
+              opponentAvatar={opponent!.avatarId}
+              opponentScore={opponentScore}
+              playerScore={playerScore}
+            /> : null}
+        </GameContainer>
+
+        <LinkLessNav />
+      </PageContainer>
+    </>
   );
 };

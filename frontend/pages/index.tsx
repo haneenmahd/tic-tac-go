@@ -150,8 +150,8 @@ export default function Home() {
   return (
     <>
       <Head>
-
         <title>Tic Tac Go</title>
+        <meta name="description" content="Home － Pair among random players and enjoy a wonderful tic tac toe game with 5 rounds. Let's see who wins!" />
       </Head>
 
       <Container>
