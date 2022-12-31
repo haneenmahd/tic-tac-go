@@ -56,10 +56,6 @@ const HeroTextContainer = styled.div`
 const HeroTitle = styled.div`
   display: flex;
   flex-direction: row;
-  
-  @media screen and (${QUERIES.small}) {
-    
-  }
 `;
 
 const HeroText = styled.h1<{
@@ -69,6 +65,7 @@ const HeroText = styled.h1<{
   font-size: 2.5rem;
   background: repeating-radial-gradient(#000 -20.22%, #0C8F8F 76.38%, rgba(0, 0, 0, 0) 93.28%);
   background-clip: text;
+  -webkit-background-clip: text;
   font-weight: 800;
   transition: color 250ms ease-in;
 `;
