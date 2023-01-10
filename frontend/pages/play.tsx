@@ -46,7 +46,7 @@ const Container = styled.div`
 `;
 
 const GameContainer = styled.div`
-  margin: 30px;
+  margin: 1rem;
 `;
 
 const SelectedAvatarAnimation = keyframes`
@@ -82,7 +82,7 @@ const SelectedAvatar = styled.div`
   }
 
   @media screen and (${QUERIES.small}) {
-    max-width: 100%;
+    max-width: 50%;
     height: auto;
     margin: 0 1rem;
   }
@@ -96,6 +96,7 @@ const Form = styled.div`
 
   @media screen and (${QUERIES.small}) {
     flex-direction: column;
+    width: 95%;
   }
 `;
 
@@ -115,7 +116,7 @@ const AvatarPickerGrid = styled.div`
 
   @media screen and (${QUERIES.small}) {
     width: 100%;
-    gap: 22px;
+    gap: 2rem;
   }
 `;
 
@@ -125,7 +126,7 @@ const AvatarOption = styled.div<{
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 10px;
+  padding: 0.2rem;
   border-radius: 100px;
   cursor: pointer;
   box-shadow: 0 0 0 0px ${COLORS.fadedGray};
@@ -149,7 +150,6 @@ const AvatarOption = styled.div<{
 const GameInfoContainer = styled.div<{
   showingGame: boolean;
 }>`
-  width: 100%;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -181,7 +181,7 @@ const PlayerInfoBubble = styled.div < {
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  gap: 1rem;
+  gap: 2rem;
   padding: 28px 25px;
   border: 2px dashed #ececec;
   border-radius: 100px;
@@ -201,7 +201,7 @@ const PlayerInfoBubble = styled.div < {
   `}
 
   ${p => p.gameOver === false && p.isPlayerTurn && css`
-      border: 2px solid rgba(223, 235, 255, 1);
+    border: 2px solid rgba(223, 235, 255, 1);
   `}
 
   ${p => p.showingGame && css`
@@ -268,31 +268,6 @@ const SymbolPreviewContainer = styled.div`
 
 const PlayerInfoName = styled.p`
   font-weight: 500;
-`;
-
-const BlinkAnimation = keyframes`
-  0% {
-    border-color: ${COLORS.black};
-  }
-
-  50% {
-    border-color: ${COLORS.fadedGray};
-  }
-
-  100% {
-    border-color: ${COLORS.black};
-  }
-`;
-
-const SearchPlayerInfoBubble = styled(PlayerInfoBubble) <{
-  searching?: boolean;
-}>`
-  ${p =>
-    p.searching &&
-    css`
-      border: 2px dashed ${COLORS.black};
-      animation: ${BlinkAnimation} 1s ${TRANSITIONS.load} infinite;
-    `}
 `;
 
 const SymbolPreview = styled.div`
@@ -498,7 +473,7 @@ export default function Play({ avatars }: {
 
       <Form>
         <TextField
-          placeholder="Your Name"
+          placeholder="What's your name?"
           value={name}
           onChange={e => setName(e.target.value)}
           maxLength={10}
@@ -584,7 +559,6 @@ export default function Play({ avatars }: {
             : null}
 
           {/* Show a divider when in prematch */}
-          {!opponent ? <Divider maxWidth /> : null}
 
           {opponent ? (
             <ScoreCard showingGame={opponent !== null}>
@@ -617,17 +591,7 @@ export default function Play({ avatars }: {
               }
             </SymbolPreview>
           </PlayerInfoBubble>
-        ) : (
-          <SearchPlayerInfoBubble searching={joinedGame}>
-            <AvatarContainer>
-              <SearchIcon />
-
-              <span>
-                {joinedGame ? "Searching for opponent" : "Choose your side"}
-              </span>
-            </AvatarContainer>
-          </SearchPlayerInfoBubble>
-        )}
+        ) : null}
       </GameInfoContainer>
 
       {opponent ? (
