@@ -14,4 +14,4 @@ server.listen(PORT);
 server.on("error", error => onError(error as HTTPError, PORT));
 server.on("listening", () => onListening(PORT))
 
-const io = socket(server);
+socket(server);
