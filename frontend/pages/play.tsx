@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import styled, { css, keyframes } from "styled-components";
-import Image from "next/image";
 import { Check, ArrowRight, ArrowLeft, ArrowUp } from "react-feather";
 import Avatar, { AvatarProps } from "boring-avatars";
 import {
