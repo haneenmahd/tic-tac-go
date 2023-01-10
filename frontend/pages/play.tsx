@@ -18,9 +18,9 @@ import Crypto from "services/Crypto";
 import Divider from "components/Divider";
 import TextField from "components/TextField";
 import type { PlayerSymbol, Player } from "types";
-import OSymbol from "static/svg/O.svg";
-import XSymbol from "static/svg/X.svg";
-import SearchIcon from "static/svg/search-filled.svg";
+import OSymbol from "assets/svg/O.svg";
+import XSymbol from "assets/svg/X.svg";
+import SearchIcon from "assets/svg/search-filled.svg";
 import Head from "next/head";
 
 const PageContainer = styled.div`

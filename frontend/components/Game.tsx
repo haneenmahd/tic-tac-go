@@ -2,8 +2,8 @@ import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import styled, { css, keyframes } from "styled-components";
 import { COLORS, QUERIES } from "components/constants";
 import GameService from "services/GameService";
-import OSymbol from "static/svg/O.svg";
-import XSymbol from "static/svg/X.svg";
+import OSymbol from "assets/svg/O.svg";
+import XSymbol from "assets/svg/X.svg";
 import type { PlayMatrix, PlayerSymbol } from "types";
 
 export const symbols: {

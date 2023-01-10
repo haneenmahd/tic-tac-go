@@ -2,7 +2,7 @@ import styled from "styled-components";
 import NavLink from "./NavLink";
 import Divider from "./Divider";
 import { COLORS } from "./constants";
-import Icon from "static/svg/logo.svg";
+import Icon from "assets/svg/logo.svg";
 
 const Container = styled.nav`
   display: flex;

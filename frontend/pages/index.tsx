@@ -7,7 +7,7 @@ import NavBar from "components/NavBar";
 import Button from "components/Button";
 import { ChevronRight } from "react-feather";
 import { COLORS, QUERIES } from "components/constants";
-import GameMobileShowcase from "static/png/game-mobile.png";
+import GameMobileShowcase from "assets/png/game-mobile.png";
 
 const Container = styled.main`
   height: 100%;
