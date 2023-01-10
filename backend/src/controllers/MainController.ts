@@ -7,8 +7,7 @@ export default class MainController {
     protected gameController = new GameController();
 
     public onConnection(
-        socket: Socket,
-        io: Server
+        socket: Socket
     ) {
         socket.on("join_game", message => this.roomController.joinGame(socket, message));
         socket.on("join_room", room => this.roomController.joinRoom(socket, room));

@@ -25,7 +25,6 @@ export default class RoomController {
             const opponent = connectedPlayers[0];
             this.roomId = crypto.randomBytes(5).toString("hex");
 
-            // player has started playing
             player.startPlaying();
             socket.emit("room_join_request", this.roomId, opponent);
             socket.to(opponent.id).emit("room_join_request", this.roomId, player);
