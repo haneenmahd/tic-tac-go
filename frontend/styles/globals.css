@@ -27,6 +27,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
   font: 16px system-ui, sans-serif;
   background-color: #fff;
+  -webkit-tap-highlight-color: none;
 }
 
 a {
