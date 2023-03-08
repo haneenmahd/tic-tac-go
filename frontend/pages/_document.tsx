@@ -1,7 +1,13 @@
-import Document, { Html, Head, Main, NextScript, DocumentContext } from 'next/document'
+import Document, {
+  Html,
+  Head,
+  Main,
+  NextScript,
+  DocumentContext
+} from 'next/document'
 import { ServerStyleSheet } from 'styled-components'
 
-export default class MyDocument extends Document {
+export default class AppDocument extends Document {
   static async getInitialProps(ctx: DocumentContext) {
     const sheet = new ServerStyleSheet();
     const originalRenderPage = ctx.renderPage;
@@ -33,7 +39,6 @@ export default class MyDocument extends Document {
           <meta name="description" content="Play Tic Tac Toe with random players around the world." />
           <meta name="keywords" content="online, game, play, tic tac toe, meet friends, meet people, random person, find people, meet people around the world, " />
           <meta name="robots" content="index, follow"></meta>
-          <meta name="viewport" content="width=device-width, initial-scale=1" />
           <link rel="icon" href="/favicon.ico" />
           <link rel="preconnect" href="https://rsms.me/" />
           <link rel="stylesheet" href="https://rsms.me/inter/inter.css" />
