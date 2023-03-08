@@ -1,4 +1,6 @@
-import styled from "styled-components";
+import OSymbol from "assets/svg/O.svg";
+import XSymbol from "assets/svg/X.svg";
+import { PlayerSymbol } from "types";
 
 export const QUERIES = {
     large: "min-width: 768px",
@@ -26,3 +28,16 @@ export const TRANSITIONS = {
     smoothHovers: "cubic-bezier(0.57, 0.38, 0.26, 0.95)"
 };
 
+export const symbols: {
+    [name: string]: PlayerSymbol
+} = {
+    X: "X",
+    O: "O",
+};
+
+export const symbolImages: {
+    [name: string]: string
+} = {
+    X: XSymbol,
+    O: OSymbol,
+}
