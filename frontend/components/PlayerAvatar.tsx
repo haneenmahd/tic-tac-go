@@ -2,6 +2,7 @@ import Avatar, { AvatarProps } from "boring-avatars";
 
 interface PlayerAvatarProps {
     name: string
+    size?: string | number
 }
 
 export default function PlayerAvatar(props: PlayerAvatarProps) {
@@ -12,7 +13,7 @@ export default function PlayerAvatar(props: PlayerAvatarProps) {
 
     return (
         <Avatar
-            size="100%"
+            size={props.size ? props.size : "100%"}
             name={props.name}
             {...avatarProps}
         />
