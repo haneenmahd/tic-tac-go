@@ -38,10 +38,11 @@ export default class AppDocument extends Document {
         <Head>
           <meta name="description" content="Play Tic Tac Toe with random players around the world." />
           <meta name="keywords" content="online, game, play, tic tac toe, meet friends, meet people, random person, find people, meet people around the world, " />
-          <meta name="robots" content="index, follow"></meta>
+          <meta name="robots" content="index, follow" />
           <link rel="icon" href="/favicon.ico" />
           <link rel="preconnect" href="https://rsms.me/" />
           <link rel="stylesheet" href="https://rsms.me/inter/inter.css" />
+          <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         </Head>
         <body>
           <Main />
