@@ -10,7 +10,7 @@ export const QUERIES = {
 
 export const COLORS = {
     black: "#000",
-    gray: "#8B8B8B",
+    gray: "#656565",
     white: "#FFF",
     blue: "#DCF0F0",
     fadedBlue: "#F6FDFD",
