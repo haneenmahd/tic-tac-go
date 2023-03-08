@@ -6,6 +6,7 @@ import Divider from '../Divider';
 import { COLORS, QUERIES, TRANSITIONS } from '../constants';
 import { ArrowRight } from 'react-feather';
 import FadeIn from 'animations/FadeIn';
+import PlayerAvatar from 'components/PlayerAvatar';
 
 const Container = styled.div`
     display: flex;
@@ -71,8 +72,7 @@ interface GameResultProps {
     playerScore: number,
     opponentName: string,
     opponentAvatar: string,
-    opponentScore: number,
-    avatarProps: AvatarProps
+    opponentScore: number
 }
 
 export default function GameResult({
@@ -81,8 +81,7 @@ export default function GameResult({
     playerScore,
     opponentName,
     opponentAvatar,
-    opponentScore,
-    avatarProps
+    opponentScore
 }: GameResultProps) {
     const didPlayerWin = playerScore > opponentScore ? true : playerScore < opponentScore ? false : null;
     const title = didPlayerWin ? "Congratulations!" :
@@ -114,20 +113,14 @@ export default function GameResult({
             <MatchPreview>
                 <MatchPreviewAvatar>
                     <span>{playerScore}</span>
-                    <Avatar
-                        name={playerAvatar}
-                        size={70}
-                        {...avatarProps} />
+                    <PlayerAvatar name={playerAvatar} />
                 </MatchPreviewAvatar>
 
                 <Divider maxWidth />
 
                 <MatchPreviewAvatar>
                     <span>{opponentScore}</span>
-                    <Avatar
-                        name={opponentAvatar}
-                        size={70}
-                        {...avatarProps} />
+                    <PlayerAvatar name={opponentAvatar} />
                 </MatchPreviewAvatar>
             </MatchPreview>
 
