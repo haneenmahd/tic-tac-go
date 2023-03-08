@@ -1,40 +1,34 @@
 import { useEffect, useState } from "react";
 import styled, { css, keyframes } from "styled-components";
-import { Check, ArrowRight, ArrowLeft, ArrowUp } from "react-feather";
-import Avatar, { AvatarProps } from "boring-avatars";
+import { Check, ArrowRight } from "react-feather";
 import {
   COLORS,
   TRANSITIONS,
-  QUERIES
+  QUERIES,
+  symbols,
 } from "components/constants";
 import { LinkLessNav } from "components/NavBar";
-import Button from "components/Button";
-import Game, { symbols } from "components/Game";
-import GameActions from "components/GameActions";
-import GameResult from "components/GameResult";
+import Game from "components/Game";
+import GameActions from "components/Game/GameActions";
+import GameResult from "components/Game/GameResult";
 import GameService from "services/GameService";
 import Crypto from "services/Crypto";
 import Divider from "components/Divider";
-import TextField from "components/TextField";
-import type { PlayerSymbol, Player } from "types";
 import OSymbol from "assets/svg/O.svg";
 import XSymbol from "assets/svg/X.svg";
-import SearchIcon from "assets/svg/search-filled.svg";
 import Head from "next/head";
+import FadeIn from "animations/FadeIn";
+import PlayerAvatar from "components/PlayerAvatar";
+import AvatarPicker from "components/Play/AvatarPicker";
+import type { PlayerSymbol, Player } from "types";
 
-const PageContainer = styled.div`
+const PageWrapper = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
 `;
 
-const FadeIn = keyframes`
-  from {
-    opacity: 0;
-  }
-`;
-
-const Container = styled.div`
+const Wrapper = styled.div`
   min-height: calc(100vh - 90px);
   width: 100%;
   display: flex;
@@ -44,109 +38,11 @@ const Container = styled.div`
   animation: ${FadeIn} 1s ${TRANSITIONS.load};
 `;
 
-const GameContainer = styled.div`
+const GameWrapper = styled.div`
   margin: 1rem;
 `;
 
-const SelectedAvatarAnimation = keyframes`
-  from {
-    transform: translate(0%, -200%) skewY(100deg);
-  }
-`;
-
-const SelectedAvatar = styled.div`
-  position: relative;
-  cursor: pointer;
-  animation: ${SelectedAvatarAnimation} .5s ${TRANSITIONS.smoothHovers};
-
-  &::before {
-    content: "Good luck <3";
-    position: absolute;
-    opacity: 0;
-    top: -5px;
-    left: 50%;
-    width: 130px;
-    text-align: center;
-    transform: translate(-50%, -50%);
-    background-color: ${COLORS.gray};
-    color: ${COLORS.white};
-    padding: 5px 10px;
-    border-radius: 5rem;
-    transition: ${TRANSITIONS.hovers};
-  }
-
-  &:hover::before {
-    opacity: 1;
-    top: 0;
-  }
-
-  @media screen and (${QUERIES.small}) {
-    max-width: 50%;
-    height: auto;
-    margin: 0 1rem;
-  }
-`;
-
-const Form = styled.div`
-  display: flex;
-  flex-direction: row;
-  gap: 20px;
-  padding: 50px 0;
-
-  @media screen and (${QUERIES.small}) {
-    flex-direction: column;
-    width: 95%;
-  }
-`;
-
-const AvatarPickerGrid = styled.div`
-  width: 60%;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  gap: 44px;
-  padding: 10px 0;
-  justify-content: center;
-  transition: all 300ms;
-
-  @media screen and (${QUERIES.medium}) {
-    width: 80%;
-  }
-
-  @media screen and (${QUERIES.small}) {
-    width: 100%;
-    gap: 2rem;
-  }
-`;
-
-const AvatarOption = styled.div<{
-  selected?: boolean;
-}>`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0.2rem;
-  border-radius: 100px;
-  cursor: pointer;
-  box-shadow: 0 0 0 0px ${COLORS.fadedGray};
-  transition: transform .5s ${TRANSITIONS.smoothHovers}, 
-              box-shadow .5s ${TRANSITIONS.smoothHovers};
-
-  &:hover {
-    transform: rotate3d(-1, 1, 1, 20deg) scale(1.2);
-    transition: ${TRANSITIONS.hovers};
-  }
-
-  &:active {
-    scale: 0.99;
-  }
-
-  ${p => p.selected && css`
-    box-shadow: 0 0 0 5px ${COLORS.black};
-  `}
-`;
-
-const GameInfoContainer = styled.div<{
+const GameInfoWrapper = styled.div<{
   showingGame: boolean;
 }>`
   display: flex;
@@ -228,7 +124,7 @@ const PlayerInfoBubble = styled.div < {
   ` : null}
 `;
 
-const AvatarContainer = styled.div`
+const AvatarWrapper = styled.div`
   display: flex;
   align-items: center;
   gap: 1rem;
@@ -260,7 +156,7 @@ const AvatarActions = styled.div`
   }
 `;
 
-const SymbolPreviewContainer = styled.div`
+const SymbolPreviewWrapper = styled.div`
   display: flex;
   gap: 10px;
 `;
@@ -316,7 +212,7 @@ const ConfirmButton = styled.button`
   }
 `;
 
-const GameRoundContainer = styled.div<{
+const GameRoundWrapper = styled.div<{
   showingGame?: boolean;
 }>`
   width: 10%;
@@ -380,9 +276,11 @@ export async function getServerSideProps() {
   }
 }
 
-export default function Play({ avatars }: {
-  avatars: string[],
-}) {
+interface PlayProps {
+  avatars: string[]
+}
+
+export default function Play({ avatars }: PlayProps) {
   const [name, setName] = useState("");
   const [selectedAvatar, setSelectedAvatar] = useState(
     avatars[0]
@@ -402,10 +300,6 @@ export default function Play({ avatars }: {
   const pageTitle = showingGame ? `${playerScore} - ${opponentScore}` :
     "Choose your Avatar";
   const maxRounds = 5;
-  const avatarProps: AvatarProps = {
-    variant: "beam",
-    colors: ["#92A1C6", "#146A7C", "#F0AB3D", "#C271B4", "#C20D90"],
-  };
 
   const handleAvatarPick = (avatarId: string) => {
     setSelectedAvatar(avatarId);
@@ -460,66 +354,21 @@ export default function Play({ avatars }: {
     }
   }, [gameOver]);
 
-  const avatarPickerView = (
-    <Container>
-      <SelectedAvatar key={selectedAvatar}>
-        <Avatar
-          size="100%"
-          name={selectedAvatar}
-          {...avatarProps}
-        />
-      </SelectedAvatar>
-
-      <Form>
-        <TextField
-          placeholder="What's your name?"
-          value={name}
-          onChange={e => setName(e.target.value)}
-          maxLength={10}
-        />
-
-        <Button onClick={handlePlay}>
-          <ArrowUp />
-          Play
-        </Button>
-      </Form>
-
-      <AvatarPickerGrid>
-        {avatars.map((avatar, id) => (
-          <AvatarOption
-            key={id}
-            selected={selectedAvatar === avatar}
-            onClick={() => handleAvatarPick(avatar)}>
-            <Avatar
-              size={80}
-              name={avatar}
-              {...avatarProps}
-            />
-          </AvatarOption>
-        ))}
-      </AvatarPickerGrid>
-    </Container>
-  );
-
   const matchView = (
-    <Container>
-      <GameInfoContainer showingGame={opponent !== null}>
+    <Wrapper>
+      <GameInfoWrapper showingGame={opponent !== null}>
         <PlayerInfoBubble
           gameOver={gameOver}
           isPlayerTurn={isPlayerTurn}
           showingGame={opponent !== null}>
-          <AvatarContainer>
-            <Avatar
-              size="100%"
-              name={selectedAvatar}
-              {...avatarProps}
-            />
+          <AvatarWrapper>
+            <PlayerAvatar name={selectedAvatar} />
 
             <PlayerInfoName>{name}</PlayerInfoName>
-          </AvatarContainer>
+          </AvatarWrapper>
 
           <AvatarActions>
-            <SymbolPreviewContainer>
+            <SymbolPreviewWrapper>
               {joinedGame ? (
                 <SymbolPreview>
                   {
@@ -542,7 +391,7 @@ export default function Play({ avatars }: {
                   </SymbolPicker>
                 </>
               )}
-            </SymbolPreviewContainer>
+            </SymbolPreviewWrapper>
 
             {!joinedGame ? (
               <ConfirmButton onClick={joinGame}>
@@ -552,7 +401,7 @@ export default function Play({ avatars }: {
           </AvatarActions>
         </PlayerInfoBubble>
 
-        <GameRoundContainer showingGame={opponent !== null}>
+        <GameRoundWrapper showingGame={opponent !== null}>
           {opponent ?
             <GameRound>Round {round}</GameRound>
             : null}
@@ -566,21 +415,17 @@ export default function Play({ avatars }: {
               <span>{opponentScore}</span>
             </ScoreCard>
           ) : null}
-        </GameRoundContainer>
+        </GameRoundWrapper>
 
         {opponent ? (
           <PlayerInfoBubble
             isPlayerTurn={!isPlayerTurn}
             showingGame={opponent !== null}>
-            <AvatarContainer>
-              <Avatar
-                size="100%"
-                name={opponent.avatarId}
-                {...avatarProps}
-              />
+            <AvatarWrapper>
+              <PlayerAvatar name={opponent.avatarId} />
 
               <PlayerInfoName>{opponent.name}</PlayerInfoName>
-            </AvatarContainer>
+            </AvatarWrapper>
 
             <SymbolPreview>
               {
@@ -591,7 +436,7 @@ export default function Play({ avatars }: {
             </SymbolPreview>
           </PlayerInfoBubble>
         ) : null}
-      </GameInfoContainer>
+      </GameInfoWrapper>
 
       {opponent ? (
         <>
@@ -619,7 +464,7 @@ export default function Play({ avatars }: {
           />
         </>
       ) : null}
-    </Container>
+    </Wrapper>
   );
 
   return (
@@ -628,13 +473,20 @@ export default function Play({ avatars }: {
         <title>{pageTitle}</title>
       </Head>
 
-      <PageContainer>
-        <GameContainer>
+      <PageWrapper>
+        <GameWrapper>
           {showingGame && !gameOver ? matchView : null}
-          {!showingGame && !gameOver ? avatarPickerView : null}
+          {!showingGame && !gameOver ?
+            <AvatarPicker
+              avatars={avatars}
+              name={name}
+              setName={setName}
+              selectedAvatar={selectedAvatar}
+              handlePlay={handlePlay}
+              handleAvatarPick={handleAvatarPick}
+            /> : null}
           {showingGame && gameOver ?
             <GameResult
-              avatarProps={avatarProps}
               playerName={name}
               playerAvatar={selectedAvatar}
               opponentName={opponent!.name}
@@ -642,10 +494,10 @@ export default function Play({ avatars }: {
               opponentScore={opponentScore}
               playerScore={playerScore}
             /> : null}
-        </GameContainer>
+        </GameWrapper>
 
         <LinkLessNav />
-      </PageContainer>
+      </PageWrapper>
     </>
   );
 };
