@@ -8,7 +8,7 @@ import { Dispatch, SetStateAction, useState } from "react";
 import { ArrowUp } from "react-feather";
 import { Callback, CallbackNoParams } from "types";
 
-const Container = styled.div`
+const Wrapper = styled.div`
   min-height: calc(100vh - 90px);
   width: 100%;
   display: flex;
@@ -136,7 +136,7 @@ export default function AvatarPicker({
 }: AvatarPickerProps) {
 
     return (
-        <Container>
+        <Wrapper>
             <SelectedAvatar key={selectedAvatar}>
                 <PlayerAvatar name={selectedAvatar} />
             </SelectedAvatar>
@@ -165,6 +165,6 @@ export default function AvatarPicker({
                     </AvatarOption>
                 ))}
             </PickerGrid>
-        </Container>
+        </Wrapper>
     )
 }
