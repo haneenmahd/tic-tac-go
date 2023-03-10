@@ -59,7 +59,7 @@ const BoardBackground = styled.div`
   justify-content: center;
 `;
 
-const BackgroudHorizontalContainer = styled.div`
+const BackgroudHorizontalWrapper = styled.div`
   position: absolute;
   height: 100%;
   width: 100%;
@@ -74,7 +74,7 @@ const BackgroudHorizontalContainer = styled.div`
   }
 `;
 
-const BackgroudVerticalContainer = styled.div`
+const BackgroudVerticalWrapper = styled.div`
   position: absolute;
   height: 100%;
   width: 100%;
@@ -283,17 +283,17 @@ export default function Game({
       </BoardForeground>
 
       <BoardBackground>
-        <BackgroudHorizontalContainer>
+        <BackgroudHorizontalWrapper>
           <BoardSeperator horizontal />
 
           <BoardSeperator horizontal />
-        </BackgroudHorizontalContainer>
+        </BackgroudHorizontalWrapper>
 
-        <BackgroudVerticalContainer>
+        <BackgroudVerticalWrapper>
           <BoardSeperator />
 
           <BoardSeperator />
-        </BackgroudVerticalContainer>
+        </BackgroudVerticalWrapper>
       </BoardBackground>
     </Board>
   );

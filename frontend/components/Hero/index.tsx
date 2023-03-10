@@ -21,7 +21,7 @@ const Wrapper = styled.div`
   }
 `;
 
-const HeroSubContainer = styled.div`
+const HeroSubWrapper = styled.div`
   display: flex;
   max-width: 40%;
   flex-direction: column;
@@ -76,7 +76,7 @@ const HeroImage = styled(Image)`
 export default function Hero() {
   return (
     <Wrapper>
-      <HeroSubContainer>
+      <HeroSubWrapper>
         <HeroContent />
 
         <HeroActions>
@@ -88,7 +88,7 @@ export default function Hero() {
             </CTAButton>
           </Link>
         </HeroActions>
-      </HeroSubContainer>
+      </HeroSubWrapper>
 
       <HeroImage
         src={HeroImageSrc}

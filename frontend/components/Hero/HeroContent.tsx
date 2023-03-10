@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import styled from "styled-components";
 import { COLORS } from "../constants";
 
-const HeroTextContainer = styled.div`
+const HeroTextWrapper = styled.div`
   display: flex;
   flex-direction: column;
 `;
@@ -46,7 +46,7 @@ export default function HeroContent() {
     });
 
     return (
-        <HeroTextContainer>
+        <HeroTextWrapper>
             <HeroTitle>
                 <HeroText active={activeIndex === 0}>Tic.</HeroText>
                 <HeroText active={activeIndex === 1}>Tac.</HeroText>
@@ -55,6 +55,6 @@ export default function HeroContent() {
             <HeroDescription>
                 Play Tic Tac Toe with random people around the world. You will be paired to a random player and you both will playing the game simultaneously. You will have 5 rounds, the one with the greater score wins.
             </HeroDescription>
-        </HeroTextContainer>
+        </HeroTextWrapper>
     );
 }

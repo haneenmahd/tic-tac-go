@@ -8,7 +8,7 @@ import { ArrowRight } from 'react-feather';
 import FadeIn from 'animations/FadeIn';
 import PlayerAvatar from 'components/PlayerAvatar';
 
-const Container = styled.div`
+const Wrapper = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -23,7 +23,7 @@ const Container = styled.div`
     }
 `;
 
-const HeaderContainer = styled.div`
+const HeaderWrapper = styled.div`
     text-align: center;
     line-height: 36px;
     
@@ -102,13 +102,13 @@ export default function GameResult({
     const description = getResultDescription(playerName, playerWonName);
 
     return (
-        <Container>
-            <HeaderContainer>
+        <Wrapper>
+            <HeaderWrapper>
                 <h1>{title}</h1>
                 <h3>
                     {description}
                 </h3>
-            </HeaderContainer>
+            </HeaderWrapper>
 
             <MatchPreview>
                 <MatchPreviewAvatar>
@@ -131,6 +131,6 @@ export default function GameResult({
                 }
                 noSecondary
             />
-        </Container>
+        </Wrapper>
     );
 }
