@@ -10,6 +10,9 @@ const PORT = process.env.PORT || 4000;
 const app = express();
 const server = http.createServer(app);
 
+// Entry point for testing
+app.get("/", (_, res) => res.send("Hello world!"))
+
 server.listen(PORT);
 server.on("error", error => onError(error as HTTPError, PORT));
 server.on("listening", () => onListening(PORT))
