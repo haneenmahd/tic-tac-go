@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import styled, { css, keyframes } from "styled-components";
+import styled, { css } from "styled-components";
 import { Check, ArrowRight } from "react-feather";
 import {
   COLORS,
@@ -55,7 +55,7 @@ const GameInfoWrapper = styled.div<{
     gap: 2rem;
   }
 
-  ${p => p.showingGame && css`
+  ${(p) => p.showingGame && css`
     @media screen and (${QUERIES.small}) {
       flex-direction: row;
       gap: 0.8rem;
