@@ -4,7 +4,7 @@ import Divider from "./Divider";
 import { COLORS } from "./constants";
 import Icon from "assets/svg/logo.svg";
 
-const Container = styled.nav`
+const Wrapper = styled.nav`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -14,12 +14,12 @@ const Container = styled.nav`
   height: 90px;
 `;
 
-const LogoContainer = styled.div`
+const LogoWrapper = styled.div`
   display: flex;
   gap: 10px;
 `;
 
-const LinkLessNavContainer = styled(Container)`
+const LinkLessNavWrapper = styled(Wrapper)`
   align-items: center;
   gap: 56px;
 
@@ -37,30 +37,30 @@ const Text = styled.span`
 
 const HomeLink = () => (
   <NavLink href="/">
-    <LogoContainer>
+    <LogoWrapper>
       <Icon />
 
       <Text>TicTacGo</Text>
-    </LogoContainer>
+    </LogoWrapper>
   </NavLink>
 );
 
 const NavBar = () => {
   return (
-    <Container>
+    <Wrapper>
       <HomeLink />
 
       <NavLink href="/play">Play</NavLink>
-    </Container>
+    </Wrapper>
   );
 };
 
 const LinkLessNav = () => (
-  <LinkLessNavContainer>
+  <LinkLessNavWrapper>
     <HomeLink />
 
     <Divider maxWidth />
-  </LinkLessNavContainer>
+  </LinkLessNavWrapper>
 );
 
 export { LinkLessNav };

@@ -1,17 +1,21 @@
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
-import styled, { css, keyframes } from "styled-components";
-import { COLORS, QUERIES } from "components/constants";
+import {
+  Dispatch,
+  SetStateAction,
+  useEffect,
+  useState
+} from "react";
+import styled, {
+  css,
+  keyframes
+} from "styled-components";
+import {
+  COLORS,
+  QUERIES,
+  symbols,
+  symbolImages
+} from "components/constants";
 import GameService from "services/GameService";
-import OSymbol from "assets/svg/O.svg";
-import XSymbol from "assets/svg/X.svg";
 import type { PlayMatrix, PlayerSymbol } from "types";
-
-export const symbols: {
-  [name: string]: PlayerSymbol
-} = {
-  X: "X",
-  O: "O",
-};
 
 const BOARD_RESOLUTION = "469px"; // 469x469
 
@@ -55,7 +59,7 @@ const BoardBackground = styled.div`
   justify-content: center;
 `;
 
-const BackgroudHorizontalContainer = styled.div`
+const BackgroudHorizontalWrapper = styled.div`
   position: absolute;
   height: 100%;
   width: 100%;
@@ -70,7 +74,7 @@ const BackgroudHorizontalContainer = styled.div`
   }
 `;
 
-const BackgroudVerticalContainer = styled.div`
+const BackgroudVerticalWrapper = styled.div`
   position: absolute;
   height: 100%;
   width: 100%;
@@ -153,18 +157,7 @@ const SymbolPreview = styled.div`
   }
 `;
 
-const Game = ({
-  symbol,
-  gameOver,
-  setGameOver,
-  setRound,
-  setRoundOver,
-  playerScore,
-  setPlayerScore,
-  setOpponentScore,
-  isPlayerTurn,
-  setPlayerTurn,
-}: {
+interface GameProps {
   symbol: PlayerSymbol,
   gameOver: boolean;
   setGameOver: Dispatch<SetStateAction<boolean>>;
@@ -175,7 +168,20 @@ const Game = ({
   setOpponentScore: Dispatch<SetStateAction<number>>,
   isPlayerTurn: boolean,
   setPlayerTurn: Dispatch<SetStateAction<boolean>>
-}) => {
+}
+
+export default function Game({
+  symbol,
+  gameOver,
+  setGameOver,
+  setRound,
+  setRoundOver,
+  playerScore,
+  setPlayerScore,
+  setOpponentScore,
+  isPlayerTurn,
+  setPlayerTurn,
+}: GameProps) {
   const [matrix, setMatrix] = useState<PlayMatrix>([
     [null, null, null],
     [null, null, null],
@@ -255,19 +261,19 @@ const Game = ({
   return (
     <Board>
       <BoardForeground>
-        {matrix.map((row, rowIdx) => (
-          <Row key={rowIdx}>
-            {row.map((column, colIdx) => (
+        {matrix.map((row, rowId) => (
+          <Row key={rowId}>
+            {row.map((column, colId) => (
               <Column
-                onClick={() => handleClick(rowIdx, colIdx)}
-                key={colIdx}>
+                onClick={() => handleClick(rowId, colId)}
+                key={colId}>
                 {column === symbols.X ?
                   <SymbolPreview>
-                    <XSymbol />
+                    <symbolImages.X />
                   </SymbolPreview>
                   : column === symbols.O ?
                     <SymbolPreview>
-                      <OSymbol />
+                      <symbolImages.O />
                     </SymbolPreview>
                     : null}
               </Column>
@@ -277,20 +283,18 @@ const Game = ({
       </BoardForeground>
 
       <BoardBackground>
-        <BackgroudHorizontalContainer>
+        <BackgroudHorizontalWrapper>
           <BoardSeperator horizontal />
 
           <BoardSeperator horizontal />
-        </BackgroudHorizontalContainer>
+        </BackgroudHorizontalWrapper>
 
-        <BackgroudVerticalContainer>
+        <BackgroudVerticalWrapper>
           <BoardSeperator />
 
           <BoardSeperator />
-        </BackgroudVerticalContainer>
+        </BackgroudVerticalWrapper>
       </BoardBackground>
     </Board>
   );
 };
-
-export default Game;

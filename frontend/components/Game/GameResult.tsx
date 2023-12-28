@@ -1,22 +1,14 @@
 import React from 'react';
-import styled, { keyframes } from 'styled-components';
+import styled from 'styled-components';
 import Avatar, { AvatarProps } from 'boring-avatars';
 import GameActions from './GameActions';
-import Divider from './Divider';
-import { COLORS, QUERIES, TRANSITIONS } from './constants';
+import Divider from '../Divider';
+import { COLORS, QUERIES, TRANSITIONS } from '../constants';
 import { ArrowRight } from 'react-feather';
+import FadeIn from 'animations/FadeIn';
+import PlayerAvatar from 'components/PlayerAvatar';
 
-const FadeIn = keyframes`
-    from {
-        opacity: 0;
-    }
-
-    to {
-        opacity: 1;
-    }
-`;
-
-const Container = styled.div`
+const Wrapper = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -31,7 +23,7 @@ const Container = styled.div`
     }
 `;
 
-const HeaderContainer = styled.div`
+const HeaderWrapper = styled.div`
     text-align: center;
     line-height: 36px;
     
@@ -74,26 +66,30 @@ const MatchPreviewAvatar = styled.div`
     }
 `;
 
-const GameResult = ({
-    playerName,
-    playerAvatar,
-    playerScore,
-    opponentName,
-    opponentAvatar,
-    opponentScore,
-    avatarProps
-}: {
+interface GameResultProps {
     playerName: string,
     playerAvatar: string,
     playerScore: number,
     opponentName: string,
     opponentAvatar: string,
-    opponentScore: number,
-    avatarProps: AvatarProps
-}) => {
+    opponentScore: number
+}
+
+export default function GameResult({
+    playerName,
+    playerAvatar,
+    playerScore,
+    opponentName,
+    opponentAvatar,
+    opponentScore
+}: GameResultProps) {
     const didPlayerWin = playerScore > opponentScore ? true : playerScore < opponentScore ? false : null;
-    const title = didPlayerWin ? "Congratulations!" : didPlayerWin === false ? "Bad luck :(" : "Well Played!";
-    const description = (playerWonName: string | null) => {
+    const title = didPlayerWin ? "Congratulations!" :
+        didPlayerWin === false ? "Bad luck :(" : "Well Played!";
+    const playerWonName = didPlayerWin ? playerName :
+        didPlayerWin === false ? opponentName : null;
+
+    const getResultDescription = (playerName: string, playerWonName: string | null) => {
         if (!playerWonName) {
             return "Both of you have won the game. It was competitive and a great one!";
         } else if (playerWonName === playerName) {
@@ -101,38 +97,30 @@ const GameResult = ({
         } else if (playerWonName !== playerName) {
             return `${playerWonName} has won the game. But well played! Good luck with your next game.`;
         }
-    };
+    }
+
+    const description = getResultDescription(playerName, playerWonName);
 
     return (
-        <Container>
-            <HeaderContainer>
+        <Wrapper>
+            <HeaderWrapper>
                 <h1>{title}</h1>
                 <h3>
-                    {
-                        description(
-                            didPlayerWin ? playerName : didPlayerWin === false ? opponentName : null
-                        )
-                    }
+                    {description}
                 </h3>
-            </HeaderContainer>
+            </HeaderWrapper>
 
             <MatchPreview>
                 <MatchPreviewAvatar>
                     <span>{playerScore}</span>
-                    <Avatar
-                        name={playerAvatar}
-                        size={70}
-                        {...avatarProps} />
+                    <PlayerAvatar name={playerAvatar} />
                 </MatchPreviewAvatar>
 
                 <Divider maxWidth />
 
                 <MatchPreviewAvatar>
                     <span>{opponentScore}</span>
-                    <Avatar
-                        name={opponentAvatar}
-                        size={70}
-                        {...avatarProps} />
+                    <PlayerAvatar name={opponentAvatar} />
                 </MatchPreviewAvatar>
             </MatchPreview>
 
@@ -143,8 +131,6 @@ const GameResult = ({
                 }
                 noSecondary
             />
-        </Container>
+        </Wrapper>
     );
 }
-
-export default GameResult;

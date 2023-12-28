@@ -12,9 +12,7 @@ class GameService {
      * So that the socket is only called when neededs
      */
     async init() {
-        const url = process.env.NODE_ENV === "development" ?
-            "http://localhost:4000" :
-            process.env.SERVER_URL;
+        const url = process.env.NODE_ENV === "development" ? "http://localhost:4000" : "https://test-a94g.onrender.com";
 
         this.ws = io(url!, { transports: ["websocket"] });
     }

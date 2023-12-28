@@ -3,7 +3,7 @@ import NavLink from "./NavLink";
 import Divider from "./Divider";
 import { COLORS, QUERIES } from "./constants";
 
-const Container = styled.div`
+const Wrapper = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: flex-end;
@@ -28,13 +28,13 @@ const FooterDivider = styled(Divider)`
 `;
 
 const Footer = () => (
-  <Container>
+  <Wrapper>
     <FooterLink href="/about">About</FooterLink>
     <FooterLink href="/support">Support</FooterLink>
     <FooterLink href="/privacy-policy">Privacy</FooterLink>
 
     <FooterDivider maxWidth />
-  </Container>
+  </Wrapper>
 );
 
 export default Footer;

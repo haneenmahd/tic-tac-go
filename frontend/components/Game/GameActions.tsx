@@ -1,10 +1,9 @@
 import React from 'react';
 import styled, { css } from 'styled-components';
 import { COLORS, QUERIES } from 'components/constants';
-import Button from './Button';
+import Button from '../Button';
 
-
-const GameActionsContainer = styled.div<{
+const Wrapper = styled.div<{
   disabled?: boolean;
 }>`
   display: flex;
@@ -25,7 +24,7 @@ const GameActionsContainer = styled.div<{
   }
 `;
 
-const GameActionButton = styled(Button)`
+const ActionButton = styled(Button)`
   font-weight: 500;
   padding: 0 20px;
   color: ${COLORS.black};
@@ -36,7 +35,7 @@ const GameActionButton = styled(Button)`
   }
 `;
 
-const GameActionButtonSecondary = styled(GameActionButton)`
+const ActionButtonSecondary = styled(ActionButton)`
   font-weight: normal;
   border: 1px solid ${COLORS.blue};
   background: ${COLORS.fadedBlue};
@@ -46,16 +45,7 @@ const GameActionButtonSecondary = styled(GameActionButton)`
   }
 `;
 
-const GameActions = ({
-  disabled,
-  primaryTitle,
-  primaryAction,
-  primaryIcon,
-  secondaryTitle,
-  secondaryAction,
-  secondaryIcon,
-  noSecondary
-}: {
+interface GameActionsProps {
   disabled?: boolean;
   primaryTitle: string;
   primaryAction?: React.MouseEventHandler<HTMLButtonElement>;
@@ -64,24 +54,33 @@ const GameActions = ({
   secondaryAction?: React.MouseEventHandler<HTMLButtonElement>;
   secondaryIcon?: JSX.Element;
   noSecondary?: boolean;
-}) => {
+}
+
+export default function GameActions({
+  disabled,
+  primaryTitle,
+  primaryAction,
+  primaryIcon,
+  secondaryTitle,
+  secondaryAction,
+  secondaryIcon,
+  noSecondary
+}: GameActionsProps) {
   return (
-    <GameActionsContainer disabled={disabled}>
-      <GameActionButton onClick={primaryAction}>
+    <Wrapper disabled={disabled}>
+      <ActionButton onClick={primaryAction}>
         {primaryTitle}
 
         {primaryIcon}
-      </GameActionButton>
+      </ActionButton>
 
       {noSecondary ? null :
-        <GameActionButtonSecondary onClick={secondaryAction}>
+        <ActionButtonSecondary onClick={secondaryAction}>
           {secondaryTitle}
 
           {secondaryIcon}
-        </GameActionButtonSecondary>
+        </ActionButtonSecondary>
       }
-    </GameActionsContainer>
+    </Wrapper>
   );
 }
-
-export default GameActions;
