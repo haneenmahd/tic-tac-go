@@ -42,7 +42,7 @@ export default class AppDocument extends Document {
           <link rel="icon" href="/favicon.ico" />
           <link rel="preconnect" href="https://rsms.me/" />
           <link rel="stylesheet" href="https://rsms.me/inter/inter.css" />
-          <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+          <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
         </Head>
         <body>
           <Main />
